@@ -5,8 +5,6 @@ import me from "../../assets/me.jpg";
 export const Sidebar = () => {
   const location = useLocation();
 
-  console.log("location: ", location.pathname);
-
   return (
     <div className="flex flex-col justify-between border-e bg-white w-[300px]">
       <div className="px-4 py-6">

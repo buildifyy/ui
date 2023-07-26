@@ -18,7 +18,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
     }
   };
 
-  if (location.pathname === "/") {
+  if (location.pathname === "/" || location.pathname === "/templates") {
     return null;
   }
 
