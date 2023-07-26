@@ -1,4 +1,15 @@
+import { useLocation } from "react-router-dom";
+
 export const Footer = () => {
+  const location = useLocation();
+
+  if (
+    location.pathname !== "/templates/create" &&
+    !location.pathname.includes("/templates/edit")
+  ) {
+    return null;
+  }
+
   return (
     <div className="grid h-[60px] px-28 items-center border-t grid-cols-[1fr,1fr,auto]">
       <div className="grid-item"></div>
