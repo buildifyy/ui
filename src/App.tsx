@@ -1,13 +1,15 @@
-import "./App.css";
-import Sidebar from "./components/Sidebar/Sidebar";
-import Stepper from "./components/Stepper/Stepper";
+import { Sidebar, Stepper, Footer, Content } from "./components";
 
 function App() {
   return (
-    <>
-      <Stepper />
+    <div className="flex h-full">
       <Sidebar />
-    </>
+      <div className="flex w-full flex-col justify-between">
+        <Stepper />
+        <Content />
+        <Footer />
+      </div>
+    </div>
   );
 }
 

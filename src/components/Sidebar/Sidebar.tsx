@@ -1,130 +1,158 @@
 import logo from "../../assets/logo.svg";
-import eye from "../../assets/eye.svg";
-import create from "../../assets/create.svg";
-import edit from "../../assets/edit.svg";
-import list from "../../assets/list.svg";
+import me from "../../assets/me.jpg";
 
-const Sidebar = () => {
+export const Sidebar = () => {
   return (
-    <aside className="sidebar h-full absolute justify-start z-max ">
-      <section className="sidebar-title items-center p-4">
-        <img src={logo} height={50} width={50} />
-        <div className="flex flex-col">
-          <span className="text-2xl">Buildify</span>
-        </div>
-      </section>
-      <section className="sidebar-content h-fit min-h-[20rem] overflow-visible">
-        <nav className="menu rounded-md">
-          <section className="menu-section px-4">
-            <ul className="menu-items">
-              <li>
-                <input type="checkbox" id="menu-1" className="menu-toggle" />
-                <label className="menu-item justify-between" htmlFor="menu-1">
-                  <div className="flex gap-2">
-                    <span className="text-lg">Templates</span>
-                  </div>
+    <div className="flex flex-col justify-between border-e bg-white w-[300px]">
+      <div className="px-4 py-6">
+        <span className="grid h-10 w-32 place-content-center rounded-lg text-lg grid-cols-2 items-center ml-10">
+          <img src={logo} width={50} height={50} />
+          <span>Buildify</span>
+        </span>
 
-                  <span className="menu-icon">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </span>
-                </label>
+        <ul className="mt-6 space-y-1">
+          <li>
+            <details className="group [&_summary::-webkit-details-marker]:hidden">
+              <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                <span className="text-sm font-medium"> Templates </span>
 
-                <div className="menu-item-collapse">
-                  <div className="min-h-0">
-                    <li className="menu-item ml-3 text-md">
-                      <img src={list} width={15} height={15} />
-                      <span>List</span>
-                    </li>
-                    <li className="menu-item menu-item-disabled ml-3 text-md">
-                      <img
-                        src={eye}
-                        width={15}
-                        height={15}
-                        className="opacity-50"
-                      />
-                      <span>View</span>
-                    </li>
-                    <li className="menu-item menu-item-disabled ml-3 text-md">
-                      <img
-                        src={create}
-                        width={15}
-                        height={15}
-                        className="opacity-50"
-                      />
-                      <span>Create</span>
-                    </li>
-                    <li className="menu-item menu-item-disabled ml-3 text-md">
-                      <img
-                        src={edit}
-                        width={15}
-                        height={15}
-                        className="opacity-50"
-                      />
-                      <span>Edit</span>
-                    </li>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </section>
-        </nav>
-      </section>
-      <section className="sidebar-footer h-full justify-end bg-gray-2 pt-2">
-        <div className="divider my-0"></div>
-        <div className="dropdown z-50 flex h-fit w-full cursor-pointer hover:bg-gray-4">
-          <label
-            className="whites mx-2 flex h-fit w-full cursor-pointer p-0 hover:bg-gray-4"
-            tabIndex={0}
-          >
-            <div className="flex flex-row gap-4 p-4">
-              <div className="avatar avatar-md">
-                <img src="https://i.pravatar.cc/150?img=30" alt="avatar" />
-              </div>
-
-              <div className="flex flex-col">
-                <span>Sandra Marx</span>
-                <span className="text-xs font-normal text-content2">
-                  sandra
+                <span className="shrink-0 transition duration-300 group-open:-rotate-180">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
                 </span>
-              </div>
-            </div>
-          </label>
-          <div className="dropdown-menu dropdown-menu-right-top ml-2">
-            <a className="dropdown-item text-sm">Profile</a>
-            <a tabIndex={-1} className="dropdown-item text-sm">
-              Account settings
-            </a>
-            <a tabIndex={-1} className="dropdown-item text-sm">
-              Change email
-            </a>
-            <a tabIndex={-1} className="dropdown-item text-sm">
-              Subscriptions
-            </a>
-            <a tabIndex={-1} className="dropdown-item text-sm">
-              Change password
-            </a>
-            <a tabIndex={-1} className="dropdown-item text-sm">
-              Refer a friend
-            </a>
-            <a tabIndex={-1} className="dropdown-item text-sm">
-              Settings
-            </a>
+              </summary>
+
+              <ul className="mt-2 space-y-1 px-4">
+                <li>
+                  <a
+                    href=""
+                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  >
+                    List
+                  </a>
+                </li>
+
+                <li>
+                  <a
+                    href=""
+                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  >
+                    View
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href=""
+                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  >
+                    Create
+                  </a>
+                </li>
+
+                <li>
+                  <a
+                    href=""
+                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  >
+                    Edit
+                  </a>
+                </li>
+              </ul>
+            </details>
+          </li>
+
+          <li>
+            <details className="group [&_summary::-webkit-details-marker]:hidden">
+              <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                <span className="text-sm font-medium"> Instances </span>
+
+                <span className="shrink-0 transition duration-300 group-open:-rotate-180">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </span>
+              </summary>
+
+              <ul className="mt-2 space-y-1 px-4">
+                <li>
+                  <a
+                    href=""
+                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  >
+                    List
+                  </a>
+                </li>
+
+                <li>
+                  <a
+                    href=""
+                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  >
+                    View
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href=""
+                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  >
+                    Create
+                  </a>
+                </li>
+
+                <li>
+                  <a
+                    href=""
+                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                  >
+                    Edit
+                  </a>
+                </li>
+              </ul>
+            </details>
+          </li>
+        </ul>
+      </div>
+
+      <div className="sticky inset-x-0 bottom-0 border-gray-100">
+        <a
+          href="#"
+          className="flex items-center gap-2 bg-white p-4 hover:bg-gray-50"
+        >
+          <img
+            alt="Man"
+            src={me}
+            className="h-10 w-10 rounded-full object-cover"
+          />
+
+          <div>
+            <p className="text-xs">
+              <strong className="block font-medium">Varun Gupta</strong>
+
+              <span> varungupta2015135@gmail.com </span>
+            </p>
           </div>
-        </div>
-      </section>
-    </aside>
+        </a>
+      </div>
+    </div>
   );
 };
-
-export default Sidebar;
