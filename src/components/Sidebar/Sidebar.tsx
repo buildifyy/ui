@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import me from "../../assets/me.jpg";
 
@@ -34,38 +35,38 @@ export const Sidebar = () => {
 
               <ul className="mt-2 space-y-1 px-4">
                 <li>
-                  <a
-                    href=""
+                  <Link
+                    to={`/templates`}
                     className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                   >
                     List
-                  </a>
+                  </Link>
                 </li>
 
                 <li>
-                  <a
-                    href=""
+                  <Link
+                    to={`/templates/abcdefg`}
                     className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                   >
                     View
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href=""
+                  <Link
+                    to={`/templates/create`}
                     className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                   >
                     Create
-                  </a>
+                  </Link>
                 </li>
 
                 <li>
-                  <a
-                    href=""
+                  <Link
+                    to={`/templates/edit/abcdefg`}
                     className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                   >
                     Edit
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </details>

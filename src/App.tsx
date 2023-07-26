@@ -1,15 +1,25 @@
-import { Sidebar, Stepper, Footer, Content } from "./components";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  Layout,
+  TemplateCreate,
+  TemplateEdit,
+  TemplateList,
+  TemplateView,
+} from "./components";
 
 function App() {
   return (
-    <div className="flex h-full">
-      <Sidebar />
-      <div className="flex w-full flex-col justify-between">
-        <Stepper />
-        <Content />
-        <Footer />
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route path="/templates" element={<TemplateList />}>
+            <Route path="create" element={<TemplateCreate />} />
+            <Route path=":templateId" element={<TemplateView />} />
+            <Route path="edit/:templateId" element={<TemplateEdit />} />
+          </Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
