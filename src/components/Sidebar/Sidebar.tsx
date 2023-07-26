@@ -3,8 +3,17 @@ import logo from "../../assets/logo.svg";
 import me from "../../assets/me.jpg";
 import "./Sidebar.css";
 
-export const Sidebar = () => {
+interface SidebarProps {
+  readonly tenant: string;
+  readonly setTenant: (val: string) => void;
+}
+
+export const Sidebar = ({ tenant, setTenant }: SidebarProps) => {
   const location = useLocation();
+
+  const handleTenantChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setTenant(event.target.value);
+  };
 
   return (
     <div className="flex flex-col justify-between border-e bg-white w-[300px]">
@@ -28,6 +37,8 @@ export const Sidebar = () => {
                 name="HeadlineAct"
                 id="HeadlineAct"
                 className="-ml-[2px] mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm py-2 px-1 text-lg"
+                onChange={handleTenantChange}
+                value={tenant}
               >
                 <option value="">Please select</option>
                 <option value="JM">John Mayer</option>
