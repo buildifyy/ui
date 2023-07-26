@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import me from "../../assets/me.jpg";
+import "./Sidebar.css";
 
 export const Sidebar = () => {
   const location = useLocation();
@@ -14,6 +15,31 @@ export const Sidebar = () => {
         </span>
 
         <ul className="mt-6 space-y-1">
+          <li>
+            <div className="px-4 py-2">
+              <label
+                htmlFor="HeadlineAct"
+                className="block text-sm font-medium text-gray-500"
+              >
+                Tenant
+              </label>
+
+              <select
+                name="HeadlineAct"
+                id="HeadlineAct"
+                className="-ml-[2px] mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm py-2 px-1 text-lg"
+              >
+                <option value="">Please select</option>
+                <option value="JM">John Mayer</option>
+                <option value="SRV">Stevie Ray Vaughn</option>
+                <option value="JH">Jimi Hendrix</option>
+                <option value="BBK">B.B King</option>
+                <option value="AK">Albert King</option>
+                <option value="BG">Buddy Guy</option>
+                <option value="EC">Eric Clapton</option>
+              </select>
+            </div>
+          </li>
           <li>
             <details
               className="group"
