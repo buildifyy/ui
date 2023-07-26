@@ -1,8 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import me from "../../assets/me.jpg";
 
 export const Sidebar = () => {
+  const location = useLocation();
+
+  console.log("location: ", location.pathname);
+
   return (
     <div className="flex flex-col justify-between border-e bg-white w-[300px]">
       <div className="px-4 py-6">
@@ -13,7 +17,10 @@ export const Sidebar = () => {
 
         <ul className="mt-6 space-y-1">
           <li>
-            <details className="group [&_summary::-webkit-details-marker]:hidden">
+            <details
+              className="group"
+              open={location.pathname.includes("/templates")}
+            >
               <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
                 <span className="text-sm font-medium"> Templates </span>
 
@@ -37,7 +44,11 @@ export const Sidebar = () => {
                 <li>
                   <Link
                     to={`/templates`}
-                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                    className={`block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${
+                      location.pathname === "/templates"
+                        ? "bg-gray-100 text-gray-700"
+                        : ""
+                    }`}
                   >
                     List
                   </Link>
@@ -46,7 +57,11 @@ export const Sidebar = () => {
                 <li>
                   <Link
                     to={`/templates/abcdefg`}
-                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                    className={`block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${
+                      location.pathname === "/templates/abcdefg"
+                        ? "bg-gray-100 text-gray-700"
+                        : ""
+                    }`}
                   >
                     View
                   </Link>
@@ -54,7 +69,11 @@ export const Sidebar = () => {
                 <li>
                   <Link
                     to={`/templates/create`}
-                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                    className={`block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${
+                      location.pathname === "/templates/create"
+                        ? "bg-gray-100 text-gray-700"
+                        : ""
+                    }`}
                   >
                     Create
                   </Link>
@@ -63,7 +82,11 @@ export const Sidebar = () => {
                 <li>
                   <Link
                     to={`/templates/edit/abcdefg`}
-                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                    className={`block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${
+                      location.pathname === "/templates/edit/abcdefg"
+                        ? "bg-gray-100 text-gray-700"
+                        : ""
+                    }`}
                   >
                     Edit
                   </Link>
@@ -94,7 +117,7 @@ export const Sidebar = () => {
               </summary>
 
               <ul className="mt-2 space-y-1 px-4">
-                <li>
+                {/* <li>
                   <a
                     href=""
                     className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
@@ -127,7 +150,7 @@ export const Sidebar = () => {
                   >
                     Edit
                   </a>
-                </li>
+                </li> */}
               </ul>
             </details>
           </li>
