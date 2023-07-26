@@ -25,7 +25,7 @@ export const Sidebar = ({ tenant, setTenant }: SidebarProps) => {
 
         <ul className="mt-6 space-y-1">
           <li>
-            <div className="px-4 py-2">
+            <div className="px-2 py-2">
               <label
                 htmlFor="HeadlineAct"
                 className="block text-sm font-medium text-gray-500"
@@ -36,7 +36,7 @@ export const Sidebar = ({ tenant, setTenant }: SidebarProps) => {
               <select
                 name="HeadlineAct"
                 id="HeadlineAct"
-                className="-ml-[2px] mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm py-2 px-1 text-lg"
+                className="-ml-[2px] mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm py-2 px-2 text-lg border"
                 onChange={handleTenantChange}
                 value={tenant}
               >
