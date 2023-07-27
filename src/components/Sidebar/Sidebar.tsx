@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import me from "../../assets/me.jpg";
 import "./Sidebar.css";
+import { Select } from "..";
 
 interface SidebarProps {
   readonly tenant: string;
@@ -33,22 +34,12 @@ export const Sidebar = ({ tenant, setTenant }: SidebarProps) => {
                 Tenant
               </label>
 
-              <select
-                name="HeadlineAct"
-                id="HeadlineAct"
-                className="-ml-[2px] mt-1.5 w-full rounded-lg border-gray-300 text-gray-700 sm:text-sm py-2 px-2 text-lg border"
+              <Select
+                id="tenant"
+                name="tenant"
                 onChange={handleTenantChange}
                 value={tenant}
-              >
-                <option value="">Please select</option>
-                <option value="JM">John Mayer</option>
-                <option value="SRV">Stevie Ray Vaughn</option>
-                <option value="JH">Jimi Hendrix</option>
-                <option value="BBK">B.B King</option>
-                <option value="AK">Albert King</option>
-                <option value="BG">Buddy Guy</option>
-                <option value="EC">Eric Clapton</option>
-              </select>
+              />
             </div>
           </li>
           <li>

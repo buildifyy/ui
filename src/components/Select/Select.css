@@ -1,0 +1,22 @@
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-weight: normal;
+    background: url("data:image/svg+xml;utf8,<svg                    xmlns='http://www.w3.org/2000/svg'                    className='h-1 w-1'                    viewBox='0 0 20 20'                    fill='currentColor'                  >                    <path                      fillRule='evenodd'                      d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'                      clipRule='evenodd' style='fill: rgb(107, 114, 128);'                  />                  </svg>") 97.5% / 15% no-repeat;
+    background-size: 20px 20px;
+  }
+  
+  /* CAUTION: IE hackery ahead */
+  select::-ms-expand { 
+      display: none; /* remove default arrow on ie10 and ie11 */
+  }
+  
+  /* target Internet Explorer 9 to undo the custom arrow */
+  @media screen and (min-width:0\0) {
+      select {
+          background:none\9;
+          padding: 5px\9;
+      } 
+  }
+  
