@@ -25,7 +25,7 @@ export const BasicInformation = (props: BasicInformationProps) => {
 
   return (
     <div className="flex flex-col mt-5 mx-10 border rounded py-5 items-center overflow-scroll h-[27rem]">
-      <div className="flex items-center w-full justify-around">
+      <div className="flex items-center w-full justify-around pt-5">
         <div className="flex flex-col w-96">
           <label
             htmlFor="parent"
@@ -62,7 +62,7 @@ export const BasicInformation = (props: BasicInformationProps) => {
         <input
           id="name"
           type="text"
-          className="w-64 border h-[38px] p-2 rounded shadow-sm sm:text-sm text-gray-700"
+          className="w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700"
           required
           value={name}
           onChange={onChangeName}
@@ -84,7 +84,7 @@ export const BasicInformation = (props: BasicInformationProps) => {
         <input
           id="externalId"
           type="text"
-          className="w-64 border h-[38px] p-2 rounded shadow-sm sm:text-sm text-gray-700"
+          className="w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700"
           required
           value={externalId}
           onChange={onChangeExternalId}
@@ -112,7 +112,6 @@ export const BasicInformation = (props: BasicInformationProps) => {
           </div>
         </div>
       </div>
-      <hr className="w-[84%] my-6" />
     </div>
   );
 };

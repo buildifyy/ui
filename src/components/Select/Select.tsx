@@ -19,7 +19,7 @@ export const Select = ({
     <select
       name={name}
       id={id}
-      className={`-ml-[2px] mt-1.5 ${widthClassName} rounded-lg border-gray-300 text-gray-700 sm:text-sm py-2 px-2 text-lg border`}
+      className={`-ml-[2px] mt-1.5 ${widthClassName} rounded-lg border-gray-300 text-gray-700 py-2 px-2 border text-xs`}
       onChange={onChange}
       value={value}
       required

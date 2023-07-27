@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "../..";
 import { BasicInformation } from "./BasicInformation";
+import { Attributes } from "./Attributes";
+import { Attribute } from "../../../models";
 
 interface TemplateCreateProps {
   readonly stepSelection:
@@ -15,11 +17,10 @@ export const TemplateCreate = ({
   stepSelection,
   tenant,
 }: TemplateCreateProps) => {
-  console.log("stepSelection: ", stepSelection);
-  console.log("tenant: ", tenant);
   const [parent, setParent] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [externalId, setExternalId] = useState<string>("");
+  const [attributes, setAttributes] = useState<Attribute[]>([]);
 
   const handleParentChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setParent(event.target.value);
@@ -35,13 +36,60 @@ export const TemplateCreate = ({
     setExternalId(event.target.value);
   };
 
-  const handleSubmit = () => {};
+  const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log("submittedData: ", {
+      parent,
+      name,
+      externalId,
+      custom: true,
+      tenant: tenant,
+    });
+  };
 
-  return (
-    <div className="w-full">
-      <Header value={stepSelection} />
-      <form onSubmit={handleSubmit}>
-        {stepSelection === "Basic Information" ? (
+  const handleAddAttribute = (newAttribute: Attribute) => {
+    setAttributes((attributes) => {
+      const newAttributes = attributes.map((attr) => {
+        if (attr.isOpen) {
+          return {
+            ...attr,
+            isOpen: false,
+          };
+        }
+        return attr;
+      });
+      newAttributes.push(newAttribute);
+      return newAttributes;
+    });
+  };
+
+  const handleOpenAttribute = (id: string) => {
+    setAttributes((attributes) => {
+      return attributes.map((attribute) => {
+        if (attribute.id === id) {
+          return {
+            ...attribute,
+            isOpen: !attribute.isOpen,
+          };
+        }
+        return attribute;
+      });
+    });
+  };
+
+  const handleRemoveAttribute = (id: string) => {
+    console.log("attributes: ", attributes);
+    setAttributes((attr) => attr.filter((a: Attribute) => a.id !== id));
+  };
+
+  useEffect(() => {
+    console.log("current attributes: ", attributes);
+  }, [attributes]);
+
+  const toRender = () => {
+    switch (stepSelection) {
+      case "Basic Information":
+        return (
           <BasicInformation
             parent={parent}
             onChangeParent={handleParentChange}
@@ -50,7 +98,26 @@ export const TemplateCreate = ({
             externalId={externalId}
             onChangeExternalId={handleExternalIdChange}
           />
-        ) : null}
+        );
+      case "Attributes":
+        return (
+          <Attributes
+            attributes={attributes}
+            addAttribute={handleAddAttribute}
+            openAttribute={handleOpenAttribute}
+            removeAttribute={handleRemoveAttribute}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="w-full">
+      <Header value={stepSelection} />
+      <form id="template-form" onSubmit={handleOnSubmit}>
+        {toRender()}
       </form>
     </div>
   );
