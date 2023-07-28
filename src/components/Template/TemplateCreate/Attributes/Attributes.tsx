@@ -17,7 +17,7 @@ export const Attributes = ({
   const handleAddAttribute = () => {
     addAttribute({
       id: attributes.length.toString(),
-      name: "new attribute",
+      name: "Untitled Attribute",
       isOpen: true,
     });
   };
