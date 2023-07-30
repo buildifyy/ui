@@ -10,6 +10,8 @@ import {
   TemplateList,
   TemplateView,
 } from "./components";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import { CreateTemplateFormData } from "./models";
 
 function App() {
   const location = useLocation();
@@ -22,43 +24,56 @@ function App() {
     setStepSelection("Basic Information");
   }, [location]);
 
+  const methods = useForm<CreateTemplateFormData>();
+
+  const onSubmit: SubmitHandler<CreateTemplateFormData> = (data) =>
+    console.log("formData: ", data);
+
   return (
-    <div className="flex h-full">
-      <Sidebar tenant={tenant} setTenant={setTenant} />
-      <div className="flex w-full flex-col justify-between">
-        <Stepper
-          stepSelection={stepSelection}
-          setStepSelection={setStepSelection}
-        />
-        <Content>
-          <Routes>
-            <Route
-              path="/templates"
-              element={<TemplateList tenant={tenant} />}
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <div className="flex h-full">
+          <Sidebar tenant={tenant} setTenant={setTenant} />
+          <div className="flex w-full flex-col justify-between">
+            <Stepper
+              stepSelection={stepSelection}
+              setStepSelection={setStepSelection}
             />
-            <Route
-              path="/templates/create"
-              element={
-                <TemplateCreate stepSelection={stepSelection} tenant={tenant} />
-              }
-            />
-            <Route
-              path="/templates/:templateId"
-              element={
-                <TemplateView stepSelection={stepSelection} tenant={tenant} />
-              }
-            />
-            <Route
-              path="/templates/edit/:templateId"
-              element={
-                <TemplateEdit stepSelection={stepSelection} tenant={tenant} />
-              }
-            />
-          </Routes>
-        </Content>
-        <Footer />
-      </div>
-    </div>
+            <Content>
+              <Routes>
+                <Route
+                  path="/templates"
+                  element={<TemplateList tenant={tenant} />}
+                />
+                <Route
+                  path="/templates/create"
+                  element={<TemplateCreate stepSelection={stepSelection} />}
+                />
+                <Route
+                  path="/templates/:templateId"
+                  element={
+                    <TemplateView
+                      stepSelection={stepSelection}
+                      tenant={tenant}
+                    />
+                  }
+                />
+                <Route
+                  path="/templates/edit/:templateId"
+                  element={
+                    <TemplateEdit
+                      stepSelection={stepSelection}
+                      tenant={tenant}
+                    />
+                  }
+                />
+              </Routes>
+            </Content>
+            <Footer />
+          </div>
+        </div>
+      </form>
+    </FormProvider>
   );
 }
 

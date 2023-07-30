@@ -10,42 +10,10 @@ interface TemplateCreateProps {
     | "Attributes"
     | "Relationships"
     | "Metric Types";
-  readonly tenant: string;
 }
 
-export const TemplateCreate = ({
-  stepSelection,
-  tenant,
-}: TemplateCreateProps) => {
-  const [parent, setParent] = useState<string>("");
-  const [name, setName] = useState<string>("");
-  const [externalId, setExternalId] = useState<string>("");
+export const TemplateCreate = ({ stepSelection }: TemplateCreateProps) => {
   const [attributes, setAttributes] = useState<Attribute[]>([]);
-
-  const handleParentChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setParent(event.target.value);
-  };
-
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-
-  const handleExternalIdChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setExternalId(event.target.value);
-  };
-
-  const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log("submittedData: ", {
-      parent,
-      name,
-      externalId,
-      custom: true,
-      tenant: tenant,
-    });
-  };
 
   const handleAddAttribute = (newAttribute: Attribute) => {
     setAttributes((attributes) => {
@@ -63,20 +31,6 @@ export const TemplateCreate = ({
     });
   };
 
-  const handleOpenAttribute = (id: string) => {
-    setAttributes((attributes) => {
-      return attributes.map((attribute) => {
-        if (attribute.id === id) {
-          return {
-            ...attribute,
-            isOpen: !attribute.isOpen,
-          };
-        }
-        return attribute;
-      });
-    });
-  };
-
   const handleRemoveAttribute = (id: string) => {
     console.log("attributes: ", attributes);
     setAttributes((attr) => attr.filter((a: Attribute) => a.id !== id));
@@ -89,22 +43,12 @@ export const TemplateCreate = ({
   const toRender = () => {
     switch (stepSelection) {
       case "Basic Information":
-        return (
-          <BasicInformation
-            parent={parent}
-            onChangeParent={handleParentChange}
-            name={name}
-            onChangeName={handleNameChange}
-            externalId={externalId}
-            onChangeExternalId={handleExternalIdChange}
-          />
-        );
+        return <BasicInformation />;
       case "Attributes":
         return (
           <Attributes
             attributes={attributes}
             addAttribute={handleAddAttribute}
-            openAttribute={handleOpenAttribute}
             removeAttribute={handleRemoveAttribute}
           />
         );
@@ -116,9 +60,7 @@ export const TemplateCreate = ({
   return (
     <div className="w-full">
       <Header value={stepSelection} />
-      <form id="template-form" onSubmit={handleOnSubmit}>
-        {toRender()}
-      </form>
+      {toRender()}
     </div>
   );
 };

@@ -2,23 +2,18 @@ import { Attribute } from "../../models";
 
 interface PanelProps {
   readonly attribute: Attribute;
-  readonly onOpen: (id: string) => void;
   readonly onRemove: (id: string) => void;
 }
 
-export const Panel = ({ attribute, onOpen, onRemove }: PanelProps) => {
+export const Panel = ({ attribute, onRemove }: PanelProps) => {
   return (
     <div className="flex justify-between items-center gap-2">
       <details
         className="group rounded-lg bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden w-full"
         open={attribute.isOpen}
-        onClick={(e) => {
-          e.preventDefault();
-          onOpen(attribute.id);
-        }}
       >
         <summary className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900">
-          <h2 className="font-normal italic text-sm">{attribute.name}</h2>
+          <span className="font-normal italic text-sm">{attribute.name}</span>
 
           <span className="relative h-5 w-5 shrink-0">
             <svg
@@ -53,12 +48,29 @@ export const Panel = ({ attribute, onOpen, onRemove }: PanelProps) => {
           </span>
         </summary>
 
-        <p className="mt-4 leading-relaxed text-gray-700">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab hic
-          veritatis molestias culpa in, recusandae laboriosam neque aliquid
-          libero nesciunt voluptate dicta quo officiis explicabo consequuntur
-          distinctio corporis earum similique!
-        </p>
+        <div className="mt-4 leading-relaxed text-gray-700 text-sm">
+          <div className="flex items-center w-full justify-around">
+            <div className="flex flex-col w-96">
+              <label
+                htmlFor="externalId"
+                className="block text-sm font-medium text-gray-700"
+              >
+                External ID
+              </label>
+              <span className="text-xs text-gray-400 mt-2">
+                A unique identifier for your template.
+              </span>
+            </div>
+            <input
+              id="name"
+              type="text"
+              className="w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700"
+              required
+              // value={externalId}
+              // onChange={onChangeExternalId}
+            />
+          </div>
+        </div>
       </details>
       <span
         className="text-sm hover:cursor-pointer"

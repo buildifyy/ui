@@ -1,27 +1,12 @@
+import { useFormContext } from "react-hook-form";
 import { Select, Toggle } from "../../..";
+import { CreateTemplateFormData } from "../../../../models";
 
-interface BasicInformationProps {
-  readonly parent: string;
-  readonly onChangeParent: (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => void;
-  readonly name: string;
-  readonly onChangeName: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  readonly externalId: string;
-  readonly onChangeExternalId: (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void;
-}
-
-export const BasicInformation = (props: BasicInformationProps) => {
+export const BasicInformation = () => {
   const {
-    parent,
-    onChangeParent,
-    name,
-    onChangeName,
-    externalId,
-    onChangeExternalId,
-  } = props;
+    register,
+    formState: { errors },
+  } = useFormContext<CreateTemplateFormData>();
 
   return (
     <div className="flex flex-col mt-5 mx-10 border rounded py-5 items-center overflow-scroll h-[27rem]">
@@ -38,13 +23,19 @@ export const BasicInformation = (props: BasicInformationProps) => {
             this template.
           </span>
         </div>
-        <Select
-          id="parent"
-          name="parent"
-          onChange={onChangeParent}
-          value={parent}
-          widthClassName="w-64"
-        />
+        <div className="flex flex-col">
+          <Select
+            id="parent"
+            widthClassName="w-64"
+            {...register("basicInformation.parent", { required: true })}
+            errorClassName={
+              errors.basicInformation?.parent ? "border-red-600" : ""
+            }
+          />
+          {errors.basicInformation?.parent && (
+            <span className="text-xs text-red-600">This field is required</span>
+          )}
+        </div>
       </div>
       <hr className="w-[84%] my-6" />
       <div className="flex items-center w-full justify-around">
@@ -59,14 +50,19 @@ export const BasicInformation = (props: BasicInformationProps) => {
             This will be the name of your template.
           </span>
         </div>
-        <input
-          id="name"
-          type="text"
-          className="w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700"
-          required
-          value={name}
-          onChange={onChangeName}
-        />
+        <div className="flex flex-col">
+          <input
+            id="name"
+            type="text"
+            className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
+              errors.basicInformation?.name ? "border-red-600" : ""
+            }`}
+            {...register("basicInformation.name", { required: true })}
+          />
+          {errors.basicInformation?.name && (
+            <span className="text-xs text-red-600">This field is required</span>
+          )}
+        </div>
       </div>
       <hr className="w-[84%] my-6" />
       <div className="flex items-center w-full justify-around">
@@ -81,14 +77,19 @@ export const BasicInformation = (props: BasicInformationProps) => {
             A unique identifier for your template.
           </span>
         </div>
-        <input
-          id="externalId"
-          type="text"
-          className="w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700"
-          required
-          value={externalId}
-          onChange={onChangeExternalId}
-        />
+        <div className="flex flex-col">
+          <input
+            id="externalId"
+            type="text"
+            className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
+              errors.basicInformation?.externalId ? "border-red-600" : ""
+            }`}
+            {...register("basicInformation.externalId", { required: true })}
+          />
+          {errors.basicInformation?.externalId && (
+            <span className="text-xs text-red-600">This field is required</span>
+          )}
+        </div>
       </div>
       <hr className="w-[84%] my-6" />
       <div className="flex items-center w-full justify-around">
