@@ -6,6 +6,8 @@ export interface BasicInformation {
 
 export interface Attribute {
     readonly name: string;
+    readonly dataType: string
+    readonly isRequired?: boolean;
 }
   
 export interface CreateTemplateFormData {

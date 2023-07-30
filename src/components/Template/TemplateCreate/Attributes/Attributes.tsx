@@ -15,7 +15,7 @@ export const Attributes = () => {
   };
 
   const handleAddAttribute = () => {
-    append({ name: "" });
+    append({ name: "", dataType: "", isRequired: false });
   };
 
   return (

@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
-import ErrorIcon from "../../assets/error.svg";
 import { useFormContext } from "react-hook-form";
 import { CreateTemplateFormData } from "../../models";
+import { FaExclamationTriangle } from "react-icons/fa";
 
 interface StepperProps {
   readonly stepSelection: string;
@@ -48,7 +48,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
               1
             </span>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               <span
                 className={`hidden sm:block ${
                   stepSelection === "Basic Information" ? "font-bold" : ""
@@ -59,7 +59,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
               {errors.basicInformation?.parent ||
               errors.basicInformation?.name ||
               errors.basicInformation?.externalId ? (
-                <img src={ErrorIcon} />
+                <FaExclamationTriangle className="text-red-600" />
               ) : (
                 ""
               )}
@@ -78,7 +78,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
               2
             </span>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               <span
                 className={`hidden sm:block ${
                   stepSelection === "Attributes" ? "font-bold" : ""
@@ -87,7 +87,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
                 Attributes
               </span>
               {errors.attributes?.length && errors.attributes?.length > 0 ? (
-                <img src={ErrorIcon} />
+                <FaExclamationTriangle className="text-red-600" />
               ) : null}
             </div>
           </li>

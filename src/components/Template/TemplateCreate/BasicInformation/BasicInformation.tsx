@@ -9,8 +9,8 @@ export const BasicInformation = () => {
   } = useFormContext<CreateTemplateFormData>();
 
   return (
-    <div className="flex flex-col mt-5 mx-10 border rounded py-5 items-center overflow-scroll h-[27rem]">
-      <div className="flex items-center w-full justify-around pt-5">
+    <div className="flex flex-col mt-5 mx-10 border rounded py-5 px-10 items-center overflow-scroll h-[27rem]">
+      <div className="flex items-center w-full justify-between pt-5">
         <div className="flex flex-col w-96">
           <label
             htmlFor="parent"
@@ -33,12 +33,14 @@ export const BasicInformation = () => {
             }
           />
           {errors.basicInformation?.parent && (
-            <span className="text-xs text-red-600">This field is required</span>
+            <span className="text-xs text-red-600">
+              {errors.basicInformation?.parent.message}
+            </span>
           )}
         </div>
       </div>
       <hr className="w-[84%] my-6" />
-      <div className="flex items-center w-full justify-around">
+      <div className="flex items-center w-full justify-between">
         <div className="flex flex-col w-96">
           <label
             htmlFor="name"
@@ -63,12 +65,14 @@ export const BasicInformation = () => {
             })}
           />
           {errors.basicInformation?.name && (
-            <span className="text-xs text-red-600">This field is required</span>
+            <span className="text-xs text-red-600">
+              {errors.basicInformation?.name.message}
+            </span>
           )}
         </div>
       </div>
       <hr className="w-[84%] my-6" />
-      <div className="flex items-center w-full justify-around">
+      <div className="flex items-center w-full justify-between">
         <div className="flex flex-col w-96">
           <label
             htmlFor="externalId"
@@ -90,12 +94,14 @@ export const BasicInformation = () => {
             {...register("basicInformation.externalId", { required: true })}
           />
           {errors.basicInformation?.externalId && (
-            <span className="text-xs text-red-600">This field is required</span>
+            <span className="text-xs text-red-600">
+              {errors.basicInformation?.externalId.message}
+            </span>
           )}
         </div>
       </div>
       <hr className="w-[84%] my-6" />
-      <div className="flex items-center w-full justify-around">
+      <div className="flex items-center w-full justify-between">
         <div className="flex flex-col w-96">
           <label
             htmlFor="custom"
@@ -109,7 +115,7 @@ export const BasicInformation = () => {
         </div>
         <div className="flex w-64">
           <div className="flex flex-col w-96 items-end">
-            <Toggle id="custom" name="custom" value={true} isDisabled />
+            <Toggle id="custom" value={true} isDisabled />
             <span className="text-xs text-gray-400 mt-2">
               This value cannot be changed
             </span>
