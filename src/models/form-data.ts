@@ -1,9 +1,14 @@
 export interface BasicInformation {
-    parent: string;
-    name: string;
-    externalId: string;
+    readonly parent: string;
+    readonly name: string;
+    readonly externalId: string;
+}
+
+export interface Attribute {
+    readonly name: string;
 }
   
 export interface CreateTemplateFormData {
-    basicInformation: BasicInformation;
+    readonly basicInformation: BasicInformation;
+    readonly attributes: Attribute[];
 }

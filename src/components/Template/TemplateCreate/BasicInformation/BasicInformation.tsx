@@ -57,7 +57,10 @@ export const BasicInformation = () => {
             className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
               errors.basicInformation?.name ? "border-red-600" : ""
             }`}
-            {...register("basicInformation.name", { required: true })}
+            {...register("basicInformation.name", {
+              required: true,
+              minLength: 1,
+            })}
           />
           {errors.basicInformation?.name && (
             <span className="text-xs text-red-600">This field is required</span>

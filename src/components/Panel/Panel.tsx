@@ -1,19 +1,41 @@
-import { Attribute } from "../../models";
+import { useFormContext, useWatch } from "react-hook-form";
+import { CreateTemplateFormData } from "../../models";
+import { useState } from "react";
 
 interface PanelProps {
-  readonly attribute: Attribute;
-  readonly onRemove: (id: string) => void;
+  readonly index: number;
+  readonly onRemove: (index: number) => void;
 }
 
-export const Panel = ({ attribute, onRemove }: PanelProps) => {
+export const Panel = ({ index, onRemove }: PanelProps) => {
+  const [open, setOpen] = useState<boolean>(true);
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = useFormContext<CreateTemplateFormData>();
+
+  const attributeNameLive = useWatch({
+    name: `attributes.${index}.name`,
+    control,
+  });
+
   return (
     <div className="flex justify-between items-center gap-2">
       <details
         className="group rounded-lg bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden w-full"
-        open={attribute.isOpen}
+        open={open}
       >
-        <summary className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900">
-          <span className="font-normal italic text-sm">{attribute.name}</span>
+        <summary
+          className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900"
+          onClick={() => {
+            event?.preventDefault();
+            setOpen(!open);
+          }}
+        >
+          <span className="font-normal italic text-sm">
+            {attributeNameLive ? attributeNameLive : "Unititled Attribute"}
+          </span>
 
           <span className="relative h-5 w-5 shrink-0">
             <svg
@@ -55,26 +77,33 @@ export const Panel = ({ attribute, onRemove }: PanelProps) => {
                 htmlFor="externalId"
                 className="block text-sm font-medium text-gray-700"
               >
-                External ID
+                Name
               </label>
               <span className="text-xs text-gray-400 mt-2">
-                A unique identifier for your template.
+                This will be the name of your attribute.
               </span>
             </div>
-            <input
-              id="name"
-              type="text"
-              className="w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700"
-              required
-              // value={externalId}
-              // onChange={onChangeExternalId}
-            />
+            <div className="flex flex-col">
+              <input
+                id="name"
+                type="text"
+                className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
+                  errors.attributes?.[index]?.name ? "border-red-600" : ""
+                }`}
+                {...register(`attributes.${index}.name`)}
+              />
+              {errors.attributes?.[index]?.name && (
+                <span className="text-xs text-red-600">
+                  This field is required
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </details>
       <span
         className="text-sm hover:cursor-pointer"
-        onClick={() => onRemove(attribute.id)}
+        onClick={() => onRemove(index)}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

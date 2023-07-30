@@ -12,6 +12,8 @@ import {
 } from "./components";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { CreateTemplateFormData } from "./models";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "./models/form-schema";
 
 function App() {
   const location = useLocation();
@@ -24,14 +26,17 @@ function App() {
     setStepSelection("Basic Information");
   }, [location]);
 
-  const methods = useForm<CreateTemplateFormData>();
+  const methods = useForm<CreateTemplateFormData>({
+    resolver: yupResolver(schema),
+    mode: "all",
+  });
 
   const onSubmit: SubmitHandler<CreateTemplateFormData> = (data) =>
     console.log("formData: ", data);
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form onSubmit={methods.handleSubmit(onSubmit)} className="h-full">
         <div className="flex h-full">
           <Sidebar tenant={tenant} setTenant={setTenant} />
           <div className="flex w-full flex-col justify-between">

@@ -1,4 +1,7 @@
 import { useLocation } from "react-router-dom";
+import ErrorIcon from "../../assets/error.svg";
+import { useFormContext } from "react-hook-form";
+import { CreateTemplateFormData } from "../../models";
 
 interface StepperProps {
   readonly stepSelection: string;
@@ -9,6 +12,9 @@ interface StepperProps {
 
 export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
   const location = useLocation();
+  const {
+    formState: { errors },
+  } = useFormContext<CreateTemplateFormData>();
 
   const handleStepClick = (
     val: "Basic Information" | "Attributes" | "Relationships" | "Metric Types"
@@ -42,14 +48,22 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
               1
             </span>
 
-            <span
-              className={`hidden sm:block ${
-                stepSelection === "Basic Information" ? "font-bold" : ""
-              }`}
-            >
-              {" "}
-              Basic Information{" "}
-            </span>
+            <div className="flex gap-2">
+              <span
+                className={`hidden sm:block ${
+                  stepSelection === "Basic Information" ? "font-bold" : ""
+                }`}
+              >
+                Basic Information
+              </span>
+              {errors.basicInformation?.parent ||
+              errors.basicInformation?.name ||
+              errors.basicInformation?.externalId ? (
+                <img src={ErrorIcon} />
+              ) : (
+                ""
+              )}
+            </div>
           </li>
 
           <li
@@ -64,14 +78,18 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
               2
             </span>
 
-            <span
-              className={`hidden sm:block ${
-                stepSelection === "Attributes" ? "font-bold" : ""
-              }`}
-            >
-              {" "}
-              Attributes{" "}
-            </span>
+            <div className="flex gap-2">
+              <span
+                className={`hidden sm:block ${
+                  stepSelection === "Attributes" ? "font-bold" : ""
+                }`}
+              >
+                Attributes
+              </span>
+              {errors.attributes?.length && errors.attributes?.length > 0 ? (
+                <img src={ErrorIcon} />
+              ) : null}
+            </div>
           </li>
 
           <li
