@@ -6,7 +6,7 @@ export const Attributes = () => {
   const { control } = useFormContext<CreateTemplateFormData>();
   const {
     fields: attributes,
-    append,
+    prepend,
     remove,
   } = useFieldArray({ control, name: "attributes", keyName: "_id" });
 
@@ -15,12 +15,13 @@ export const Attributes = () => {
   };
 
   const handleAddAttribute = () => {
-    append({ name: "", dataType: "", isRequired: false });
+    prepend({ name: "", dataType: "", isRequired: false });
   };
 
   return (
-    <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-scroll h-[27rem]">
+    <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-scroll h-[30rem]">
       <div className="space-y-4 w-full">
+        <AddPanel onAdd={handleAddAttribute} />
         {attributes.map((attr, index) => {
           return (
             <Panel
@@ -30,7 +31,6 @@ export const Attributes = () => {
             />
           );
         })}
-        <AddPanel onAdd={handleAddAttribute} />
       </div>
     </div>
   );
