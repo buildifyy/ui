@@ -61,7 +61,13 @@ export const Panel = ({ index, onRemove }: PanelProps) => {
             {attributeNameLive ? attributeNameLive : "Unititled Attribute"}
           </span>
 
-          {open ? <FaChevronUp /> : <FaChevronDown />}
+          <div className="flex gap-5">
+            {open ? <FaChevronUp /> : <FaChevronDown />}
+            <FaTrashAlt
+              onClick={() => onRemove(index)}
+              className="hover:cursor-pointer"
+            />
+          </div>
         </summary>
         <div className="mt-4 leading-relaxed text-gray-700 text-sm">
           <div className="flex items-center w-full justify-between">
@@ -184,10 +190,6 @@ export const Panel = ({ index, onRemove }: PanelProps) => {
           </div>
         </div>
       </details>
-      <FaTrashAlt
-        onClick={() => onRemove(index)}
-        className="hover:cursor-pointer"
-      />
     </div>
   );
 };
