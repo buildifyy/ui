@@ -1,15 +1,21 @@
 import React from "react";
 import "./Select.css";
 
+export interface SelectData {
+  id: string;
+  value: string | number;
+}
+
 interface SelectProps {
   readonly id?: string;
   readonly widthClassName?: string;
   readonly errorClassName?: string;
+  readonly data?: SelectData[];
 }
 
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   (props, ref) => {
-    const { id, widthClassName, errorClassName, ...rest } = props;
+    const { id, widthClassName, errorClassName, data, ...rest } = props;
     return (
       <select
         id={id}
@@ -18,13 +24,11 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         {...rest}
       >
         <option value="">Please select</option>
-        <option value="JM">John Mayer</option>
-        <option value="SRV">Stevie Ray Vaughn</option>
-        <option value="JH">Jimi Hendrix</option>
-        <option value="BBK">B.B King</option>
-        <option value="AK">Albert King</option>
-        <option value="BG">Buddy Guy</option>
-        <option value="EC">Eric Clapton</option>
+        {data?.map((d) => (
+          <option value={d.id} key={d.id}>
+            {d.value}
+          </option>
+        ))}
       </select>
     );
   }

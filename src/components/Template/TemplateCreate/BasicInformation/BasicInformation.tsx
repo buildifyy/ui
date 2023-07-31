@@ -1,12 +1,35 @@
-import { useFormContext } from "react-hook-form";
-import { Select, Toggle } from "../../..";
+import { useFormContext, useWatch } from "react-hook-form";
+import { Select, SelectData, Toggle } from "../../..";
 import { CreateTemplateFormData } from "../../../../models";
+import { useEffect } from "react";
 
 export const BasicInformation = () => {
   const {
+    control,
     register,
+    setValue,
     formState: { errors },
   } = useFormContext<CreateTemplateFormData>();
+
+  const parentTemplateData: SelectData[] = [
+    { id: "JM", value: "John Mayer" },
+    { id: "SRV", value: "Stevie Ray Vaughn" },
+    { id: "JH", value: "Jimi Hendrix" },
+    { id: "BBK", value: "B.B King" },
+    { id: "AK", value: "Albert King" },
+    { id: "BG", value: "Buddy Guy" },
+    { id: "EC", value: "Eric Clapton" },
+  ];
+
+  const basicInformationNameLive = useWatch({
+    name: "basicInformation.name",
+    control,
+  });
+
+  useEffect(() => {
+    const valueToSet = basicInformationNameLive?.replace(/\s/g, "");
+    setValue("basicInformation.externalId", valueToSet);
+  }, [basicInformationNameLive, setValue]);
 
   return (
     <div className="flex flex-col mt-5 mx-10 border rounded py-5 px-10 items-center overflow-scroll h-[27rem]">
@@ -27,7 +50,8 @@ export const BasicInformation = () => {
           <Select
             id="parent"
             widthClassName="w-64"
-            {...register("basicInformation.parent", { required: true })}
+            data={parentTemplateData}
+            {...register("basicInformation.parent")}
             errorClassName={
               errors.basicInformation?.parent ? "border-red-600" : ""
             }
@@ -59,10 +83,7 @@ export const BasicInformation = () => {
             className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
               errors.basicInformation?.name ? "border-red-600" : ""
             }`}
-            {...register("basicInformation.name", {
-              required: true,
-              minLength: 1,
-            })}
+            {...register("basicInformation.name")}
           />
           {errors.basicInformation?.name && (
             <span className="text-xs text-red-600">
@@ -91,7 +112,7 @@ export const BasicInformation = () => {
             className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
               errors.basicInformation?.externalId ? "border-red-600" : ""
             }`}
-            {...register("basicInformation.externalId", { required: true })}
+            {...register("basicInformation.externalId")}
           />
           {errors.basicInformation?.externalId && (
             <span className="text-xs text-red-600">

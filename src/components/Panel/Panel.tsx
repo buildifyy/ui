@@ -2,7 +2,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { CreateTemplateFormData } from "../../models";
 import { useEffect, useState } from "react";
 import { FaChevronDown, FaChevronUp, FaTrashAlt } from "react-icons/fa";
-import { Select, Toggle } from "..";
+import { Select, SelectData, Toggle } from "..";
 
 interface PanelProps {
   readonly index: number;
@@ -33,6 +33,16 @@ export const Panel = ({ index, onRemove }: PanelProps) => {
       setValue(`attributes.${index}.isHidden`, false);
     }
   }, [attributeIsRequiredLive, index, setValue]);
+
+  const dataTypeData: SelectData[] = [
+    { id: "JM", value: "John Mayer" },
+    { id: "SRV", value: "Stevie Ray Vaughn" },
+    { id: "JH", value: "Jimi Hendrix" },
+    { id: "BBK", value: "B.B King" },
+    { id: "AK", value: "Albert King" },
+    { id: "BG", value: "Buddy Guy" },
+    { id: "EC", value: "Eric Clapton" },
+  ];
 
   return (
     <div className="flex justify-between items-center gap-2">
@@ -100,6 +110,7 @@ export const Panel = ({ index, onRemove }: PanelProps) => {
               <Select
                 id="dataType"
                 widthClassName="w-64"
+                data={dataTypeData}
                 {...register(`attributes.${index}.dataType`)}
                 errorClassName={
                   errors.attributes?.[index]?.dataType ? "border-red-600" : ""

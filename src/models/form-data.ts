@@ -12,6 +12,7 @@ export interface Attribute {
 }
   
 export interface CreateTemplateFormData {
+    readonly tenant: string;
     readonly basicInformation: BasicInformation;
     readonly attributes: Attribute[];
 }

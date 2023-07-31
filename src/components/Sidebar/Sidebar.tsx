@@ -2,19 +2,26 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import me from "../../assets/me.jpg";
 import "./Sidebar.css";
-import { Select } from "..";
+import { Select, SelectData } from "..";
+import { CreateTemplateFormData } from "../../models";
+import { useFormContext } from "react-hook-form";
 
-interface SidebarProps {
-  readonly tenant: string;
-  readonly setTenant: (val: string) => void;
-}
-
-export const Sidebar = ({ tenant, setTenant }: SidebarProps) => {
+export const Sidebar = () => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<CreateTemplateFormData>();
   const location = useLocation();
 
-  const handleTenantChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setTenant(event.target.value);
-  };
+  const tenantData: SelectData[] = [
+    { id: "JM", value: "John Mayer" },
+    { id: "SRV", value: "Stevie Ray Vaughn" },
+    { id: "JH", value: "Jimi Hendrix" },
+    { id: "BBK", value: "B.B King" },
+    { id: "AK", value: "Albert King" },
+    { id: "BG", value: "Buddy Guy" },
+    { id: "EC", value: "Eric Clapton" },
+  ];
 
   return (
     <div className="flex flex-col justify-between border-e bg-white w-[300px]">
@@ -28,18 +35,24 @@ export const Sidebar = ({ tenant, setTenant }: SidebarProps) => {
           <li>
             <div className="px-2 py-2">
               <label
-                htmlFor="HeadlineAct"
+                htmlFor="tenant"
                 className="block text-sm font-medium text-gray-500"
               >
                 Tenant
               </label>
-
-              <Select
-                id="tenant"
-                name="tenant"
-                onChange={handleTenantChange}
-                value={tenant}
-              />
+              <div className="flex flex-col">
+                <Select
+                  id="tenant"
+                  data={tenantData}
+                  widthClassName="w-full"
+                  {...register("tenant")}
+                />
+                {errors.tenant && (
+                  <span className="text-xs text-red-600">
+                    {errors.tenant.message}
+                  </span>
+                )}
+              </div>
             </div>
           </li>
           <li>
