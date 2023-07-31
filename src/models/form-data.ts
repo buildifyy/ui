@@ -8,6 +8,7 @@ export interface Attribute {
     readonly name: string;
     readonly dataType: string
     readonly isRequired?: boolean;
+    readonly isHidden?: boolean;
 }
   
 export interface CreateTemplateFormData {

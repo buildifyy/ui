@@ -10,5 +10,6 @@ export const schema = yup.object({
         name: yup.string().required("This field is required"),
         dataType: yup.string().required("This field is required"),
         isRequired: yup.boolean(),
+        isHidden: yup.boolean()
     })).required().default([])
 })

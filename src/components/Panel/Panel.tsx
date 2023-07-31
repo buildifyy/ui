@@ -1,6 +1,6 @@
 import { useFormContext, useWatch } from "react-hook-form";
 import { CreateTemplateFormData } from "../../models";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaChevronDown, FaChevronUp, FaTrashAlt } from "react-icons/fa";
 import { Select, Toggle } from "..";
 
@@ -14,6 +14,7 @@ export const Panel = ({ index, onRemove }: PanelProps) => {
   const {
     register,
     control,
+    setValue,
     formState: { errors },
   } = useFormContext<CreateTemplateFormData>();
 
@@ -21,6 +22,17 @@ export const Panel = ({ index, onRemove }: PanelProps) => {
     name: `attributes.${index}.name`,
     control,
   });
+
+  const attributeIsRequiredLive = useWatch({
+    name: `attributes.${index}.isRequired`,
+    control,
+  });
+
+  useEffect(() => {
+    if (attributeIsRequiredLive) {
+      setValue(`attributes.${index}.isHidden`, false);
+    }
+  }, [attributeIsRequiredLive, index, setValue]);
 
   return (
     <div className="flex justify-between items-center gap-2">
@@ -122,6 +134,34 @@ export const Panel = ({ index, onRemove }: PanelProps) => {
               {errors.attributes?.[index]?.isRequired && (
                 <span className="text-xs text-red-600">
                   {errors.attributes?.[index]?.isRequired?.message}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 leading-relaxed text-gray-700 text-sm">
+          <div className="flex items-center w-full justify-between">
+            <div className="flex flex-col w-96">
+              <label
+                htmlFor="hidden"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Hidden
+              </label>
+              <span className="text-xs text-gray-400 mt-2">
+                This will mark the attribute as a hidden field.
+              </span>
+            </div>
+            <div className="flex flex-col items-end">
+              <Toggle
+                id="hidden"
+                {...register(`attributes.${index}.isHidden`)}
+                isDisabled={attributeIsRequiredLive}
+              />
+              {errors.attributes?.[index]?.isHidden && (
+                <span className="text-xs text-red-600">
+                  {errors.attributes?.[index]?.isHidden?.message}
                 </span>
               )}
             </div>
