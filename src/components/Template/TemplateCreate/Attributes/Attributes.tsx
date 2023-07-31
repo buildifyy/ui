@@ -21,6 +21,13 @@ export const Attributes = () => {
   return (
     <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-scroll h-[30rem]">
       <div className="space-y-4 w-full">
+        {attributes.length !== 0 ? (
+          <span>
+            {attributes.length} new
+            {attributes.length > 1 ? " attributes" : " attribute"}
+          </span>
+        ) : null}
+
         <AddPanel onAdd={handleAddAttribute} />
         {attributes.map((attr, index) => {
           return (
