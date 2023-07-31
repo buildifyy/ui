@@ -159,6 +159,11 @@ export const Panel = ({ index, onRemove }: PanelProps) => {
                 {...register(`attributes.${index}.isHidden`)}
                 isDisabled={attributeIsRequiredLive}
               />
+              {attributeIsRequiredLive ? (
+                <span className="text-gray-600 text-xs">
+                  An attribute marked as required cannot be hidden
+                </span>
+              ) : null}
               {errors.attributes?.[index]?.isHidden && (
                 <span className="text-xs text-red-600">
                   {errors.attributes?.[index]?.isHidden?.message}
