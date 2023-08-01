@@ -38,15 +38,21 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
             className="flex items-center gap-2 bg-white p-2"
             onClick={() => handleStepClick("Basic Information")}
           >
-            <span
-              className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
-                stepSelection === "Basic Information"
-                  ? "bg-blue-600"
-                  : "bg-gray-100"
-              }`}
-            >
-              1
-            </span>
+            {errors.basicInformation?.parent ||
+            errors.basicInformation?.name ||
+            errors.basicInformation?.externalId ? (
+              <FaExclamationTriangle className="text-red-600 text-center" />
+            ) : (
+              <span
+                className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
+                  stepSelection === "Basic Information"
+                    ? "bg-blue-600"
+                    : "bg-gray-100"
+                }`}
+              >
+                1
+              </span>
+            )}
 
             <div className="flex gap-2 items-center">
               <span
@@ -56,13 +62,6 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
               >
                 Basic Information
               </span>
-              {errors.basicInformation?.parent ||
-              errors.basicInformation?.name ||
-              errors.basicInformation?.externalId ? (
-                <FaExclamationTriangle className="text-red-600" />
-              ) : (
-                ""
-              )}
             </div>
           </li>
 
@@ -70,13 +69,17 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
             className="flex items-center gap-2 bg-white p-2"
             onClick={() => handleStepClick("Attributes")}
           >
-            <span
-              className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
-                stepSelection === "Attributes" ? "bg-blue-600" : "bg-gray-100"
-              }`}
-            >
-              2
-            </span>
+            {errors.attributes?.length && errors.attributes.length > 0 ? (
+              <FaExclamationTriangle className="text-red-600" />
+            ) : (
+              <span
+                className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
+                  stepSelection === "Attributes" ? "bg-blue-600" : "bg-gray-100"
+                }`}
+              >
+                2
+              </span>
+            )}
 
             <div className="flex gap-2 items-center">
               <span
@@ -86,9 +89,6 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
               >
                 Attributes
               </span>
-              {errors.attributes?.length && errors.attributes?.length > 0 ? (
-                <FaExclamationTriangle className="text-red-600" />
-              ) : null}
             </div>
           </li>
 
