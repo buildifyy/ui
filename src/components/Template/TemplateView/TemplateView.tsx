@@ -6,12 +6,10 @@ interface TemplateViewProps {
     | "Attributes"
     | "Relationships"
     | "Metric Types";
-  readonly tenant: string;
 }
 
-export const TemplateView = ({ stepSelection, tenant }: TemplateViewProps) => {
+export const TemplateView = ({ stepSelection }: TemplateViewProps) => {
   const { templateId } = useParams();
   console.log("stepSelection: ", stepSelection);
-  console.log("tenant: ", tenant);
   return <div>Template View: {templateId}</div>;
 };

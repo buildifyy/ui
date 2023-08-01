@@ -20,7 +20,6 @@ function App() {
   const [stepSelection, setStepSelection] = useState<
     "Basic Information" | "Attributes" | "Relationships" | "Metric Types"
   >("Basic Information");
-  const [tenant, setTenant] = useState<string>("");
 
   useEffect(() => {
     setStepSelection("Basic Information");
@@ -38,7 +37,7 @@ function App() {
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} className="h-full">
         <div className="flex h-full">
-          <Sidebar tenant={tenant} setTenant={setTenant} />
+          <Sidebar />
           <div className="flex w-full flex-col justify-between">
             <Stepper
               stepSelection={stepSelection}
@@ -46,31 +45,18 @@ function App() {
             />
             <Content>
               <Routes>
-                <Route
-                  path="/templates"
-                  element={<TemplateList tenant={tenant} />}
-                />
+                <Route path="/templates" element={<TemplateList />} />
                 <Route
                   path="/templates/create"
                   element={<TemplateCreate stepSelection={stepSelection} />}
                 />
                 <Route
                   path="/templates/:templateId"
-                  element={
-                    <TemplateView
-                      stepSelection={stepSelection}
-                      tenant={tenant}
-                    />
-                  }
+                  element={<TemplateView stepSelection={stepSelection} />}
                 />
                 <Route
                   path="/templates/edit/:templateId"
-                  element={
-                    <TemplateEdit
-                      stepSelection={stepSelection}
-                      tenant={tenant}
-                    />
-                  }
+                  element={<TemplateEdit stepSelection={stepSelection} />}
                 />
               </Routes>
             </Content>
