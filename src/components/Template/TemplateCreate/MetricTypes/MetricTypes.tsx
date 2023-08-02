@@ -15,7 +15,7 @@ export const MetricTypes = () => {
   };
 
   const handleAddMetricType = () => {
-    prepend({ name: "", metricType: "", metrics: [] });
+    prepend({ name: "", metricType: "", metrics: [{ name: "" }] });
   };
 
   return (

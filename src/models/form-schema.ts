@@ -22,6 +22,6 @@ export const schema = yup.object({
             value: yup.mixed<string | number | boolean>(),
             isCalculated: yup.boolean(),
             isSourced: yup.boolean()
-        })).required().default([]).min(1)
+        })).required().default([]).min(1, "Atleast 1 metric needs to be added")
     })).required().default([])
 })

@@ -32,6 +32,8 @@ export const MetricTypePanel = ({ index, onRemove }: MetricTypePanelProps) => {
     control,
   });
 
+  console.log("errors: ", errors);
+
   useEffect(() => {
     trigger(`metricTypes.${index}`);
   }, [index, trigger]);
@@ -92,7 +94,7 @@ export const MetricTypePanel = ({ index, onRemove }: MetricTypePanelProps) => {
                 This will be the name of your metric type.
               </span>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col items-end">
               <input
                 id="name"
                 type="text"
@@ -122,7 +124,7 @@ export const MetricTypePanel = ({ index, onRemove }: MetricTypePanelProps) => {
                 This will be the type of your metric.
               </span>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col items-end">
               <Select
                 id="metricType"
                 widthClassName="w-64"
@@ -143,7 +145,20 @@ export const MetricTypePanel = ({ index, onRemove }: MetricTypePanelProps) => {
           </div>
         </div>
         <div className="mt-4 leading-relaxed text-gray-700 text-sm">
-          <AddPanel title="Add Metric" onAdd={handleAddMetric} />
+          {metrics.length !== 0 ? (
+            <span>
+              {metrics.length} new
+              {metrics.length > 1 ? " metrics" : " metric"}
+            </span>
+          ) : null}
+          <AddPanel
+            title="Add Metric"
+            onAdd={handleAddMetric}
+            className="mt-4"
+          />
+          <span className="text-xs text-red-600">
+            {errors.metricTypes?.[index]?.metrics?.message}
+          </span>
           {metrics.map((attr, metricIndex) => {
             return (
               <MetricPanel

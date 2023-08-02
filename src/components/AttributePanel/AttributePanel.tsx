@@ -87,7 +87,7 @@ export const AttributePanel = ({ index, onRemove }: AttributePanelProps) => {
                 This will be the name of your attribute.
               </span>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col items-end">
               <input
                 id="name"
                 type="text"
@@ -117,7 +117,7 @@ export const AttributePanel = ({ index, onRemove }: AttributePanelProps) => {
                 This will be the data type of your attribute.
               </span>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col items-end">
               <Select
                 id="dataType"
                 widthClassName="w-64"

@@ -18,6 +18,7 @@ export const MetricPanel = ({
   const [open, setOpen] = useState<boolean>(true);
   const {
     register,
+    unregister,
     control,
     trigger,
     formState: { errors },
@@ -28,9 +29,22 @@ export const MetricPanel = ({
     control,
   });
 
+  const metricIsManualLive = useWatch({
+    name: `metricTypes.${metricTypeIndex}.metrics.${index}.isManual`,
+    control,
+  });
+
   useEffect(() => {
     trigger(`metricTypes.${metricTypeIndex}.metrics.${index}`);
   }, [index, metricTypeIndex, trigger]);
+
+  useEffect(() => {
+    if (metricIsManualLive) {
+      register(`metricTypes.${metricTypeIndex}.metrics.${index}.value`);
+    } else {
+      unregister(`metricTypes.${metricTypeIndex}.metrics.${index}.value`);
+    }
+  }, [index, metricIsManualLive, metricTypeIndex, register, unregister]);
 
   return (
     <div className="flex justify-between items-center gap-2 mt-4">
@@ -70,7 +84,7 @@ export const MetricPanel = ({
                 This will be the name of your metric.
               </span>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col items-end">
               <input
                 id="name"
                 type="text"
@@ -142,7 +156,7 @@ export const MetricPanel = ({
                 This can be the default value of the metric.
               </span>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col items-end">
               <input
                 id="value"
                 type="text"
@@ -154,6 +168,7 @@ export const MetricPanel = ({
                 {...register(
                   `metricTypes.${metricTypeIndex}.metrics.${index}.value`
                 )}
+                disabled={!metricIsManualLive}
               />
               {errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
                 ?.value && (
@@ -162,6 +177,12 @@ export const MetricPanel = ({
                     errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
                       ?.value?.message
                   }
+                </span>
+              )}
+              {!metricIsManualLive && (
+                <span className="text-xs text-yellow-600">
+                  Since this metric is not configured to be a manual metric, any
+                  value defined here won't be configured.
                 </span>
               )}
             </div>
