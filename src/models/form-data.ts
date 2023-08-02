@@ -9,6 +9,7 @@ export interface Attribute {
     readonly dataType: string
     readonly isRequired?: boolean;
     readonly isHidden?: boolean;
+    readonly isExpanded: boolean;
 }
 
 export interface MetricType {

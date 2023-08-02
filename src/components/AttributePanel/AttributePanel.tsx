@@ -1,21 +1,27 @@
 import { useFormContext, useWatch } from "react-hook-form";
 import { CreateTemplateFormData } from "../../models";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FaChevronDown, FaChevronUp, FaTrashAlt } from "react-icons/fa";
 import { Select, SelectData, Toggle } from "..";
 
 interface AttributePanelProps {
   readonly index: number;
   readonly onRemove: (index: number) => void;
+  readonly onToggleExpand: (index: number) => void;
 }
 
-export const AttributePanel = ({ index, onRemove }: AttributePanelProps) => {
-  const [open, setOpen] = useState<boolean>(true);
+export const AttributePanel = ({
+  index,
+  onRemove,
+  onToggleExpand,
+}: AttributePanelProps) => {
+  // const [open, setOpen] = useState<boolean>(true);
   const {
     register,
     control,
     trigger,
     setValue,
+    getValues,
     formState: { errors },
   } = useFormContext<CreateTemplateFormData>();
 
@@ -53,13 +59,13 @@ export const AttributePanel = ({ index, onRemove }: AttributePanelProps) => {
     <div className="flex justify-between items-center gap-2">
       <details
         className="group rounded-lg bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden w-full"
-        open={open}
+        open={getValues(`attributes.${index}.isExpanded`)}
       >
         <summary
           className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900"
           onClick={() => {
             event?.preventDefault();
-            setOpen(!open);
+            onToggleExpand(index);
           }}
         >
           <span className="font-normal italic text-sm">
@@ -67,7 +73,11 @@ export const AttributePanel = ({ index, onRemove }: AttributePanelProps) => {
           </span>
 
           <div className="flex gap-5">
-            {open ? <FaChevronUp /> : <FaChevronDown />}
+            {getValues(`attributes.${index}.isExpanded`) ? (
+              <FaChevronUp />
+            ) : (
+              <FaChevronDown />
+            )}
             <FaTrashAlt
               onClick={() => onRemove(index)}
               className="hover:cursor-pointer"

@@ -146,7 +146,7 @@ export const MetricTypePanel = ({ index, onRemove }: MetricTypePanelProps) => {
         </div>
         <div className="mt-4 leading-relaxed text-gray-700 text-sm">
           {metrics.length !== 0 ? (
-            <span>
+            <span className="text-md text-green-600">
               {metrics.length} new
               {metrics.length > 1 ? " metrics" : " metric"}
             </span>

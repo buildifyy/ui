@@ -22,7 +22,7 @@ export const MetricTypes = () => {
     <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-scroll h-[30rem]">
       <div className="space-y-4 w-full">
         {metricTypes.length !== 0 ? (
-          <span>
+          <span className="text-green-600">
             {metricTypes.length} new
             {metricTypes.length > 1 ? " metric types" : " metric type"}
           </span>
