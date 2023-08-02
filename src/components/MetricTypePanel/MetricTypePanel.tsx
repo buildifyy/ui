@@ -22,6 +22,13 @@ export const MetricTypePanel = ({
     trigger,
     formState: { errors },
   } = useFormContext<CreateTemplateFormData>();
+  const { fields: metricTypes } = useFieldArray({
+    control,
+    name: `metricTypes`,
+    keyName: "_id",
+  });
+  const metricType = metricTypes[index];
+
   const {
     fields: metrics,
     prepend,
@@ -124,7 +131,7 @@ export const MetricTypePanel = ({
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
               <label
-                htmlFor="name"
+                htmlFor={`name.${metricType?._id}`}
                 className="block text-sm font-medium text-gray-700"
               >
                 Name
@@ -135,7 +142,7 @@ export const MetricTypePanel = ({
             </div>
             <div className="flex flex-col items-end">
               <input
-                id="name"
+                id={`name.${metricType?._id}`}
                 type="text"
                 className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
                   errors.metricTypes?.[index]?.name ? "border-red-600" : ""
@@ -154,7 +161,7 @@ export const MetricTypePanel = ({
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
               <label
-                htmlFor="metricType"
+                htmlFor={`metricType.${metricType?._id}`}
                 className="block text-sm font-medium text-gray-700"
               >
                 Type
@@ -165,7 +172,7 @@ export const MetricTypePanel = ({
             </div>
             <div className="flex flex-col items-end">
               <Select
-                id="metricType"
+                id={`metricType.${metricType?._id}`}
                 widthClassName="w-64"
                 data={metricTypeData}
                 {...register(`metricTypes.${index}.metricType`)}

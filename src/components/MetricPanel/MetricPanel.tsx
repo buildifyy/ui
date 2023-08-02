@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useFormContext, useWatch } from "react-hook-form";
+import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { FaChevronUp, FaChevronDown, FaTrashAlt } from "react-icons/fa";
 import { Toggle } from "..";
 import { CreateTemplateFormData } from "../../models";
@@ -25,6 +25,13 @@ export const MetricPanel = ({
     trigger,
     formState: { errors },
   } = useFormContext<CreateTemplateFormData>();
+
+  const { fields: metrics } = useFieldArray({
+    control,
+    name: `metricTypes.${metricTypeIndex}.metrics`,
+    keyName: "_id",
+  });
+  const metric = metrics[index];
 
   const metricNameLive = useWatch({
     name: `metricTypes.${metricTypeIndex}.metrics.${index}.name`,
@@ -117,7 +124,7 @@ export const MetricPanel = ({
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
               <label
-                htmlFor="name"
+                htmlFor={`name.${metric?._id}`}
                 className="block text-sm font-medium text-gray-700"
               >
                 Name
@@ -128,7 +135,7 @@ export const MetricPanel = ({
             </div>
             <div className="flex flex-col items-end">
               <input
-                id="name"
+                id={`name.${metric?._id}`}
                 type="text"
                 className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
                   errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]?.name
@@ -156,7 +163,7 @@ export const MetricPanel = ({
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
               <label
-                htmlFor="manual"
+                htmlFor={`manual.${metric?._id}`}
                 className="block text-sm font-medium text-gray-700"
               >
                 Manual
@@ -167,7 +174,7 @@ export const MetricPanel = ({
             </div>
             <div className="flex flex-col items-end">
               <Toggle
-                id="manual"
+                id={`manual.${metric?._id}`}
                 {...register(
                   `metricTypes.${metricTypeIndex}.metrics.${index}.isManual`
                 )}
@@ -189,7 +196,7 @@ export const MetricPanel = ({
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
               <label
-                htmlFor="value"
+                htmlFor={`value.${metric?._id}`}
                 className="block text-sm font-medium text-gray-700"
               >
                 Value
@@ -200,7 +207,7 @@ export const MetricPanel = ({
             </div>
             <div className="flex flex-col items-end">
               <input
-                id="value"
+                id={`value.${metric?._id}`}
                 type="text"
                 className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
                   errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]?.value
@@ -235,7 +242,7 @@ export const MetricPanel = ({
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
               <label
-                htmlFor="calculated"
+                htmlFor={`calculated.${metric?._id}`}
                 className="block text-sm font-medium text-gray-700"
               >
                 Calculated
@@ -246,7 +253,7 @@ export const MetricPanel = ({
             </div>
             <div className="flex flex-col items-end">
               <Toggle
-                id="calculated"
+                id={`calculated.${metric?._id}`}
                 {...register(
                   `metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`
                 )}
@@ -268,7 +275,7 @@ export const MetricPanel = ({
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
               <label
-                htmlFor="sourced"
+                htmlFor={`sourced.${metric?._id}`}
                 className="block text-sm font-medium text-gray-700"
               >
                 Sourced
@@ -279,7 +286,7 @@ export const MetricPanel = ({
             </div>
             <div className="flex flex-col items-end">
               <Toggle
-                id="sourced"
+                id={`sourced.${metric?._id}`}
                 {...register(
                   `metricTypes.${metricTypeIndex}.metrics.${index}.isSourced`
                 )}

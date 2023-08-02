@@ -1,6 +1,7 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { AddPanel, AttributePanel } from "../../..";
 import { CreateTemplateFormData } from "../../../../models";
+import { useEffect } from "react";
 
 export const Attributes = () => {
   const { control, getValues } = useFormContext<CreateTemplateFormData>();
@@ -14,6 +15,8 @@ export const Attributes = () => {
   const handleRemoveAttribute = (index: number) => {
     remove(index);
   };
+
+  useEffect(() => {}, [attributes]);
 
   const handleAddAttribute = () => {
     prepend({ name: "", dataType: "", isExpanded: true });

@@ -1,4 +1,4 @@
-import { useFormContext, useWatch } from "react-hook-form";
+import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { CreateTemplateFormData } from "../../models";
 import { useEffect } from "react";
 import { FaChevronDown, FaChevronUp, FaTrashAlt } from "react-icons/fa";
@@ -23,6 +23,13 @@ export const AttributePanel = ({
     getValues,
     formState: { errors },
   } = useFormContext<CreateTemplateFormData>();
+
+  const { fields: attributes } = useFieldArray({
+    control,
+    name: `attributes`,
+    keyName: "_id",
+  });
+  const attribute = attributes[index];
 
   const attributeNameLive = useWatch({
     name: `attributes.${index}.name`,
@@ -90,7 +97,7 @@ export const AttributePanel = ({
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
               <label
-                htmlFor="name"
+                htmlFor={`name.${attribute?._id}`}
                 className="block text-sm font-medium text-gray-700"
               >
                 Name
@@ -101,7 +108,7 @@ export const AttributePanel = ({
             </div>
             <div className="flex flex-col items-end">
               <input
-                id="name"
+                id={`name.${attribute?._id}`}
                 type="text"
                 className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
                   errors.attributes?.[index]?.name ? "border-red-600" : ""
@@ -120,7 +127,7 @@ export const AttributePanel = ({
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
               <label
-                htmlFor="dataType"
+                htmlFor={`dataType.${attribute?._id}`}
                 className="block text-sm font-medium text-gray-700"
               >
                 Data Type
@@ -131,7 +138,7 @@ export const AttributePanel = ({
             </div>
             <div className="flex flex-col items-end">
               <Select
-                id="dataType"
+                id={`dataType.${attribute?._id}`}
                 widthClassName="w-64"
                 data={dataTypeData}
                 {...register(`attributes.${index}.dataType`)}
@@ -151,7 +158,7 @@ export const AttributePanel = ({
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
               <label
-                htmlFor="required"
+                htmlFor={`required.${attribute?._id}`}
                 className="block text-sm font-medium text-gray-700"
               >
                 Required
@@ -162,7 +169,7 @@ export const AttributePanel = ({
             </div>
             <div className="flex flex-col items-end">
               <Toggle
-                id="required"
+                id={`required.${attribute?._id}`}
                 {...register(`attributes.${index}.isRequired`)}
               />
               {errors.attributes?.[index]?.isRequired && (
@@ -178,7 +185,7 @@ export const AttributePanel = ({
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
               <label
-                htmlFor="hidden"
+                htmlFor={`hidden.${attribute?._id}`}
                 className="block text-sm font-medium text-gray-700"
               >
                 Hidden
@@ -189,7 +196,7 @@ export const AttributePanel = ({
             </div>
             <div className="flex flex-col items-end">
               <Toggle
-                id="hidden"
+                id={`hidden.${attribute?._id}`}
                 {...register(`attributes.${index}.isHidden`)}
                 isDisabled={attributeIsRequiredLive}
               />
