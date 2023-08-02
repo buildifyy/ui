@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { FaChevronUp, FaChevronDown, FaTrashAlt } from "react-icons/fa";
 import { SelectData, Select, AddPanel, MetricPanel } from "..";
@@ -7,13 +7,18 @@ import { CreateTemplateFormData } from "../../models";
 interface MetricTypePanelProps {
   readonly index: number;
   readonly onRemove: (index: number) => void;
+  readonly onToggleExpand: (index: number) => void;
 }
 
-export const MetricTypePanel = ({ index, onRemove }: MetricTypePanelProps) => {
-  const [open, setOpen] = useState<boolean>(true);
+export const MetricTypePanel = ({
+  index,
+  onRemove,
+  onToggleExpand,
+}: MetricTypePanelProps) => {
   const {
     register,
     control,
+    getValues,
     trigger,
     formState: { errors },
   } = useFormContext<CreateTemplateFormData>();
@@ -60,13 +65,13 @@ export const MetricTypePanel = ({ index, onRemove }: MetricTypePanelProps) => {
     <div className="flex justify-between items-center gap-2">
       <details
         className="group rounded-lg bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden w-full"
-        open={open}
+        open={getValues(`metricTypes.${index}.isExpanded`)}
       >
         <summary
           className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900"
           onClick={() => {
             event?.preventDefault();
-            setOpen(!open);
+            onToggleExpand(index);
           }}
         >
           <span className="font-normal italic text-sm">
@@ -74,7 +79,11 @@ export const MetricTypePanel = ({ index, onRemove }: MetricTypePanelProps) => {
           </span>
 
           <div className="flex gap-5">
-            {open ? <FaChevronUp /> : <FaChevronDown />}
+            {getValues(`metricTypes.${index}.isExpanded`) ? (
+              <FaChevronUp />
+            ) : (
+              <FaChevronDown />
+            )}
             <FaTrashAlt
               onClick={() => onRemove(index)}
               className="hover:cursor-pointer"

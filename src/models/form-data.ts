@@ -16,6 +16,7 @@ export interface MetricType {
     readonly name: string;
     readonly metricType: string;
     readonly metrics: Metric[];
+    readonly isExpanded: boolean;
 }
 
 export interface Metric {
