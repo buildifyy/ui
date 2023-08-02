@@ -4,16 +4,17 @@ import { useEffect, useState } from "react";
 import { FaChevronDown, FaChevronUp, FaTrashAlt } from "react-icons/fa";
 import { Select, SelectData, Toggle } from "..";
 
-interface PanelProps {
+interface AttributePanelProps {
   readonly index: number;
   readonly onRemove: (index: number) => void;
 }
 
-export const Panel = ({ index, onRemove }: PanelProps) => {
+export const AttributePanel = ({ index, onRemove }: AttributePanelProps) => {
   const [open, setOpen] = useState<boolean>(true);
   const {
     register,
     control,
+    trigger,
     setValue,
     formState: { errors },
   } = useFormContext<CreateTemplateFormData>();
@@ -27,6 +28,10 @@ export const Panel = ({ index, onRemove }: PanelProps) => {
     name: `attributes.${index}.isRequired`,
     control,
   });
+
+  useEffect(() => {
+    trigger(`attributes.${index}`);
+  }, [index, trigger]);
 
   useEffect(() => {
     if (attributeIsRequiredLive) {

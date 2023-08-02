@@ -8,6 +8,7 @@ export const BasicInformation = () => {
     control,
     register,
     setValue,
+    trigger,
     formState: { errors },
   } = useFormContext<CreateTemplateFormData>();
 
@@ -27,8 +28,14 @@ export const BasicInformation = () => {
   });
 
   useEffect(() => {
+    trigger("basicInformation");
+  }, [trigger]);
+
+  useEffect(() => {
     const valueToSet = basicInformationNameLive?.replace(/\s/g, "");
-    setValue("basicInformation.externalId", valueToSet);
+    setValue("basicInformation.externalId", valueToSet, {
+      shouldValidate: true,
+    });
   }, [basicInformationNameLive, setValue]);
 
   return (

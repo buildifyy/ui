@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 import { CreateTemplateFormData } from "../../models";
-import { FaExclamationTriangle } from "react-icons/fa";
+import { FaCheck, FaExclamationTriangle } from "react-icons/fa";
 
 interface StepperProps {
   readonly stepSelection: string;
@@ -13,7 +13,7 @@ interface StepperProps {
 export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
   const location = useLocation();
   const {
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useFormContext<CreateTemplateFormData>();
 
   const handleStepClick = (
@@ -42,6 +42,8 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
             errors.basicInformation?.name ||
             errors.basicInformation?.externalId ? (
               <FaExclamationTriangle className="text-red-600 text-center" />
+            ) : dirtyFields.basicInformation && !errors.basicInformation ? (
+              <FaCheck className="text-green-600" />
             ) : (
               <span
                 className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
@@ -71,6 +73,9 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
           >
             {errors.attributes?.length && errors.attributes.length > 0 ? (
               <FaExclamationTriangle className="text-red-600" />
+            ) : dirtyFields.attributes &&
+              (!errors.attributes || errors.attributes?.length === 0) ? (
+              <FaCheck className="text-green-600" />
             ) : (
               <span
                 className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
@@ -120,13 +125,22 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
             className="flex items-center gap-2 bg-white p-2"
             onClick={() => handleStepClick("Metric Types")}
           >
-            <span
-              className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
-                stepSelection === "Metric Types" ? "bg-blue-600" : "bg-gray-100"
-              }`}
-            >
-              4
-            </span>
+            {errors.metricTypes?.length && errors.metricTypes.length > 0 ? (
+              <FaExclamationTriangle className="text-red-600" />
+            ) : dirtyFields.metricTypes &&
+              (!errors.metricTypes || errors.metricTypes?.length === 0) ? (
+              <FaCheck className="text-green-600" />
+            ) : (
+              <span
+                className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
+                  stepSelection === "Metric Types"
+                    ? "bg-blue-600"
+                    : "bg-gray-100"
+                }`}
+              >
+                4
+              </span>
+            )}
 
             <span
               className={`hidden sm:block ${

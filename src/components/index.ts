@@ -7,4 +7,6 @@ export * from './Header';
 export * from './Select';
 export * from './Toggle';
 export * from './AddPanel';
-export * from './Panel';
+export * from './AttributePanel';
+export * from './MetricTypePanel';
+export * from './MetricPanel';

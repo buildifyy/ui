@@ -1,6 +1,7 @@
 import { Header } from "../..";
 import { BasicInformation } from "./BasicInformation";
 import { Attributes } from "./Attributes";
+import { MetricTypes } from "./MetricTypes";
 
 interface TemplateCreateProps {
   readonly stepSelection:
@@ -17,6 +18,8 @@ export const TemplateCreate = ({ stepSelection }: TemplateCreateProps) => {
         return <BasicInformation />;
       case "Attributes":
         return <Attributes />;
+      case "Metric Types":
+        return <MetricTypes />;
       default:
         return null;
     }

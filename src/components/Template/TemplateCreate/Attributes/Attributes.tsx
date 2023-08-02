@@ -1,5 +1,5 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { AddPanel, Panel } from "../../..";
+import { AddPanel, AttributePanel } from "../../..";
 import { CreateTemplateFormData } from "../../../../models";
 
 export const Attributes = () => {
@@ -15,7 +15,7 @@ export const Attributes = () => {
   };
 
   const handleAddAttribute = () => {
-    prepend({ name: "", dataType: "", isRequired: false });
+    prepend({ name: "", dataType: "" });
   };
 
   return (
@@ -28,10 +28,10 @@ export const Attributes = () => {
           </span>
         ) : null}
 
-        <AddPanel onAdd={handleAddAttribute} />
+        <AddPanel title="Add Attribute" onAdd={handleAddAttribute} />
         {attributes.map((attr, index) => {
           return (
-            <Panel
+            <AttributePanel
               key={attr._id}
               index={index}
               onRemove={handleRemoveAttribute}

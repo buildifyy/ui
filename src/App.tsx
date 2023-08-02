@@ -27,7 +27,7 @@ function App() {
 
   const methods = useForm<CreateTemplateFormData>({
     resolver: yupResolver(schema),
-    mode: "onTouched",
+    mode: "all",
   });
 
   const onSubmit: SubmitHandler<CreateTemplateFormData> = (data) =>

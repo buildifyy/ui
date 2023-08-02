@@ -12,5 +12,16 @@ export const schema = yup.object({
         dataType: yup.string().required("This field is required"),
         isRequired: yup.boolean(),
         isHidden: yup.boolean()
+    })).required().default([]),
+    metricTypes: yup.array().of(yup.object({
+        name: yup.string().required("This field is required"),
+        metricType: yup.string().required("This field is required"),
+        metrics: yup.array().of(yup.object({
+            name: yup.string().required("This field is required"),
+            isManual: yup.boolean(),
+            value: yup.mixed<string | number | boolean>(),
+            isCalculated: yup.boolean(),
+            isSourced: yup.boolean()
+        })).required().default([]).min(1)
     })).required().default([])
 })
