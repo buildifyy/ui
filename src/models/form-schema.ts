@@ -18,10 +18,16 @@ export const schema = yup.object({
         metricType: yup.string().required("This field is required"),
         metrics: yup.array().of(yup.object({
             name: yup.string().required("This field is required"),
-            isManual: yup.boolean(),
+            isManual: yup.boolean().test('oneOfRequired', 'One of Manual, Calculated or Sourced must be selected', function() {
+                return (this.parent.isManual || this.parent.isCalculated || this.parent.isSourced)
+            }),
             value: yup.mixed<string | number | boolean>(),
-            isCalculated: yup.boolean(),
-            isSourced: yup.boolean()
+            isCalculated: yup.boolean().test('oneOfRequired2', 'One of Manual, Calculated or Sourced must be selected', function() {
+                return (this.parent.isManual || this.parent.isCalculated || this.parent.isSourced)
+            }),
+            isSourced: yup.boolean().test('oneOfRequired3', 'One of Manual, Calculated or Sourced must be selected', function() {
+                return (this.parent.isManual || this.parent.isCalculated || this.parent.isSourced)
+            })
         })).required().default([]).min(1, "Atleast 1 metric needs to be added")
     })).required().default([])
 })

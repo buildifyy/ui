@@ -19,7 +19,7 @@ export const MetricTypes = () => {
     prepend({
       name: "",
       metricType: "",
-      metrics: [{ name: "" }],
+      metrics: [{ name: "", isExpanded: true }],
       isExpanded: true,
     });
   };

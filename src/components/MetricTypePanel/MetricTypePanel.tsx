@@ -26,6 +26,7 @@ export const MetricTypePanel = ({
     fields: metrics,
     prepend,
     remove,
+    update,
   } = useFieldArray({
     control,
     name: `metricTypes.${index}.metrics`,
@@ -37,18 +38,44 @@ export const MetricTypePanel = ({
     control,
   });
 
-  console.log("errors: ", errors);
-
   useEffect(() => {
     trigger(`metricTypes.${index}`);
   }, [index, trigger]);
 
   const handleAddMetric = () => {
-    prepend({ name: "" });
+    prepend({ name: "", isExpanded: true });
   };
 
   const handleRemoveMetric = (index: number) => {
     remove(index);
+  };
+
+  const handleToggleExpandMetric = (metricIndex: number) => {
+    update(index, {
+      ...getValues(`metricTypes.${index}.metrics.${metricIndex}`),
+      isExpanded: !getValues(
+        `metricTypes.${index}.metrics.${metricIndex}.isExpanded`
+      ),
+    });
+  };
+
+  const handleToggleExpandOrCollapseAll = () => {
+    const shouldCollapseAll = metrics.some((mt) => mt.isExpanded);
+    if (shouldCollapseAll) {
+      metrics.forEach((_, metricIndex) => {
+        update(metricIndex, {
+          ...getValues(`metricTypes.${index}.metrics.${metricIndex}`),
+          isExpanded: false,
+        });
+      });
+    } else {
+      metrics.forEach((_, metricIndex) => {
+        update(metricIndex, {
+          ...getValues(`metricTypes.${index}.metrics.${metricIndex}`),
+          isExpanded: true,
+        });
+      });
+    }
   };
 
   const metricTypeData: SelectData[] = [
@@ -85,7 +112,10 @@ export const MetricTypePanel = ({
               <FaChevronDown />
             )}
             <FaTrashAlt
-              onClick={() => onRemove(index)}
+              onClick={(event: React.MouseEvent) => {
+                onRemove(index);
+                event?.stopPropagation();
+              }}
               className="hover:cursor-pointer"
             />
           </div>
@@ -154,12 +184,25 @@ export const MetricTypePanel = ({
           </div>
         </div>
         <div className="mt-4 leading-relaxed text-gray-700 text-sm">
-          {metrics.length !== 0 ? (
-            <span className="text-md text-green-600">
-              {metrics.length} new
-              {metrics.length > 1 ? " metrics" : " metric"}
-            </span>
-          ) : null}
+          <div className="flex justify-between">
+            {metrics.length !== 0 ? (
+              <span className="text-md text-green-600">
+                {metrics.length} new
+                {metrics.length > 1 ? " metrics" : " metric"}
+              </span>
+            ) : null}
+            {metrics.length !== 0 && (
+              <button
+                className="inline-block rounded border border-indigo-600 bg-indigo-600 px-5 py-1 w-fit text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500 disabled:opacity-50 disabled:pointer-events-none"
+                type="submit"
+                onClick={handleToggleExpandOrCollapseAll}
+              >
+                {metrics.some((metric) => metric.isExpanded)
+                  ? "Collapse All"
+                  : "Expand All"}
+              </button>
+            )}
+          </div>
           <AddPanel
             title="Add Metric"
             onAdd={handleAddMetric}
@@ -168,13 +211,14 @@ export const MetricTypePanel = ({
           <span className="text-xs text-red-600">
             {errors.metricTypes?.[index]?.metrics?.message}
           </span>
-          {metrics.map((attr, metricIndex) => {
+          {metrics.map((metric, metricIndex) => {
             return (
               <MetricPanel
-                key={attr._id}
+                key={metric._id}
                 index={metricIndex}
                 metricTypeIndex={index}
                 onRemove={handleRemoveMetric}
+                onToggleExpand={handleToggleExpandMetric}
               />
             );
           })}

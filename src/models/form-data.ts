@@ -9,14 +9,14 @@ export interface Attribute {
     readonly dataType: string
     readonly isRequired?: boolean;
     readonly isHidden?: boolean;
-    readonly isExpanded: boolean;
+    readonly isExpanded?: boolean;
 }
 
 export interface MetricType {
     readonly name: string;
     readonly metricType: string;
     readonly metrics: Metric[];
-    readonly isExpanded: boolean;
+    readonly isExpanded?: boolean;
 }
 
 export interface Metric {
@@ -25,6 +25,7 @@ export interface Metric {
     readonly value?: string | number | boolean;
     readonly isCalculated?: boolean;
     readonly isSourced?: boolean;
+    readonly isExpanded?: boolean;
 }
   
 export interface CreateTemplateFormData {

@@ -15,7 +15,6 @@ export const AttributePanel = ({
   onRemove,
   onToggleExpand,
 }: AttributePanelProps) => {
-  // const [open, setOpen] = useState<boolean>(true);
   const {
     register,
     control,
@@ -79,7 +78,10 @@ export const AttributePanel = ({
               <FaChevronDown />
             )}
             <FaTrashAlt
-              onClick={() => onRemove(index)}
+              onClick={(event: React.MouseEvent) => {
+                onRemove(index);
+                event?.stopPropagation();
+              }}
               className="hover:cursor-pointer"
             />
           </div>

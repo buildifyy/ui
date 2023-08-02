@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { FaChevronUp, FaChevronDown, FaTrashAlt } from "react-icons/fa";
 import { Toggle } from "..";
@@ -8,18 +8,20 @@ interface MetricPanelProps {
   readonly index: number;
   readonly metricTypeIndex: number;
   readonly onRemove: (index: number) => void;
+  readonly onToggleExpand: (index: number) => void;
 }
 
 export const MetricPanel = ({
   index,
   metricTypeIndex,
   onRemove,
+  onToggleExpand,
 }: MetricPanelProps) => {
-  const [open, setOpen] = useState<boolean>(true);
   const {
     register,
     unregister,
     control,
+    getValues,
     trigger,
     formState: { errors },
   } = useFormContext<CreateTemplateFormData>();
@@ -34,6 +36,16 @@ export const MetricPanel = ({
     control,
   });
 
+  const metricIsCalculatedLive = useWatch({
+    name: `metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`,
+    control,
+  });
+
+  const metricIsSourcedLive = useWatch({
+    name: `metricTypes.${metricTypeIndex}.metrics.${index}.isSourced`,
+    control,
+  });
+
   useEffect(() => {
     trigger(`metricTypes.${metricTypeIndex}.metrics.${index}`);
   }, [index, metricTypeIndex, trigger]);
@@ -44,19 +56,40 @@ export const MetricPanel = ({
     } else {
       unregister(`metricTypes.${metricTypeIndex}.metrics.${index}.value`);
     }
-  }, [index, metricIsManualLive, metricTypeIndex, register, unregister]);
+    trigger(`metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`);
+    trigger(`metricTypes.${metricTypeIndex}.metrics.${index}.isSourced`);
+  }, [
+    index,
+    metricIsManualLive,
+    metricTypeIndex,
+    register,
+    trigger,
+    unregister,
+  ]);
+
+  useEffect(() => {
+    trigger(`metricTypes.${metricTypeIndex}.metrics.${index}.isManual`);
+    trigger(`metricTypes.${metricTypeIndex}.metrics.${index}.isSourced`);
+  }, [index, metricIsCalculatedLive, metricTypeIndex, trigger]);
+
+  useEffect(() => {
+    trigger(`metricTypes.${metricTypeIndex}.metrics.${index}.isManual`);
+    trigger(`metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`);
+  }, [index, metricIsSourcedLive, metricTypeIndex, trigger]);
 
   return (
     <div className="flex justify-between items-center gap-2 mt-4">
       <details
         className="group rounded-lg bg-white p-6 [&_summary::-webkit-details-marker]:hidden w-full"
-        open={open}
+        open={getValues(
+          `metricTypes.${metricTypeIndex}.metrics.${index}.isExpanded`
+        )}
       >
         <summary
           className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900"
           onClick={() => {
             event?.preventDefault();
-            setOpen(!open);
+            onToggleExpand(index);
           }}
         >
           <span className="font-normal italic text-sm">
@@ -64,9 +97,18 @@ export const MetricPanel = ({
           </span>
 
           <div className="flex gap-5">
-            {open ? <FaChevronUp /> : <FaChevronDown />}
+            {getValues(
+              `metricTypes.${metricTypeIndex}.metrics.${index}.isExpanded`
+            ) ? (
+              <FaChevronUp />
+            ) : (
+              <FaChevronDown />
+            )}
             <FaTrashAlt
-              onClick={() => onRemove(index)}
+              onClick={(event: React.MouseEvent) => {
+                onRemove(index);
+                event?.stopPropagation();
+              }}
               className="hover:cursor-pointer"
             />
           </div>
