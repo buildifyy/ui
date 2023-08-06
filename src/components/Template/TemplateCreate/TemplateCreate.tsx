@@ -28,8 +28,10 @@ export const TemplateCreate = ({ stepSelection }: TemplateCreateProps) => {
     }
   };
 
-  const onSubmit: SubmitHandler<CreateTemplateFormData> = (data) =>
+  const onSubmit: SubmitHandler<CreateTemplateFormData> = (data) => {
     console.log("createTemplateFormData: ", data);
+    localStorage.setItem("template", JSON.stringify(data));
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="h-full w-full">
