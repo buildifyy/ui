@@ -1,7 +1,9 @@
-import { Header } from "../..";
+import { Footer, Header } from "../..";
 import { BasicInformation } from "./BasicInformation";
 import { Attributes } from "./Attributes";
 import { MetricTypes } from "./MetricTypes";
+import { SubmitHandler, useFormContext } from "react-hook-form";
+import { CreateTemplateFormData } from "../../../models";
 
 interface TemplateCreateProps {
   readonly stepSelection:
@@ -12,6 +14,7 @@ interface TemplateCreateProps {
 }
 
 export const TemplateCreate = ({ stepSelection }: TemplateCreateProps) => {
+  const { handleSubmit } = useFormContext<CreateTemplateFormData>();
   const toRender = () => {
     switch (stepSelection) {
       case "Basic Information":
@@ -25,10 +28,16 @@ export const TemplateCreate = ({ stepSelection }: TemplateCreateProps) => {
     }
   };
 
+  const onSubmit: SubmitHandler<CreateTemplateFormData> = (data) =>
+    console.log("createTemplateFormData: ", data);
+
   return (
-    <div className="w-full">
-      <Header value={stepSelection} />
-      {toRender()}
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="h-full w-full">
+      <div className="w-full">
+        <Header value={stepSelection} />
+        {toRender()}
+        <Footer />
+      </div>
+    </form>
   );
 };

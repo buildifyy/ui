@@ -11,7 +11,7 @@ export const Footer = () => {
   }
 
   return (
-    <div className="grid h-[60px] px-28 items-center border-t grid-cols-[1fr,1fr,auto]">
+    <div className="fixed inset-x-0 bottom-0 grid h-[60px] px-28 items-center border-t grid-cols-[1fr,1fr,auto]">
       <div className="grid-item"></div>
       <div className="grid-item"></div>
       <div className="grid-item">

@@ -39,7 +39,7 @@ export const BasicInformation = () => {
   }, [basicInformationNameLive, setValue]);
 
   return (
-    <div className="flex flex-col mt-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto max-h-[40rem]">
+    <div className="flex flex-col mt-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto max-h-[35rem]">
       <div className="flex items-center w-full justify-between pt-5">
         <div className="flex flex-col w-96">
           <label
