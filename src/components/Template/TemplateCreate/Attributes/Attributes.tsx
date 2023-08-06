@@ -49,16 +49,14 @@ export const Attributes = () => {
   };
 
   return (
-    <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-scroll h-[30rem]">
+    <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-y-auto max-h-[40rem]">
       <div className="space-y-4 w-full">
-        <div className="flex justify-between">
-          {attributes.length !== 0 ? (
+        {attributes.length !== 0 ? (
+          <div className="flex justify-between">
             <span className="text-green-600">
               {attributes.length} new
               {attributes.length > 1 ? " attributes" : " attribute"}
             </span>
-          ) : null}
-          {attributes.length !== 0 ? (
             <button
               className="inline-block rounded border border-indigo-600 bg-indigo-600 px-5 py-1 w-fit text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500 disabled:opacity-50 disabled:pointer-events-none"
               type="submit"
@@ -68,8 +66,8 @@ export const Attributes = () => {
                 ? "Collapse All"
                 : "Expand All"}
             </button>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
 
         <AddPanel title="Add Attribute" onAdd={handleAddAttribute} />
         {attributes.map((attr, index) => {
