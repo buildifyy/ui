@@ -5,7 +5,8 @@ export const schema = yup.object({
     basicInformation: yup.object({
         parent: yup.string().required("This field is required"),
         name: yup.string().required("This field is required"),
-        externalId: yup.string().required("This field is required")
+        externalId: yup.string().required("This field is required"),
+        isCustom: yup.boolean().required("This field is required").default(true),
     }),
     attributes: yup.array().of(yup.object({
         name: yup.string().required("This field is required"),

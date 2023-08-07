@@ -2,6 +2,7 @@ export interface BasicInformation {
     readonly parent: string;
     readonly name: string;
     readonly externalId: string;
+    readonly isCustom: boolean;
 }
 
 export interface Attribute {

@@ -143,7 +143,12 @@ export const BasicInformation = () => {
         </div>
         <div className="flex w-64">
           <div className="flex flex-col w-96 items-end">
-            <Toggle id="custom" value={true} isDisabled />
+            <Toggle
+              id="custom"
+              value={true}
+              {...register("basicInformation.isCustom")}
+              isDisabled
+            />
             <span className="text-xs text-gray-400 mt-2">
               This value cannot be changed
             </span>

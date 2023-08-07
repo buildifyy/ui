@@ -14,7 +14,10 @@ interface TemplateCreateProps {
 }
 
 export const TemplateCreate = ({ stepSelection }: TemplateCreateProps) => {
-  const { handleSubmit } = useFormContext<CreateTemplateFormData>();
+  const {
+    handleSubmit,
+    formState: { errors },
+  } = useFormContext<CreateTemplateFormData>();
   const toRender = () => {
     switch (stepSelection) {
       case "Basic Information":
@@ -27,6 +30,8 @@ export const TemplateCreate = ({ stepSelection }: TemplateCreateProps) => {
         return null;
     }
   };
+
+  console.log("errors: ", errors);
 
   const onSubmit: SubmitHandler<CreateTemplateFormData> = (data) => {
     console.log("createTemplateFormData: ", data);

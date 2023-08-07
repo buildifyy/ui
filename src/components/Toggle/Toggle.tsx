@@ -17,7 +17,7 @@ export const Toggle = React.forwardRef<HTMLInputElement, ToggleProps>(
           ref={ref}
           className="peer sr-only [&:checked_+_span_svg[data-checked-icon]]:block [&:checked_+_span_svg[data-unchecked-icon]]:hidden"
           disabled={isDisabled}
-          checked={value}
+          defaultChecked={value}
           {...rest}
         />
 
