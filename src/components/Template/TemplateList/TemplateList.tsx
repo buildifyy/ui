@@ -1,51 +1,46 @@
-import { createColumnHelper } from "@tanstack/react-table";
-import React from "react";
-import { CreateTemplateFormData } from "../../../models";
-import { DataTable } from "../../DataTable/DataTable";
-import { FaBan, FaCheck } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { Header } from "../..";
+import { BasicInformation, CreateTemplateFormData } from "../../../models";
+import { FaAngleRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export const TemplateList = () => {
-  const localData = localStorage.getItem("template");
-  const jsonData = localData ? JSON.parse(localData) : {};
+  const [dataToRender, setDataToRender] = useState<BasicInformation[]>([]);
 
-  console.log("jsonData: ", jsonData);
-
-  const columnHelper = createColumnHelper<CreateTemplateFormData>();
-
-  const columns = [
-    columnHelper.accessor("basicInformation.name", {
-      id: "name",
-      cell: (info) => <span>{info.getValue()}</span>,
-      header: () => <span className="font-bold">Name</span>,
-    }),
-    columnHelper.accessor("basicInformation.externalId", {
-      id: "externalId",
-      cell: (info) => <span>{info.getValue()}</span>,
-      header: () => <span className="font-bold">External ID</span>,
-    }),
-    columnHelper.accessor("basicInformation.parent", {
-      id: "parent",
-      cell: (info) => <span>{info.getValue()}</span>,
-      header: () => <div className="flex font-bold">Parent</div>,
-    }),
-    columnHelper.accessor("basicInformation.isCustom", {
-      id: "isCustom",
-      cell: (info) => {
-        return (
-          <div className="flex justify-center">
-            {info.getValue() ? <FaCheck /> : <FaBan />}
-          </div>
-        );
-      },
-      header: () => <div className="flex justify-center font-bold">Custom</div>,
-    }),
-  ];
-
-  const [data] = React.useState(() => [jsonData]);
+  useEffect(() => {
+    const localData = localStorage.getItem("template");
+    const jsonData: CreateTemplateFormData = localData
+      ? JSON.parse(localData)
+      : {};
+    if (jsonData && jsonData.basicInformation) {
+      const toAdd = [jsonData.basicInformation];
+      for (let i = 0; i < 20; i++) {
+        toAdd.push(jsonData.basicInformation);
+      }
+      setDataToRender(toAdd);
+    }
+  }, []);
 
   return (
-    <div className="p-2 w-full">
-      <DataTable columns={columns} data={data} />
+    <div className="w-full">
+      <Header value="Templates" />
+      <ul className="list-none grid grid-cols-1 gap-5 mt-5 mx-10 py-5 px-10 max-h-[42rem] overflow-y-auto">
+        {dataToRender?.map((data, i) => (
+          <Link key={i} to={`/templates/${data.externalId}`}>
+            <li className="flex justify-between items-center h-14 border rounded-2xl px-5 hover:bg-gray-100 hover:cursor-pointer">
+              <div>
+                {data.name} -
+                <span className="text-gray-500 ml-1 text-sm">
+                  {data.externalId}
+                </span>
+              </div>
+              <div>
+                <FaAngleRight className="text-sm" />
+              </div>
+            </li>
+          </Link>
+        ))}
+      </ul>
     </div>
   );
 };
