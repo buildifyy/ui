@@ -3,6 +3,7 @@ import {Header} from "../..";
 import {BasicInformation, CreateTemplateFormData} from "../../../models";
 import {Link} from "react-router-dom";
 import {FaEye, FaBan, FaCheck} from "react-icons/fa6";
+import {Filter} from "../../Filter";
 
 export const TemplateList = () => {
     const [dataToRender, setDataToRender] = useState<BasicInformation[]>([]);
@@ -59,7 +60,7 @@ export const TemplateList = () => {
         <div className="w-full">
             <Header value="Templates"/>
             <div className="flex justify-between">
-                <div></div>
+                <Filter />
                 <input
                     type="text"
                     placeholder="Search"
