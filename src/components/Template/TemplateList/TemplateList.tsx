@@ -18,7 +18,7 @@ export const TemplateList = () => {
   const [selectedIsCustom, setSelectedIsCustom] = useState<string[]>();
   const cachedList = useRef<BasicInformation[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const showFilteredResultsHelper = (searchText || selectedExternalIds && selectedExternalIds.length > 0) && dataToRender.length !== 0 && !isLoading;
+  const showFilteredResultsHelper = (searchText || selectedExternalIds && selectedExternalIds.length > 0 || selectedNames && selectedNames.length > 0 || selectedParents && selectedParents.length > 0 || selectedIsCustom && selectedIsCustom.length > 0) && dataToRender.length !== 0 && !isLoading;
 
   const handleSearchTextChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -128,11 +128,19 @@ export const TemplateList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchText, selectedExternalIds, selectedNames, selectedParents, selectedIsCustom]);
 
+  const handleClearAllFilters = () => {
+    setSelectedExternalIds([]);
+    setSelectedNames([]);
+    setSelectedParents([]);
+    setSelectedIsCustom([]);
+    setSearchText("");
+  }
+
   return (
     <div className="w-full">
       <Header value="Templates"/>
       <div className="flex justify-between mt-4">
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           <Filter
             options={externalIdFilterOptions}
             selectedValues={selectedExternalIds}
@@ -157,12 +165,14 @@ export const TemplateList = () => {
             setSelectedValues={setSelectedIsCustom}
             placeholderText="All Customs"
           />
+          <span className="hover:cursor-pointer hover:text-blue-600 text-sm" onClick={handleClearAllFilters}>Clear all filters</span>
         </div>
         <input
           type="text"
           placeholder="Search"
           className="pl-4 py-1 pr-1 border rounded-2xl"
           onChange={handleSearchTextChange}
+          value={searchText}
         />
       </div>
       <div className="max-h-[calc(100%-10rem)] overflow-y-auto border rounded-2xl mt-5">
