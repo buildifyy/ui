@@ -16,12 +16,15 @@ interface FilterProps {
 export const Filter = ({options, selectedValues, setSelectedValues, placeholderText, isDisabled}: FilterProps) => {
   const InputOption = (props: OptionProps<FilterOption>) => {
     return (
-      <components.Option
-        {...props}
-      >
-        <input type="checkbox" checked={props.isSelected}/>
-        <span className="ml-2">{props.children}</span>
-      </components.Option>
+      <div className="px-1 my-1">
+        <components.Option
+          {...props}
+          className="rounded-2xl"
+        >
+          <input type="checkbox" checked={props.isSelected}/>
+          <span className="ml-2">{props.children}</span>
+        </components.Option>
+      </div>
     );
   };
 
