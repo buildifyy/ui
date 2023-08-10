@@ -47,24 +47,31 @@ export const TemplateList = () => {
           value: data.externalId
         }
       }));
-      setNameFilterOptions(toAdd.map(data => {
-        return {
-          label: data.name,
-          value: data.name
+
+      const newNameFilterOptions: FilterOption[] = [];
+      toAdd.forEach(data => {
+        if (newNameFilterOptions.findIndex(f => f.value === data.name) === -1) {
+          newNameFilterOptions.push({label: data.name, value: data.name});
         }
-      }));
-      setParentFilterOptions(toAdd.map(data => {
-        return {
-          label: data.parent,
-          value: data.parent
+      })
+      setNameFilterOptions(newNameFilterOptions);
+
+      const newParentFilterOptions: FilterOption[] = [];
+      toAdd.forEach(data => {
+        if (newParentFilterOptions.findIndex(f => f.value === data.parent) === -1) {
+          newParentFilterOptions.push({label: data.parent, value: data.parent});
         }
-      }));
-      setIsCustomFilterOptions(toAdd.map(data => {
-        return {
-          label: data.isCustom.toString(),
-          value: data.isCustom.toString()
+      })
+      setParentFilterOptions(newParentFilterOptions);
+
+      const newIsCustomFilterOptions: FilterOption[] = [];
+      toAdd.forEach(data => {
+        if (newIsCustomFilterOptions.findIndex(f => f.value === data.isCustom.toString()) === -1) {
+          newIsCustomFilterOptions.push({label: data.isCustom.toString(), value: data.isCustom.toString()});
         }
-      }));
+      })
+      setIsCustomFilterOptions(newIsCustomFilterOptions);
+
       setDataToRender(toAdd);
       setIsLoading(false);
     }
