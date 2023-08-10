@@ -8,26 +8,17 @@ import {Filter, FilterOption} from "../../Filter";
 export const TemplateList = () => {
   const [dataToRender, setDataToRender] = useState<BasicInformation[]>([]);
   const [searchText, setSearchText] = useState<string>();
+  const [externalIdFilterOptions, setExternalIdFilterOptions] = useState<FilterOption[]>([]);
+  const [selectedExternalIds, setSelectedExternalIds] = useState<string[]>();
   const cachedList = useRef<BasicInformation[]>([]);
-
-  const filterOptions: FilterOption[] = [
-    {value: 'ocean', label: 'Ocean'},
-    {value: 'blue', label: 'Blue'},
-    {value: 'purple', label: 'Purple'},
-    {value: 'red', label: 'Red'},
-    {value: 'orange', label: 'Orange'},
-    {value: 'yellow', label: 'Yellow'},
-    {value: 'green', label: 'Green'},
-    {value: 'forest', label: 'Forest'},
-    {value: 'slate', label: 'Slate'},
-    {value: 'silver', label: 'Silver'},
-  ];
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSearchTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
 
   useEffect(() => {
+    setIsLoading(true);
     const localData = localStorage.getItem("template");
     const jsonData: CreateTemplateFormData = localData
       ? JSON.parse(localData)
@@ -42,11 +33,20 @@ export const TemplateList = () => {
         });
       }
       cachedList.current = toAdd;
+
+      setExternalIdFilterOptions(toAdd.map(data => {
+        return {
+          label: data.externalId,
+          value: data.externalId
+        }
+      }));
       setDataToRender(toAdd);
+      setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
+    setIsLoading(true);
     const getFilteredResults = setTimeout(() => {
       if (searchText) {
         const listCopy = [...cachedList.current];
@@ -63,17 +63,48 @@ export const TemplateList = () => {
       if (searchText === "") {
         setDataToRender(cachedList.current);
       }
+
+      setIsLoading(false);
     }, 500);
 
     return () => clearTimeout(getFilteredResults);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchText]);
 
+  useEffect(() => {
+    setIsLoading(true);
+    const getFilteredResults = setTimeout(() => {
+      console.log('selectedExternalIds: ', selectedExternalIds);
+      if (selectedExternalIds) {
+        const listCopy = [...cachedList.current];
+        const filteredList = listCopy.filter(
+          (i) =>
+            selectedExternalIds.includes(i.externalId)
+        );
+        console.log("filteredResults: ", filteredList);
+        setDataToRender(filteredList);
+      }
+
+      if (selectedExternalIds?.length === 0) {
+        setDataToRender(cachedList.current);
+      }
+
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(getFilteredResults);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedExternalIds]);
+
   return (
     <div className="w-full">
       <Header value="Templates"/>
       <div className="flex justify-between mt-4">
-        <Filter options={filterOptions}/>
+        <Filter
+          options={externalIdFilterOptions}
+          selectedValues={selectedExternalIds}
+          setSelectedValues={setSelectedExternalIds}
+        />
         <input
           type="text"
           placeholder="Search"
@@ -95,29 +126,31 @@ export const TemplateList = () => {
           <tbody>
           {dataToRender.length === 0 ? <tr>
             <td colSpan={4} className="p-4">No templates found</td>
-          </tr> : dataToRender.map((data, i) =>
-            <tr key={i} className="border-b">
-              <td className="p-4">
-                {data.externalId}
-              </td>
-              <td className="p-4">{data.name}</td>
-              <td className="p-4">{data.parent}</td>
-              <td className="p-4">
-                {data.isCustom ? <FaCheck/> : <FaBan/>}
-              </td>
-              <Link key={i} to={`/templates/${data.externalId}`}>
-                <td className="p-4 w-fit hover:cursor-pointer">
-                  <FaEye className="border rounded-3xl h-8 w-8 p-2 hover:scale-110"/>
+          </tr> : isLoading ?
+            <td colSpan={4} className="p-4 text-center">Loading...</td> : dataToRender.map((data, i) =>
+              <tr key={i} className="border-b">
+                <td className="p-4">
+                  {data.externalId}
                 </td>
-              </Link>
-            </tr>
-          )}
+                <td className="p-4">{data.name}</td>
+                <td className="p-4">{data.parent}</td>
+                <td className="p-4">
+                  {data.isCustom ? <FaCheck/> : <FaBan/>}
+                </td>
+                <Link key={i} to={`/templates/${data.externalId}`}>
+                  <td className="p-4 w-fit hover:cursor-pointer">
+                    <FaEye className="border rounded-3xl h-8 w-8 p-2 hover:scale-110"/>
+                  </td>
+                </Link>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
-      {searchText && dataToRender.length !== 0 && (<div className="text-right text-gray-500 text-md mt-2">
-        {dataToRender.length} filtered {dataToRender.length > 1 ? "results" : "result"}
-      </div>)}
+      {(searchText || selectedExternalIds && selectedExternalIds.length > 0) && dataToRender.length !== 0 && !isLoading && (
+        <div className="text-right text-gray-500 text-md mt-2">
+          {dataToRender.length} filtered {dataToRender.length > 1 ? "results" : "result"}
+        </div>)}
     </div>
   );
 };
