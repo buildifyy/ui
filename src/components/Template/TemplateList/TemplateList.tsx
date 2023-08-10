@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {ChangeEvent, useEffect, useRef, useState} from "react";
 import {Header} from "../..";
 import {BasicInformation, CreateTemplateFormData} from "../../../models";
 import {Link} from "react-router-dom";
@@ -10,10 +10,17 @@ export const TemplateList = () => {
   const [searchText, setSearchText] = useState<string>();
   const [externalIdFilterOptions, setExternalIdFilterOptions] = useState<FilterOption[]>([]);
   const [selectedExternalIds, setSelectedExternalIds] = useState<string[]>();
+  const [nameFilterOptions, setNameFilterOptions] = useState<FilterOption[]>([]);
+  const [selectedNames, setSelectedNames] = useState<string[]>();
+  const [parentFilterOptions, setParentFilterOptions] = useState<FilterOption[]>([]);
+  const [selectedParents, setSelectedParents] = useState<string[]>();
+  const [isCustomFilterOptions, setIsCustomFilterOptions] = useState<FilterOption[]>([]);
+  const [selectedIsCustom, setSelectedIsCustom] = useState<string[]>();
   const cachedList = useRef<BasicInformation[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const showFilteredResultsHelper = (searchText || selectedExternalIds && selectedExternalIds.length > 0) && dataToRender.length !== 0 && !isLoading;
 
-  const handleSearchTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchTextChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
 
@@ -40,6 +47,24 @@ export const TemplateList = () => {
           value: data.externalId
         }
       }));
+      setNameFilterOptions(toAdd.map(data => {
+        return {
+          label: data.name,
+          value: data.name
+        }
+      }));
+      setParentFilterOptions(toAdd.map(data => {
+        return {
+          label: data.parent,
+          value: data.parent
+        }
+      }));
+      setIsCustomFilterOptions(toAdd.map(data => {
+        return {
+          label: data.isCustom.toString(),
+          value: data.isCustom.toString()
+        }
+      }));
       setDataToRender(toAdd);
       setIsLoading(false);
     }
@@ -48,67 +73,95 @@ export const TemplateList = () => {
   useEffect(() => {
     setIsLoading(true);
     const getFilteredResults = setTimeout(() => {
+      let filteredList = cachedList.current;
       if (searchText) {
         const listCopy = [...cachedList.current];
-        const filteredList = listCopy.filter(
+        filteredList = listCopy.filter(
           (i) =>
             i.externalId.toLowerCase().includes(searchText.toLowerCase()) ||
             i.name.toLowerCase().includes(searchText.toLowerCase()) ||
             i.parent.toLowerCase().includes(searchText.toLowerCase())
         );
-        console.log("filteredResults: ", filteredList);
-        setDataToRender(filteredList);
       }
 
-      if (searchText === "") {
-        setDataToRender(cachedList.current);
-      }
-
-      setIsLoading(false);
-    }, 500);
-
-    return () => clearTimeout(getFilteredResults);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchText]);
-
-  useEffect(() => {
-    setIsLoading(true);
-    const getFilteredResults = setTimeout(() => {
-      console.log('selectedExternalIds: ', selectedExternalIds);
-      if (selectedExternalIds) {
-        const listCopy = [...cachedList.current];
-        const filteredList = listCopy.filter(
+      if (selectedExternalIds && selectedExternalIds.length > 0) {
+        const listCopy = [...filteredList];
+        filteredList = listCopy.filter(
           (i) =>
             selectedExternalIds.includes(i.externalId)
         );
-        console.log("filteredResults: ", filteredList);
-        setDataToRender(filteredList);
       }
 
-      if (selectedExternalIds?.length === 0) {
-        setDataToRender(cachedList.current);
+      if (selectedNames && selectedNames.length > 0) {
+        const listCopy = [...filteredList];
+        filteredList = listCopy.filter(
+          (i) =>
+            selectedNames.includes(i.name)
+        );
       }
 
+      if (selectedParents && selectedParents.length > 0) {
+        const listCopy = [...filteredList];
+        filteredList = listCopy.filter(
+          (i) =>
+            selectedParents.includes(i.parent)
+        );
+      }
+
+      if (selectedIsCustom && selectedIsCustom.length > 0) {
+        const listCopy = [...filteredList];
+        filteredList = listCopy.filter(
+          (i) =>
+            selectedIsCustom.includes(i.isCustom.toString())
+        );
+      }
+
+      if (searchText === "" && selectedExternalIds?.length === 0 && selectedNames?.length === 0 && selectedParents?.length === 0 && selectedIsCustom?.length === 0) {
+        filteredList = cachedList.current;
+      }
+
+      setDataToRender(filteredList);
       setIsLoading(false);
     }, 1000);
 
     return () => clearTimeout(getFilteredResults);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedExternalIds]);
+  }, [searchText, selectedExternalIds, selectedNames, selectedParents, selectedIsCustom]);
 
   return (
     <div className="w-full">
       <Header value="Templates"/>
       <div className="flex justify-between mt-4">
-        <Filter
-          options={externalIdFilterOptions}
-          selectedValues={selectedExternalIds}
-          setSelectedValues={setSelectedExternalIds}
-        />
+        <div className="flex gap-2">
+          <Filter
+            options={externalIdFilterOptions}
+            selectedValues={selectedExternalIds}
+            setSelectedValues={setSelectedExternalIds}
+            placeholderText="All External IDs"
+          />
+          <Filter
+            options={nameFilterOptions}
+            selectedValues={selectedNames}
+            setSelectedValues={setSelectedNames}
+            placeholderText="All Names"
+          />
+          <Filter
+            options={parentFilterOptions}
+            selectedValues={selectedParents}
+            setSelectedValues={setSelectedParents}
+            placeholderText="All Parents"
+          />
+          <Filter
+            options={isCustomFilterOptions}
+            selectedValues={selectedIsCustom}
+            setSelectedValues={setSelectedIsCustom}
+            placeholderText="All Customs"
+          />
+        </div>
         <input
           type="text"
           placeholder="Search"
-          className="pl-4 py-1 pr-1 border rounded-3xl w-[30%]"
+          className="pl-4 py-1 pr-1 border rounded-2xl"
           onChange={handleSearchTextChange}
         />
       </div>
@@ -147,7 +200,7 @@ export const TemplateList = () => {
           </tbody>
         </table>
       </div>
-      {(searchText || selectedExternalIds && selectedExternalIds.length > 0) && dataToRender.length !== 0 && !isLoading && (
+      {showFilteredResultsHelper && (
         <div className="text-right text-gray-500 text-md mt-2">
           {dataToRender.length} filtered {dataToRender.length > 1 ? "results" : "result"}
         </div>)}
