@@ -1,37 +1,53 @@
 import {useState} from "react";
-import {Multiselect} from "multiselect-react-dropdown";
-import './Filter.css';
+import Select, {MultiValue, components, OptionProps, MultiValueProps} from "react-select"
 
-interface ColourOption {
-    readonly value: string;
-    readonly label: string;
-    readonly color: string;
+export interface FilterOption {
+  readonly label: string;
+  readonly value: string;
 }
 
-export const Filter = () => {
-    const colourOptions: ColourOption[] = [
-        {value: 'ocean', label: 'Ocean', color: '#00B8D9'},
-        {value: 'blue', label: 'Blue', color: '#0052CC'},
-        {value: 'purple', label: 'Purple', color: '#5243AA'},
-        {value: 'red', label: 'Red', color: '#FF5630'},
-        {value: 'orange', label: 'Orange', color: '#FF8B00'},
-        {value: 'yellow', label: 'Yellow', color: '#FFC400'},
-        {value: 'green', label: 'Green', color: '#36B37E'},
-        {value: 'forest', label: 'Forest', color: '#00875A'},
-        {value: 'slate', label: 'Slate', color: '#253858'},
-        {value: 'silver', label: 'Silver', color: '#666666'},
-    ];
+interface FilterProps {
+  readonly options: FilterOption[];
+}
 
-    const [selectedExternalIdValues, setSelectedExternalIdValues] = useState<ColourOption[]>([]);
+export const Filter = ({options}: FilterProps) => {
+  const [selectedExternalIdValues, setSelectedExternalIdValues] = useState<FilterOption[]>([]);
 
-    const handleOnSelect = (selectedList: ColourOption[]) => {
-        setSelectedExternalIdValues(selectedList);
-    }
-
+  const InputOption = (props: OptionProps<FilterOption>) => {
+    console.log('option props: ', props);
     return (
-        <Multiselect displayValue="label" hideSelectedList options={colourOptions} onSelect={handleOnSelect}
-                     showCheckbox
-                     selectedValues={selectedExternalIdValues} avoidHighlightFirstOption
-        />
+      <components.Option
+        {...props}
+      >
+        <input type="checkbox" checked={props.isSelected}/>
+        <span className="ml-2">{props.children}</span>
+      </components.Option>
     );
+  };
+
+  const MultiValue = (props: MultiValueProps<FilterOption>) => {
+    return !props.index &&
+        <components.SingleValue {...props}><span>{selectedExternalIdValues.length} selected</span>
+        </components.SingleValue>
+  }
+
+  const handleOnSelect = (options: MultiValue<FilterOption>) => {
+    if (Array.isArray(options)) {
+      setSelectedExternalIdValues(options.map(opt => opt.value))
+    }
+  }
+
+  return (
+    <Select
+      isMulti
+      closeMenuOnSelect={false}
+      closeMenuOnScroll={false}
+      hideSelectedOptions={false}
+      onChange={handleOnSelect}
+      options={options}
+      components={{Option: InputOption, MultiValue}}
+      className="w-[18%]"
+      placeholder="All External IDs"
+    />
+  );
 }
