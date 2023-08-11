@@ -1,9 +1,10 @@
-import { Footer, Header } from "../..";
 import { BasicInformation } from "./BasicInformation";
 import { Attributes } from "./Attributes";
 import { MetricTypes } from "./MetricTypes";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import { CreateTemplateFormData } from "../../../models";
+import { Header } from "../../shared";
+import { Footer } from "../../skeleton";
 
 interface TemplateCreateProps {
   readonly stepSelection:

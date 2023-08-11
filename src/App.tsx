@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import {
-  Content,
   Sidebar,
   Stepper,
   TemplateCreate,
@@ -38,7 +37,7 @@ function App() {
             stepSelection={stepSelection}
             setStepSelection={setStepSelection}
           />
-          <Content>
+          <div className="flex h-full p-5">
             <Routes>
               <Route path="/templates" element={<TemplateList />} />
               <Route
@@ -54,7 +53,7 @@ function App() {
                 element={<TemplateEdit stepSelection={stepSelection} />}
               />
             </Routes>
-          </Content>
+          </div>
         </div>
       </div>
     </FormProvider>

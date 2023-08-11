@@ -1,12 +1,12 @@
 import { useLocation } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
-import { CreateTemplateFormData } from "../../models";
+import { CreateTemplateFormData } from "../../../models";
 import { FaCheck, FaExclamationTriangle } from "react-icons/fa";
 
 interface StepperProps {
   readonly stepSelection: string;
   readonly setStepSelection: (
-    val: "Basic Information" | "Attributes" | "Relationships" | "Metric Types"
+    val: "Basic Information" | "Attributes" | "Relationships" | "Metric Types",
   ) => void;
 }
 
@@ -17,7 +17,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
   } = useFormContext<CreateTemplateFormData>();
 
   const handleStepClick = (
-    val: "Basic Information" | "Attributes" | "Relationships" | "Metric Types"
+    val: "Basic Information" | "Attributes" | "Relationships" | "Metric Types",
   ) => {
     if (stepSelection !== val) {
       setStepSelection(val);

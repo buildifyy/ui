@@ -1,8 +1,8 @@
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
-import { CreateTemplateFormData } from "../../models";
+import { CreateTemplateFormData } from "../../../../models";
 import { useEffect } from "react";
 import { FaChevronDown, FaChevronUp, FaTrashAlt } from "react-icons/fa";
-import { Select, SelectData, Toggle } from "..";
+import { Select, SelectData, Toggle } from "../../../shared";
 
 interface AttributePanelProps {
   readonly index: number;

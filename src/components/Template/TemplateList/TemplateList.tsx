@@ -1,10 +1,9 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { Header } from "../..";
 import { BasicInformation, CreateTemplateFormData } from "../../../models";
 import { Link } from "react-router-dom";
 import { FaEye, FaBan, FaCheck } from "react-icons/fa6";
-import { Filter, FilterOption } from "../../Filter";
 import Loader from "../../../assets/loading.gif";
+import { Filter, FilterOption, Header } from "../../shared";
 
 export const TemplateList = () => {
   const [dataToRender, setDataToRender] = useState<BasicInformation[]>([]);

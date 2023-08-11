@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { FaChevronUp, FaChevronDown, FaTrashAlt } from "react-icons/fa";
-import { SelectData, Select, AddPanel, MetricPanel } from "..";
-import { CreateTemplateFormData } from "../../models";
+import { CreateTemplateFormData } from "../../../../models";
+import { AddPanel, Select, SelectData } from "../../../shared";
+import { MetricPanel } from "../MetricPanel";
 
 interface MetricTypePanelProps {
   readonly index: number;
@@ -61,7 +62,7 @@ export const MetricTypePanel = ({
     update(index, {
       ...getValues(`metricTypes.${index}.metrics.${metricIndex}`),
       isExpanded: !getValues(
-        `metricTypes.${index}.metrics.${metricIndex}.isExpanded`
+        `metricTypes.${index}.metrics.${metricIndex}.isExpanded`,
       ),
     });
   };

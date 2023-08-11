@@ -1,7 +1,7 @@
 import { useFormContext, useWatch } from "react-hook-form";
-import { Select, SelectData, Toggle } from "../../..";
 import { CreateTemplateFormData } from "../../../../models";
 import { useEffect } from "react";
+import { Select, SelectData, Toggle } from "../../../shared";
 
 export const BasicInformation = () => {
   const {

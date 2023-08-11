@@ -1,9 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
-import logo from "../../assets/logo.svg";
-import me from "../../assets/me.jpg";
+import logo from "../../../assets/logo.svg";
+import me from "../../../assets/me.jpg";
 import "./Sidebar.css";
-import { Select, SelectData } from "..";
-import { CreateTemplateFormData } from "../../models";
+import { Select, SelectData } from "../../index.ts";
+import { CreateTemplateFormData } from "../../../models";
 import { useFormContext } from "react-hook-form";
 
 export const Sidebar = () => {

@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { FaChevronUp, FaChevronDown, FaTrashAlt } from "react-icons/fa";
-import { Toggle } from "..";
-import { CreateTemplateFormData } from "../../models";
+import { CreateTemplateFormData } from "../../../../models";
+import { Toggle } from "../../../shared";
 
 interface MetricPanelProps {
   readonly index: number;
@@ -89,7 +89,7 @@ export const MetricPanel = ({
       <details
         className="group rounded-lg bg-white p-6 [&_summary::-webkit-details-marker]:hidden w-full"
         open={getValues(
-          `metricTypes.${metricTypeIndex}.metrics.${index}.isExpanded`
+          `metricTypes.${metricTypeIndex}.metrics.${index}.isExpanded`,
         )}
       >
         <summary
@@ -105,7 +105,7 @@ export const MetricPanel = ({
 
           <div className="flex gap-5">
             {getValues(
-              `metricTypes.${metricTypeIndex}.metrics.${index}.isExpanded`
+              `metricTypes.${metricTypeIndex}.metrics.${index}.isExpanded`,
             ) ? (
               <FaChevronUp />
             ) : (
@@ -143,7 +143,7 @@ export const MetricPanel = ({
                     : ""
                 }`}
                 {...register(
-                  `metricTypes.${metricTypeIndex}.metrics.${index}.name`
+                  `metricTypes.${metricTypeIndex}.metrics.${index}.name`,
                 )}
               />
               {errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
@@ -176,7 +176,7 @@ export const MetricPanel = ({
               <Toggle
                 id={`manual.${metric?._id}`}
                 {...register(
-                  `metricTypes.${metricTypeIndex}.metrics.${index}.isManual`
+                  `metricTypes.${metricTypeIndex}.metrics.${index}.isManual`,
                 )}
               />
               {errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
@@ -215,7 +215,7 @@ export const MetricPanel = ({
                     : ""
                 }`}
                 {...register(
-                  `metricTypes.${metricTypeIndex}.metrics.${index}.value`
+                  `metricTypes.${metricTypeIndex}.metrics.${index}.value`,
                 )}
                 disabled={!metricIsManualLive}
               />
@@ -255,7 +255,7 @@ export const MetricPanel = ({
               <Toggle
                 id={`calculated.${metric?._id}`}
                 {...register(
-                  `metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`
+                  `metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`,
                 )}
               />
               {errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
@@ -288,7 +288,7 @@ export const MetricPanel = ({
               <Toggle
                 id={`sourced.${metric?._id}`}
                 {...register(
-                  `metricTypes.${metricTypeIndex}.metrics.${index}.isSourced`
+                  `metricTypes.${metricTypeIndex}.metrics.${index}.isSourced`,
                 )}
               />
               {errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]

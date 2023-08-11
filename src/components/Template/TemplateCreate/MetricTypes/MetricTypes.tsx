@@ -1,6 +1,7 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { CreateTemplateFormData } from "../../../../models";
-import { AddPanel, MetricTypePanel } from "../../..";
+import { AddPanel } from "../../../shared";
+import { MetricTypePanel } from "../../Panels";
 
 export const MetricTypes = () => {
   const { control, getValues } = useFormContext<CreateTemplateFormData>();
