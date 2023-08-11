@@ -1,4 +1,9 @@
-import Select, {MultiValue, components, OptionProps, MultiValueProps} from "react-select"
+import Select, {
+  MultiValue,
+  components,
+  OptionProps,
+  MultiValueProps,
+} from "react-select";
 
 export interface FilterOption {
   readonly label: string;
@@ -13,15 +18,18 @@ interface FilterProps {
   readonly isDisabled?: boolean;
 }
 
-export const Filter = ({options, selectedValues, setSelectedValues, placeholderText, isDisabled}: FilterProps) => {
+export const Filter = ({
+  options,
+  selectedValues,
+  setSelectedValues,
+  placeholderText,
+  isDisabled,
+}: FilterProps) => {
   const InputOption = (props: OptionProps<FilterOption>) => {
     return (
-      <div className="px-1 my-1">
-        <components.Option
-          {...props}
-          className="rounded-2xl"
-        >
-          <input type="checkbox" checked={props.isSelected}/>
+      <div className="px-2 my-2">
+        <components.Option {...props} className="rounded-2xl">
+          <input type="checkbox" checked={props.isSelected} />
           <span className="ml-2">{props.children}</span>
         </components.Option>
       </div>
@@ -29,18 +37,20 @@ export const Filter = ({options, selectedValues, setSelectedValues, placeholderT
   };
 
   const MultiValue = (props: MultiValueProps<FilterOption>) => {
-    return !props.index &&
-        <components.SingleValue {...props}><span
-            className="text-sm">{selectedValues?.length} selected</span>
+    return (
+      !props.index && (
+        <components.SingleValue {...props}>
+          <span className="text-sm">{selectedValues?.length} selected</span>
         </components.SingleValue>
-  }
-
+      )
+    );
+  };
 
   const handleOnSelect = (options: MultiValue<FilterOption>) => {
     if (Array.isArray(options)) {
-      setSelectedValues(options.map(opt => opt.value))
+      setSelectedValues(options.map((opt) => opt.value));
     }
-  }
+  };
 
   return (
     <Select
@@ -50,9 +60,25 @@ export const Filter = ({options, selectedValues, setSelectedValues, placeholderT
       hideSelectedOptions={false}
       onChange={handleOnSelect}
       options={options}
-      components={{Option: InputOption, MultiValue}}
+      components={{ Option: InputOption, MultiValue }}
       placeholder={placeholderText}
       isDisabled={isDisabled}
+      styles={{
+        control: (provided) => ({
+          ...provided,
+          borderRadius: "16px",
+        }),
+        menu: (provided) => ({
+          ...provided,
+          width: "max-content",
+          minWidth: "100%",
+          borderRadius: "8px",
+        }),
+        option: (provided) => ({
+          ...provided,
+          borderRadius: "8px",
+        }),
+      }}
     />
   );
-}
+};
