@@ -9,9 +9,8 @@ import {
   TemplateView,
 } from "./components";
 import { FormProvider, useForm } from "react-hook-form";
-import { CreateTemplateFormData } from "./models";
+import { CreateTemplateFormData, schema } from "./models";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { schema } from "./models/form-schema";
 
 function App() {
   const location = useLocation();
