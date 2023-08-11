@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import {
-  Sidebar,
-  Stepper,
   TemplateCreate,
   TemplateEdit,
   TemplateList,
   TemplateView,
-} from "./components";
+} from "./components/Template";
+import { Sidebar, Stepper } from "./components/skeleton";
 import { FormProvider, useForm } from "react-hook-form";
 import { CreateTemplateFormData, schema } from "./models";
 import { yupResolver } from "@hookform/resolvers/yup";
