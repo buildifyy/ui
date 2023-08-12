@@ -29,6 +29,8 @@ export const MetricTypes = () => {
           </div>
         ) : null}
 
+        {metricTypes.length === 0 ? <span>No metric types found</span> : null}
+
         {metricTypes.map((mt, index) => {
           return (
             <MetricTypePanel

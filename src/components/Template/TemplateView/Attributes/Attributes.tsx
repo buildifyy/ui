@@ -29,6 +29,8 @@ export const Attributes = () => {
           </div>
         ) : null}
 
+        {attributes.length === 0 ? <span>No attributes found</span> : null}
+
         {attributes.map((attr, index) => {
           return (
             <AttributePanel
