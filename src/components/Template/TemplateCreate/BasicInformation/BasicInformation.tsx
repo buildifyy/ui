@@ -8,7 +8,6 @@ export const BasicInformation = () => {
     control,
     register,
     setValue,
-    trigger,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
 
@@ -26,11 +25,6 @@ export const BasicInformation = () => {
     name: "basicInformation.name",
     control,
   });
-
-  useEffect(() => {
-    console.log("doing");
-    trigger("basicInformation");
-  }, [trigger]);
 
   useEffect(() => {
     if (basicInformationNameLive) {

@@ -56,10 +56,6 @@ export const MetricPanel = ({
   });
 
   useEffect(() => {
-    trigger(`metricTypes.${metricTypeIndex}.metrics.${index}`);
-  }, [index, metricTypeIndex, trigger]);
-
-  useEffect(() => {
     if (metricIsManualLive) {
       register(`metricTypes.${metricTypeIndex}.metrics.${index}.value`);
     } else {

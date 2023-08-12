@@ -28,7 +28,7 @@ export const Attributes = () => {
   };
 
   return (
-    <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-y-auto max-h-[35rem]">
+    <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-y-auto max-h-[30rem]">
       <div className="space-y-4 w-full">
         {attributes.length !== 0 ? (
           <div className="flex justify-between">

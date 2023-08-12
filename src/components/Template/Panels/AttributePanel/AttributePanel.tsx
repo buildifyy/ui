@@ -20,7 +20,6 @@ export const AttributePanel = ({
   const {
     register,
     control,
-    trigger,
     setValue,
     getValues,
     formState: { errors },
@@ -42,10 +41,6 @@ export const AttributePanel = ({
     name: `attributes.${index}.isRequired`,
     control,
   });
-
-  useEffect(() => {
-    trigger(`attributes.${index}`);
-  }, [index, trigger]);
 
   useEffect(() => {
     if (attributeIsRequiredLive) {

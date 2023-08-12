@@ -27,8 +27,24 @@ export const TemplateCreate = ({
     reset,
     formState: { errors, isSubmitSuccessful },
   } = useFormContext<TemplateFormData>();
+
+  const defaultValue = {
+    tenant: "",
+    basicInformation: {
+      name: "",
+      parent: "",
+      externalId: "",
+    },
+    attributes: [],
+    metricTypes: [],
+  };
+
   useEffect(() => {
-    reset();
+    reset(defaultValue);
+  }, []);
+
+  useEffect(() => {
+    reset(defaultValue);
     setStepSelection("Basic Information");
   }, [isSubmitSuccessful]);
 

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { FaChevronUp, FaChevronDown, FaTrashAlt } from "react-icons/fa";
 import { TemplateFormData } from "../../../../models";
@@ -22,7 +21,6 @@ export const MetricTypePanel = ({
     register,
     control,
     getValues,
-    trigger,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
   const { fields: metricTypes } = useFieldArray({
@@ -47,10 +45,6 @@ export const MetricTypePanel = ({
     name: `metricTypes.${index}.name`,
     control,
   });
-
-  useEffect(() => {
-    trigger(`metricTypes.${index}`);
-  }, [index, trigger]);
 
   const handleAddMetric = () => {
     prepend({ name: "", isExpanded: true });
