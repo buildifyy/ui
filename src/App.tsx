@@ -8,7 +8,7 @@ import {
 } from "./components/Template";
 import { Sidebar, Stepper } from "./components/skeleton";
 import { FormProvider, useForm } from "react-hook-form";
-import { CreateTemplateFormData, schema } from "./models";
+import { TemplateFormData, schema } from "./models";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
     setStepSelection("Basic Information");
   }, [location]);
 
-  const methods = useForm<CreateTemplateFormData>({
+  const methods = useForm<TemplateFormData>({
     resolver: yupResolver(schema),
     mode: "all",
   });
@@ -40,7 +40,12 @@ function App() {
               <Route path="/templates" element={<TemplateList />} />
               <Route
                 path="/templates/create"
-                element={<TemplateCreate stepSelection={stepSelection} />}
+                element={
+                  <TemplateCreate
+                    stepSelection={stepSelection}
+                    setStepSelection={setStepSelection}
+                  />
+                }
               />
               <Route
                 path="/templates/:templateId"

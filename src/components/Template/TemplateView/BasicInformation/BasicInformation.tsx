@@ -1,16 +1,9 @@
-import { useFormContext, useWatch } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { TemplateFormData } from "../../../../models";
-import { useEffect } from "react";
 import { Select, SelectData, Toggle } from "../../../shared";
 
 export const BasicInformation = () => {
-  const {
-    control,
-    register,
-    setValue,
-    trigger,
-    formState: { errors },
-  } = useFormContext<TemplateFormData>();
+  const { register } = useFormContext<TemplateFormData>();
 
   const parentTemplateData: SelectData[] = [
     { id: "JM", value: "John Mayer" },
@@ -21,25 +14,6 @@ export const BasicInformation = () => {
     { id: "BG", value: "Buddy Guy" },
     { id: "EC", value: "Eric Clapton" },
   ];
-
-  const basicInformationNameLive = useWatch({
-    name: "basicInformation.name",
-    control,
-  });
-
-  useEffect(() => {
-    console.log("doing");
-    trigger("basicInformation");
-  }, [trigger]);
-
-  useEffect(() => {
-    if (basicInformationNameLive) {
-      const valueToSet = basicInformationNameLive?.replace(/\s/g, "");
-      setValue("basicInformation.externalId", valueToSet, {
-        shouldValidate: true,
-      });
-    }
-  }, [basicInformationNameLive, setValue]);
 
   return (
     <div className="flex flex-col mt-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto max-h-[35rem]">
@@ -62,15 +36,8 @@ export const BasicInformation = () => {
             widthClassName="w-64"
             data={parentTemplateData}
             {...register("basicInformation.parent")}
-            errorClassName={
-              errors.basicInformation?.parent ? "border-red-600" : ""
-            }
+            isDisabled
           />
-          {errors.basicInformation?.parent && (
-            <span className="text-xs text-red-600">
-              {errors.basicInformation?.parent.message}
-            </span>
-          )}
         </div>
       </div>
       <hr className="w-full my-6" />
@@ -90,16 +57,10 @@ export const BasicInformation = () => {
           <input
             id="name"
             type="text"
-            className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
-              errors.basicInformation?.name ? "border-red-600" : ""
-            }`}
+            className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700`}
             {...register("basicInformation.name")}
+            disabled
           />
-          {errors.basicInformation?.name && (
-            <span className="text-xs text-red-600">
-              {errors.basicInformation?.name.message}
-            </span>
-          )}
         </div>
       </div>
       <hr className="w-full my-6" />
@@ -119,16 +80,10 @@ export const BasicInformation = () => {
           <input
             id="externalId"
             type="text"
-            className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
-              errors.basicInformation?.externalId ? "border-red-600" : ""
-            }`}
+            className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700`}
             {...register("basicInformation.externalId")}
+            disabled
           />
-          {errors.basicInformation?.externalId && (
-            <span className="text-xs text-red-600">
-              {errors.basicInformation?.externalId.message}
-            </span>
-          )}
         </div>
       </div>
       <hr className="w-full my-6" />
@@ -152,9 +107,6 @@ export const BasicInformation = () => {
               {...register("basicInformation.isCustom")}
               isDisabled
             />
-            <span className="text-xs text-gray-400 mt-2">
-              This value cannot be changed
-            </span>
           </div>
         </div>
       </div>

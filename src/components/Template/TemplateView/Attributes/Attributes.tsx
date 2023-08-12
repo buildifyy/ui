@@ -1,24 +1,14 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { TemplateFormData } from "../../../../models";
-import { AddPanel } from "../../../shared";
 import { AttributePanel } from "../../Panels";
 
 export const Attributes = () => {
   const { control, getValues } = useFormContext<TemplateFormData>();
-  const {
-    fields: attributes,
-    prepend,
-    remove,
-    update,
-  } = useFieldArray({ control, name: "attributes", keyName: "_id" });
-
-  const handleRemoveAttribute = (index: number) => {
-    remove(index);
-  };
-
-  const handleAddAttribute = () => {
-    prepend({ name: "", dataType: "", isExpanded: true });
-  };
+  const { fields: attributes, update } = useFieldArray({
+    control,
+    name: "attributes",
+    keyName: "_id",
+  });
 
   const handleToggleExpandAttribute = (index: number) => {
     update(index, {
@@ -33,20 +23,19 @@ export const Attributes = () => {
         {attributes.length !== 0 ? (
           <div className="flex justify-between">
             <span className="text-green-600">
-              {attributes.length} new
+              {attributes.length}
               {attributes.length > 1 ? " attributes" : " attribute"}
             </span>
           </div>
         ) : null}
 
-        <AddPanel title="Add Attribute" onAdd={handleAddAttribute} />
         {attributes.map((attr, index) => {
           return (
             <AttributePanel
               key={attr._id}
               index={index}
-              onRemove={handleRemoveAttribute}
               onToggleExpand={handleToggleExpandAttribute}
+              isReadonly
             />
           );
         })}

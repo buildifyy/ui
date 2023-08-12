@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { BasicInformation, CreateTemplateFormData } from "../../../models";
+import { BasicInformation, TemplateFormData } from "../../../models";
 import { Link } from "react-router-dom";
 import { FaEye, FaBan, FaCheck } from "react-icons/fa6";
 import Loader from "../../../assets/loading.gif";
@@ -41,72 +41,65 @@ export const TemplateList = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    const localData = localStorage.getItem("template");
-    const jsonData: CreateTemplateFormData = localData
-      ? JSON.parse(localData)
-      : {};
-    if (jsonData && jsonData.basicInformation) {
-      const toAdd = [jsonData.basicInformation];
-      for (let i = 2; i <= 40; i++) {
-        toAdd.push({
-          ...jsonData.basicInformation,
-          name: `Test Template ${i}`,
-          externalId: `TestTemplate${i}`,
+
+    const localData = localStorage.getItem("templates");
+    const jsonData: TemplateFormData[] = localData ? JSON.parse(localData) : [];
+    const toAdd: BasicInformation[] = [];
+    jsonData.forEach((data) => {
+      toAdd.push({
+        ...data.basicInformation,
+      });
+    });
+
+    cachedList.current = toAdd;
+
+    setExternalIdFilterOptions(
+      toAdd.map((data) => {
+        return {
+          label: data.externalId,
+          value: data.externalId,
+        };
+      }),
+    );
+
+    const newNameFilterOptions: FilterOption[] = [];
+    toAdd.forEach((data) => {
+      if (newNameFilterOptions.findIndex((f) => f.value === data.name) === -1) {
+        newNameFilterOptions.push({ label: data.name, value: data.name });
+      }
+    });
+    setNameFilterOptions(newNameFilterOptions);
+
+    const newParentFilterOptions: FilterOption[] = [];
+    toAdd.forEach((data) => {
+      if (
+        newParentFilterOptions.findIndex((f) => f.value === data.parent) === -1
+      ) {
+        newParentFilterOptions.push({
+          label: data.parent,
+          value: data.parent,
         });
       }
-      cachedList.current = toAdd;
+    });
+    setParentFilterOptions(newParentFilterOptions);
 
-      setExternalIdFilterOptions(
-        toAdd.map((data) => {
-          return {
-            label: data.externalId,
-            value: data.externalId,
-          };
-        }),
-      );
+    const newIsCustomFilterOptions: FilterOption[] = [];
+    toAdd.forEach((data) => {
+      if (
+        newIsCustomFilterOptions.findIndex(
+          (f) => f.value === data.isCustom.toString(),
+        ) === -1
+      ) {
+        newIsCustomFilterOptions.push({
+          label: data.isCustom.toString(),
+          value: data.isCustom.toString(),
+        });
+      }
+    });
+    setIsCustomFilterOptions(newIsCustomFilterOptions);
 
-      const newNameFilterOptions: FilterOption[] = [];
-      toAdd.forEach((data) => {
-        if (
-          newNameFilterOptions.findIndex((f) => f.value === data.name) === -1
-        ) {
-          newNameFilterOptions.push({ label: data.name, value: data.name });
-        }
-      });
-      setNameFilterOptions(newNameFilterOptions);
-
-      const newParentFilterOptions: FilterOption[] = [];
-      toAdd.forEach((data) => {
-        if (
-          newParentFilterOptions.findIndex((f) => f.value === data.parent) ===
-          -1
-        ) {
-          newParentFilterOptions.push({
-            label: data.parent,
-            value: data.parent,
-          });
-        }
-      });
-      setParentFilterOptions(newParentFilterOptions);
-
-      const newIsCustomFilterOptions: FilterOption[] = [];
-      toAdd.forEach((data) => {
-        if (
-          newIsCustomFilterOptions.findIndex(
-            (f) => f.value === data.isCustom.toString(),
-          ) === -1
-        ) {
-          newIsCustomFilterOptions.push({
-            label: data.isCustom.toString(),
-            value: data.isCustom.toString(),
-          });
-        }
-      });
-      setIsCustomFilterOptions(newIsCustomFilterOptions);
-
-      setDataToRender(toAdd);
-      setIsLoading(false);
-    }
+    setDataToRender(toAdd);
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {

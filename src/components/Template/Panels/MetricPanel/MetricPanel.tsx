@@ -1,14 +1,15 @@
 import { useEffect } from "react";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { FaChevronUp, FaChevronDown, FaTrashAlt } from "react-icons/fa";
-import { CreateTemplateFormData } from "../../../../models";
+import { TemplateFormData } from "../../../../models";
 import { Toggle } from "../../../shared";
 
 interface MetricPanelProps {
   readonly index: number;
   readonly metricTypeIndex: number;
-  readonly onRemove: (index: number) => void;
+  readonly onRemove?: (index: number) => void;
   readonly onToggleExpand: (index: number) => void;
+  readonly isReadonly?: boolean;
 }
 
 export const MetricPanel = ({
@@ -16,6 +17,7 @@ export const MetricPanel = ({
   metricTypeIndex,
   onRemove,
   onToggleExpand,
+  isReadonly,
 }: MetricPanelProps) => {
   const {
     register,
@@ -24,7 +26,7 @@ export const MetricPanel = ({
     getValues,
     trigger,
     formState: { errors },
-  } = useFormContext<CreateTemplateFormData>();
+  } = useFormContext<TemplateFormData>();
 
   const { fields: metrics } = useFieldArray({
     control,
@@ -113,10 +115,13 @@ export const MetricPanel = ({
             )}
             <FaTrashAlt
               onClick={(event: React.MouseEvent) => {
-                onRemove(index);
+                if (onRemove) {
+                  onRemove(index);
+                }
                 event?.stopPropagation();
               }}
               className="hover:cursor-pointer"
+              disabled={isReadonly}
             />
           </div>
         </summary>
@@ -138,6 +143,7 @@ export const MetricPanel = ({
                 id={`name.${metric?._id}`}
                 type="text"
                 className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
+                  !isReadonly &&
                   errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]?.name
                     ? "border-red-600"
                     : ""
@@ -145,16 +151,18 @@ export const MetricPanel = ({
                 {...register(
                   `metricTypes.${metricTypeIndex}.metrics.${index}.name`,
                 )}
+                disabled={isReadonly}
               />
-              {errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                ?.name && (
-                <span className="text-xs text-red-600">
-                  {
-                    errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                      ?.name?.message
-                  }
-                </span>
-              )}
+              {!isReadonly &&
+                errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
+                  ?.name && (
+                  <span className="text-xs text-red-600">
+                    {
+                      errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
+                        ?.name?.message
+                    }
+                  </span>
+                )}
             </div>
           </div>
         </div>
@@ -178,16 +186,18 @@ export const MetricPanel = ({
                 {...register(
                   `metricTypes.${metricTypeIndex}.metrics.${index}.isManual`,
                 )}
+                isDisabled={isReadonly}
               />
-              {errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                ?.isManual && (
-                <span className="text-xs text-red-600">
-                  {
-                    errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                      ?.isManual?.message
-                  }
-                </span>
-              )}
+              {!isReadonly &&
+                errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
+                  ?.isManual && (
+                  <span className="text-xs text-red-600">
+                    {
+                      errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
+                        ?.isManual?.message
+                    }
+                  </span>
+                )}
             </div>
           </div>
         </div>
@@ -210,6 +220,7 @@ export const MetricPanel = ({
                 id={`value.${metric?._id}`}
                 type="text"
                 className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
+                  !isReadonly &&
                   errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]?.value
                     ? "border-red-600"
                     : ""
@@ -217,18 +228,19 @@ export const MetricPanel = ({
                 {...register(
                   `metricTypes.${metricTypeIndex}.metrics.${index}.value`,
                 )}
-                disabled={!metricIsManualLive}
+                disabled={isReadonly || !metricIsManualLive}
               />
-              {errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                ?.value && (
-                <span className="text-xs text-red-600">
-                  {
-                    errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                      ?.value?.message
-                  }
-                </span>
-              )}
-              {!metricIsManualLive && (
+              {!isReadonly &&
+                errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
+                  ?.value && (
+                  <span className="text-xs text-red-600">
+                    {
+                      errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
+                        ?.value?.message
+                    }
+                  </span>
+                )}
+              {(isReadonly || !metricIsManualLive) && (
                 <span className="text-xs text-yellow-600">
                   Since this metric is not configured to be a manual metric, any
                   value defined here won't be configured.
@@ -257,16 +269,18 @@ export const MetricPanel = ({
                 {...register(
                   `metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`,
                 )}
+                isDisabled={isReadonly}
               />
-              {errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                ?.isCalculated && (
-                <span className="text-xs text-red-600">
-                  {
-                    errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                      ?.isCalculated?.message
-                  }
-                </span>
-              )}
+              {!isReadonly &&
+                errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
+                  ?.isCalculated && (
+                  <span className="text-xs text-red-600">
+                    {
+                      errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
+                        ?.isCalculated?.message
+                    }
+                  </span>
+                )}
             </div>
           </div>
         </div>
@@ -290,16 +304,18 @@ export const MetricPanel = ({
                 {...register(
                   `metricTypes.${metricTypeIndex}.metrics.${index}.isSourced`,
                 )}
+                isDisabled={isReadonly}
               />
-              {errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                ?.isSourced && (
-                <span className="text-xs text-red-600">
-                  {
-                    errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                      ?.isSourced?.message
-                  }
-                </span>
-              )}
+              {!isReadonly &&
+                errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
+                  ?.isSourced && (
+                  <span className="text-xs text-red-600">
+                    {
+                      errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
+                        ?.isSourced?.message
+                    }
+                  </span>
+                )}
             </div>
           </div>
         </div>

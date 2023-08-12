@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
-import { CreateTemplateFormData } from "../../../models";
+import { TemplateFormData } from "../../../models";
 import { FaCheck, FaExclamationTriangle } from "react-icons/fa";
 
 interface StepperProps {
@@ -14,7 +14,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
   const location = useLocation();
   const {
     formState: { errors, dirtyFields },
-  } = useFormContext<CreateTemplateFormData>();
+  } = useFormContext<TemplateFormData>();
 
   const handleStepClick = (
     val: "Basic Information" | "Attributes" | "Relationships" | "Metric Types",

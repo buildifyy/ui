@@ -1,19 +1,21 @@
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
-import { CreateTemplateFormData } from "../../../../models";
+import { TemplateFormData } from "../../../../models";
 import { useEffect } from "react";
 import { FaChevronDown, FaChevronUp, FaTrashAlt } from "react-icons/fa";
 import { Select, SelectData, Toggle } from "../../../shared";
 
 interface AttributePanelProps {
   readonly index: number;
-  readonly onRemove: (index: number) => void;
+  readonly onRemove?: (index: number) => void;
   readonly onToggleExpand: (index: number) => void;
+  readonly isReadonly?: boolean;
 }
 
 export const AttributePanel = ({
   index,
   onRemove,
   onToggleExpand,
+  isReadonly,
 }: AttributePanelProps) => {
   const {
     register,
@@ -22,7 +24,7 @@ export const AttributePanel = ({
     setValue,
     getValues,
     formState: { errors },
-  } = useFormContext<CreateTemplateFormData>();
+  } = useFormContext<TemplateFormData>();
 
   const { fields: attributes } = useFieldArray({
     control,
@@ -75,7 +77,7 @@ export const AttributePanel = ({
           }}
         >
           <span className="font-normal italic text-sm">
-            {attributeNameLive ? attributeNameLive : "Unititled Attribute"}
+            {attributeNameLive ? attributeNameLive : "Untitled Attribute"}
           </span>
 
           <div className="flex gap-5">
@@ -86,10 +88,13 @@ export const AttributePanel = ({
             )}
             <FaTrashAlt
               onClick={(event: React.MouseEvent) => {
-                onRemove(index);
+                if (onRemove) {
+                  onRemove(index);
+                }
                 event?.stopPropagation();
               }}
               className="hover:cursor-pointer"
+              disabled={isReadonly}
             />
           </div>
         </summary>
@@ -111,11 +116,14 @@ export const AttributePanel = ({
                 id={`name.${attribute?._id}`}
                 type="text"
                 className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
-                  errors.attributes?.[index]?.name ? "border-red-600" : ""
+                  !isReadonly && errors.attributes?.[index]?.name
+                    ? "border-red-600"
+                    : ""
                 }`}
                 {...register(`attributes.${index}.name`)}
+                disabled={isReadonly}
               />
-              {errors.attributes?.[index]?.name && (
+              {!isReadonly && errors.attributes?.[index]?.name && (
                 <span className="text-xs text-red-600">
                   {errors.attributes?.[index]?.name?.message}
                 </span>
@@ -143,10 +151,13 @@ export const AttributePanel = ({
                 data={dataTypeData}
                 {...register(`attributes.${index}.dataType`)}
                 errorClassName={
-                  errors.attributes?.[index]?.dataType ? "border-red-600" : ""
+                  !isReadonly && errors.attributes?.[index]?.dataType
+                    ? "border-red-600"
+                    : ""
                 }
+                isDisabled={isReadonly}
               />
-              {errors.attributes?.[index]?.dataType && (
+              {!isReadonly && errors.attributes?.[index]?.dataType && (
                 <span className="text-xs text-red-600">
                   {errors.attributes?.[index]?.dataType?.message}
                 </span>
@@ -171,8 +182,9 @@ export const AttributePanel = ({
               <Toggle
                 id={`required.${attribute?._id}`}
                 {...register(`attributes.${index}.isRequired`)}
+                isDisabled={isReadonly}
               />
-              {errors.attributes?.[index]?.isRequired && (
+              {!isReadonly && errors.attributes?.[index]?.isRequired && (
                 <span className="text-xs text-red-600">
                   {errors.attributes?.[index]?.isRequired?.message}
                 </span>
@@ -198,14 +210,14 @@ export const AttributePanel = ({
               <Toggle
                 id={`hidden.${attribute?._id}`}
                 {...register(`attributes.${index}.isHidden`)}
-                isDisabled={attributeIsRequiredLive}
+                isDisabled={isReadonly || attributeIsRequiredLive}
               />
-              {attributeIsRequiredLive ? (
+              {!isReadonly && attributeIsRequiredLive ? (
                 <span className="text-gray-600 text-xs">
                   An attribute marked as required cannot be hidden
                 </span>
               ) : null}
-              {errors.attributes?.[index]?.isHidden && (
+              {!isReadonly && errors.attributes?.[index]?.isHidden && (
                 <span className="text-xs text-red-600">
                   {errors.attributes?.[index]?.isHidden?.message}
                 </span>

@@ -1,37 +1,37 @@
 export interface BasicInformation {
-    readonly parent: string;
-    readonly name: string;
-    readonly externalId: string;
-    readonly isCustom: boolean;
+  readonly parent: string;
+  readonly name: string;
+  readonly externalId: string;
+  readonly isCustom: boolean;
 }
 
 export interface Attribute {
-    readonly name: string;
-    readonly dataType: string
-    readonly isRequired?: boolean;
-    readonly isHidden?: boolean;
-    readonly isExpanded?: boolean;
+  readonly name: string;
+  readonly dataType: string;
+  readonly isRequired?: boolean;
+  readonly isHidden?: boolean;
+  readonly isExpanded?: boolean;
 }
 
 export interface MetricType {
-    readonly name: string;
-    readonly metricType: string;
-    readonly metrics: Metric[];
-    readonly isExpanded?: boolean;
+  readonly name: string;
+  readonly metricType: string;
+  readonly metrics: Metric[];
+  readonly isExpanded?: boolean;
 }
 
 export interface Metric {
-    readonly name: string;
-    readonly isManual?: boolean;
-    readonly value?: string | number | boolean;
-    readonly isCalculated?: boolean;
-    readonly isSourced?: boolean;
-    readonly isExpanded?: boolean;
+  readonly name: string;
+  readonly isManual?: boolean;
+  readonly value?: string | number | boolean;
+  readonly isCalculated?: boolean;
+  readonly isSourced?: boolean;
+  readonly isExpanded?: boolean;
 }
-  
-export interface CreateTemplateFormData {
-    readonly tenant: string;
-    readonly basicInformation: BasicInformation;
-    readonly attributes: Attribute[];
-    readonly metricTypes: MetricType[];
+
+export interface TemplateFormData {
+  readonly tenant: string;
+  readonly basicInformation: BasicInformation;
+  readonly attributes: Attribute[];
+  readonly metricTypes: MetricType[];
 }

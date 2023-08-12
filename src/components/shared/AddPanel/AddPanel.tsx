@@ -2,7 +2,7 @@ import { FaPlus } from "react-icons/fa";
 
 interface AddPanelProps {
   readonly title: string;
-  readonly onAdd: () => void;
+  readonly onAdd?: () => void;
   readonly className?: string;
 }
 

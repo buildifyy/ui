@@ -1,20 +1,22 @@
 import { useEffect } from "react";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { FaChevronUp, FaChevronDown, FaTrashAlt } from "react-icons/fa";
-import { CreateTemplateFormData } from "../../../../models";
+import { TemplateFormData } from "../../../../models";
 import { AddPanel, Select, SelectData } from "../../../shared";
 import { MetricPanel } from "../MetricPanel";
 
 interface MetricTypePanelProps {
   readonly index: number;
-  readonly onRemove: (index: number) => void;
+  readonly onRemove?: (index: number) => void;
   readonly onToggleExpand: (index: number) => void;
+  readonly isReadonly?: boolean;
 }
 
 export const MetricTypePanel = ({
   index,
   onRemove,
   onToggleExpand,
+  isReadonly,
 }: MetricTypePanelProps) => {
   const {
     register,
@@ -22,7 +24,7 @@ export const MetricTypePanel = ({
     getValues,
     trigger,
     formState: { errors },
-  } = useFormContext<CreateTemplateFormData>();
+  } = useFormContext<TemplateFormData>();
   const { fields: metricTypes } = useFieldArray({
     control,
     name: `metricTypes`,
@@ -67,25 +69,6 @@ export const MetricTypePanel = ({
     });
   };
 
-  const handleToggleExpandOrCollapseAll = () => {
-    const shouldCollapseAll = metrics.some((mt) => mt.isExpanded);
-    if (shouldCollapseAll) {
-      metrics.forEach((_, metricIndex) => {
-        update(metricIndex, {
-          ...getValues(`metricTypes.${index}.metrics.${metricIndex}`),
-          isExpanded: false,
-        });
-      });
-    } else {
-      metrics.forEach((_, metricIndex) => {
-        update(metricIndex, {
-          ...getValues(`metricTypes.${index}.metrics.${metricIndex}`),
-          isExpanded: true,
-        });
-      });
-    }
-  };
-
   const metricTypeData: SelectData[] = [
     { id: "JM", value: "John Mayer" },
     { id: "SRV", value: "Stevie Ray Vaughn" },
@@ -110,7 +93,7 @@ export const MetricTypePanel = ({
           }}
         >
           <span className="font-normal italic text-sm">
-            {metricTypeNameLive ? metricTypeNameLive : "Unititled Metric Type"}
+            {metricTypeNameLive ? metricTypeNameLive : "Untitled Metric Type"}
           </span>
 
           <div className="flex gap-5">
@@ -121,10 +104,13 @@ export const MetricTypePanel = ({
             )}
             <FaTrashAlt
               onClick={(event: React.MouseEvent) => {
-                onRemove(index);
+                if (onRemove) {
+                  onRemove(index);
+                }
                 event?.stopPropagation();
               }}
               className="hover:cursor-pointer"
+              disabled={isReadonly}
             />
           </div>
         </summary>
@@ -146,11 +132,14 @@ export const MetricTypePanel = ({
                 id={`name.${metricType?._id}`}
                 type="text"
                 className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
-                  errors.metricTypes?.[index]?.name ? "border-red-600" : ""
+                  !isReadonly && errors.metricTypes?.[index]?.name
+                    ? "border-red-600"
+                    : ""
                 }`}
                 {...register(`metricTypes.${index}.name`)}
+                disabled={isReadonly}
               />
-              {errors.metricTypes?.[index]?.name && (
+              {!isReadonly && errors.metricTypes?.[index]?.name && (
                 <span className="text-xs text-red-600">
                   {errors.metricTypes?.[index]?.name?.message}
                 </span>
@@ -178,12 +167,13 @@ export const MetricTypePanel = ({
                 data={metricTypeData}
                 {...register(`metricTypes.${index}.metricType`)}
                 errorClassName={
-                  errors.metricTypes?.[index]?.metricType
+                  !isReadonly && errors.metricTypes?.[index]?.metricType
                     ? "border-red-600"
                     : ""
                 }
+                isDisabled={isReadonly}
               />
-              {errors.metricTypes?.[index]?.metricType && (
+              {!isReadonly && errors.metricTypes?.[index]?.metricType && (
                 <span className="text-xs text-red-600">
                   {errors.metricTypes?.[index]?.metricType?.message}
                 </span>
@@ -195,29 +185,20 @@ export const MetricTypePanel = ({
           <div className="flex justify-between">
             {metrics.length !== 0 ? (
               <span className="text-md text-green-600">
-                {metrics.length} new
+                {metrics.length}
                 {metrics.length > 1 ? " metrics" : " metric"}
               </span>
             ) : null}
-            {metrics.length !== 0 && (
-              <button
-                className="inline-block rounded border border-indigo-600 bg-indigo-600 px-5 py-1 w-fit text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500 disabled:opacity-50 disabled:pointer-events-none"
-                type="submit"
-                onClick={handleToggleExpandOrCollapseAll}
-              >
-                {metrics.some((metric) => metric.isExpanded)
-                  ? "Collapse All"
-                  : "Expand All"}
-              </button>
-            )}
           </div>
-          <AddPanel
-            title="Add Metric"
-            onAdd={handleAddMetric}
-            className="mt-4"
-          />
+          {!isReadonly && (
+            <AddPanel
+              title="Add Metric"
+              onAdd={handleAddMetric}
+              className="mt-4"
+            />
+          )}
           <span className="text-xs text-red-600">
-            {errors.metricTypes?.[index]?.metrics?.message}
+            {!isReadonly && errors.metricTypes?.[index]?.metrics?.message}
           </span>
           {metrics.map((metric, metricIndex) => {
             return (
@@ -227,6 +208,7 @@ export const MetricTypePanel = ({
                 metricTypeIndex={index}
                 onRemove={handleRemoveMetric}
                 onToggleExpand={handleToggleExpandMetric}
+                isReadonly={isReadonly}
               />
             );
           })}

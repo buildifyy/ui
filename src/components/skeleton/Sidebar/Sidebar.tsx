@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../../../assets/logo.svg";
 import me from "../../../assets/me.jpg";
 import "./Sidebar.css";
-import { CreateTemplateFormData } from "../../../models";
+import { TemplateFormData } from "../../../models";
 import { useFormContext } from "react-hook-form";
 import { Select, SelectData } from "../../shared";
 
@@ -10,7 +10,7 @@ export const Sidebar = () => {
   const {
     register,
     formState: { errors },
-  } = useFormContext<CreateTemplateFormData>();
+  } = useFormContext<TemplateFormData>();
   const location = useLocation();
 
   const tenantData: SelectData[] = [
@@ -92,19 +92,6 @@ export const Sidebar = () => {
                     List
                   </Link>
                 </li>
-
-                <li>
-                  <Link
-                    to={`/templates/abcdefg`}
-                    className={`block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${
-                      location.pathname === "/templates/abcdefg"
-                        ? "bg-gray-100 text-gray-700"
-                        : ""
-                    }`}
-                  >
-                    View
-                  </Link>
-                </li>
                 <li>
                   <Link
                     to={`/templates/create`}
@@ -115,19 +102,6 @@ export const Sidebar = () => {
                     }`}
                   >
                     Create
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    to={`/templates/edit/abcdefg`}
-                    className={`block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${
-                      location.pathname === "/templates/edit/abcdefg"
-                        ? "bg-gray-100 text-gray-700"
-                        : ""
-                    }`}
-                  >
-                    Edit
                   </Link>
                 </li>
               </ul>

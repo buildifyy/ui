@@ -2,9 +2,10 @@ import { BasicInformation } from "./BasicInformation";
 import { Attributes } from "./Attributes";
 import { MetricTypes } from "./MetricTypes";
 import { SubmitHandler, useFormContext } from "react-hook-form";
-import { CreateTemplateFormData } from "../../../models";
+import { TemplateFormData } from "../../../models";
 import { Header } from "../../shared";
 import { Footer } from "../../skeleton";
+import { useEffect } from "react";
 
 interface TemplateCreateProps {
   readonly stepSelection:
@@ -12,13 +13,26 @@ interface TemplateCreateProps {
     | "Attributes"
     | "Relationships"
     | "Metric Types";
+  readonly setStepSelection: (
+    val: "Basic Information" | "Attributes" | "Relationships" | "Metric Types",
+  ) => void;
 }
 
-export const TemplateCreate = ({ stepSelection }: TemplateCreateProps) => {
+export const TemplateCreate = ({
+  stepSelection,
+  setStepSelection,
+}: TemplateCreateProps) => {
   const {
     handleSubmit,
-    formState: { errors },
-  } = useFormContext<CreateTemplateFormData>();
+    reset,
+    formState: { errors, isSubmitSuccessful },
+  } = useFormContext<TemplateFormData>();
+  useEffect(() => {
+    reset();
+    setStepSelection("Basic Information");
+  }, [isSubmitSuccessful]);
+
+  console.log("errors: ", errors);
   const toRender = () => {
     switch (stepSelection) {
       case "Basic Information":
@@ -32,11 +46,33 @@ export const TemplateCreate = ({ stepSelection }: TemplateCreateProps) => {
     }
   };
 
-  console.log("errors: ", errors);
-
-  const onSubmit: SubmitHandler<CreateTemplateFormData> = (data) => {
+  const onSubmit: SubmitHandler<TemplateFormData> = (data) => {
     console.log("createTemplateFormData: ", data);
-    localStorage.setItem("template", JSON.stringify(data));
+    const localData = localStorage.getItem("templates");
+    const jsonData: TemplateFormData[] = localData ? JSON.parse(localData) : [];
+    const toPush: TemplateFormData = {
+      ...data,
+      attributes: data.attributes.map((a) => {
+        return {
+          ...a,
+          isExpanded: false,
+        };
+      }),
+      metricTypes: data.metricTypes.map((mt) => {
+        return {
+          ...mt,
+          isExpanded: false,
+          metrics: mt.metrics.map((m) => {
+            return {
+              ...m,
+              isExpanded: false,
+            };
+          }),
+        };
+      }),
+    };
+    jsonData.push(toPush);
+    localStorage.setItem("templates", JSON.stringify(jsonData));
   };
 
   return (
