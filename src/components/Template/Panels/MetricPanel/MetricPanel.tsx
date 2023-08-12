@@ -236,7 +236,7 @@ export const MetricPanel = ({
                     }
                   </span>
                 )}
-              {(isReadonly || !metricIsManualLive) && (
+              {(!isReadonly || !metricIsManualLive) && (
                 <span className="text-xs text-yellow-600">
                   Since this metric is not configured to be a manual metric, any
                   value defined here won't be configured.
