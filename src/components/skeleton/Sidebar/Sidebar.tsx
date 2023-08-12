@@ -9,6 +9,7 @@ import { Select, SelectData } from "../../shared";
 export const Sidebar = () => {
   const {
     register,
+    reset,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
   const location = useLocation();
@@ -22,6 +23,19 @@ export const Sidebar = () => {
     { id: "BG", value: "Buddy Guy" },
     { id: "EC", value: "Eric Clapton" },
   ];
+
+  const handleFormReset = () => {
+    const defaultValue = {
+      basicInformation: {
+        name: "",
+        parent: "",
+        externalId: "",
+      },
+      attributes: [],
+      metricTypes: [],
+    };
+    reset(defaultValue);
+  };
 
   return (
     <div className="flex flex-col justify-between border-e bg-white w-[300px]">
@@ -100,6 +114,7 @@ export const Sidebar = () => {
                         ? "bg-gray-100 text-gray-700"
                         : ""
                     }`}
+                    onClick={handleFormReset}
                   >
                     Create
                   </Link>

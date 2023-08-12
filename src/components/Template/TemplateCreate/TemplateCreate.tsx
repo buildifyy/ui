@@ -6,6 +6,8 @@ import { TemplateFormData } from "../../../models";
 import { Header } from "../../shared";
 import { Footer } from "../../skeleton";
 import { useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface TemplateCreateProps {
   readonly stepSelection:
@@ -28,27 +30,26 @@ export const TemplateCreate = ({
     formState: { errors, isSubmitSuccessful },
   } = useFormContext<TemplateFormData>();
 
-  const defaultValue = {
-    tenant: "",
-    basicInformation: {
-      name: "",
-      parent: "",
-      externalId: "",
-    },
-    attributes: [],
-    metricTypes: [],
+  const showSuccessToast = () => {
+    toast.success("Template created successfully!", {
+      position: "top-right",
+      autoClose: 2000,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+    });
   };
 
   useEffect(() => {
-    reset(defaultValue);
-  }, []);
-
-  useEffect(() => {
-    reset(defaultValue);
-    setStepSelection("Basic Information");
+    if (isSubmitSuccessful) {
+      reset();
+      setStepSelection("Basic Information");
+      showSuccessToast();
+    }
   }, [isSubmitSuccessful]);
 
   console.log("errors: ", errors);
+
   const toRender = () => {
     switch (stepSelection) {
       case "Basic Information":
@@ -91,13 +92,17 @@ export const TemplateCreate = ({
     localStorage.setItem("templates", JSON.stringify(jsonData));
   };
 
+  console.log("rendering");
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="h-full w-full">
-      <div className="w-full">
-        <Header value={stepSelection} />
-        {toRender()}
-        <Footer />
-      </div>
-    </form>
+    <>
+      <ToastContainer />
+      <form onSubmit={handleSubmit(onSubmit)} className="h-full w-full">
+        <div className="w-full">
+          <Header value={stepSelection} />
+          {toRender()}
+          <Footer />
+        </div>
+      </form>
+    </>
   );
 };
