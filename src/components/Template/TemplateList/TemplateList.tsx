@@ -225,15 +225,15 @@ export const TemplateList = () => {
           value={searchText}
         />
       </div>
-      <div className="max-h-[calc(100%-10rem)] overflow-y-auto border rounded-2xl mt-5">
+      <div className="max-h-[calc(100%-7rem)] overflow-y-auto border rounded-2xl mt-5">
         <table className="w-full border-collapse">
           <thead className="sticky top-0 bg-[#f5f4f6]">
             <tr className="border-b">
-              <th className="p-4 text-left">External ID</th>
-              <th className="p-4 text-left">Name</th>
-              <th className="p-4 text-left">Parent</th>
-              <th className="p-4 text-left">Custom</th>
-              <th className="p-4 text-left w-20"></th>
+              <th className="p-2 pl-4 text-left">External ID</th>
+              <th className="p-2 text-left">Name</th>
+              <th className="p-2 text-left">Parent</th>
+              <th className="p-2 text-left">Custom</th>
+              <th className="p-2 text-left w-20"></th>
             </tr>
           </thead>
           <tbody>
@@ -245,19 +245,21 @@ export const TemplateList = () => {
               </tr>
             ) : isLoading ? (
               <td colSpan={4} className="p-4">
-                <img src={Loader} alt="loading" width="30px" />
+                <div className="flex justify-center">
+                  <img src={Loader} alt="loading" width="30px" />
+                </div>
               </td>
             ) : (
               dataToRender.map((data, i) => (
                 <tr key={i} className="border-b">
-                  <td className="p-4">{data.externalId}</td>
-                  <td className="p-4">{data.name}</td>
-                  <td className="p-4">{data.parent}</td>
-                  <td className="p-4">
+                  <td className="p-2 pl-4">{data.externalId}</td>
+                  <td className="p-2">{data.name}</td>
+                  <td className="p-2">{data.parent}</td>
+                  <td className="p-2">
                     {data.isCustom ? <FaCheck /> : <FaBan />}
                   </td>
                   <Link key={i} to={`/templates/${data.externalId}`}>
-                    <td className="p-4 w-fit hover:cursor-pointer">
+                    <td className="p-2 w-fit hover:cursor-pointer">
                       <FaEye className="border rounded-3xl h-8 w-8 p-2 hover:scale-110" />
                     </td>
                   </Link>

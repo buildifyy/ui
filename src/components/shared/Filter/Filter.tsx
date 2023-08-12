@@ -30,7 +30,7 @@ export const Filter = ({
       <div className="px-2 my-2">
         <components.Option {...props} className="rounded-2xl">
           <input type="checkbox" checked={props.isSelected} />
-          <span className="ml-2">{props.children}</span>
+          <span className="ml-2 text-[0.9rem]">{props.children}</span>
         </components.Option>
       </div>
     );
@@ -40,7 +40,7 @@ export const Filter = ({
     return (
       !props.index && (
         <components.SingleValue {...props}>
-          <span className="text-sm">{selectedValues?.length} selected</span>
+          <span className="text-xs">{selectedValues?.length} selected</span>
         </components.SingleValue>
       )
     );
@@ -67,6 +67,7 @@ export const Filter = ({
         control: (provided) => ({
           ...provided,
           borderRadius: "16px",
+          fontSize: "0.9rem",
         }),
         menu: (provided) => ({
           ...provided,
