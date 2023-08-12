@@ -116,7 +116,7 @@ export const TemplateList = () => {
       if (searchText) {
         const listCopy = [...cachedList.current];
         filteredList = listCopy.filter(
-          (i) =>
+          (i: BasicInformation) =>
             i.externalId.toLowerCase().includes(searchText.toLowerCase()) ||
             i.name.toLowerCase().includes(searchText.toLowerCase()) ||
             i.parent.toLowerCase().includes(searchText.toLowerCase()),
@@ -125,26 +125,28 @@ export const TemplateList = () => {
 
       if (selectedExternalIds && selectedExternalIds.length > 0) {
         const listCopy = [...filteredList];
-        filteredList = listCopy.filter((i) =>
+        filteredList = listCopy.filter((i: BasicInformation) =>
           selectedExternalIds.includes(i.externalId),
         );
       }
 
       if (selectedNames && selectedNames.length > 0) {
         const listCopy = [...filteredList];
-        filteredList = listCopy.filter((i) => selectedNames.includes(i.name));
+        filteredList = listCopy.filter((i: BasicInformation) =>
+          selectedNames.includes(i.name),
+        );
       }
 
       if (selectedParents && selectedParents.length > 0) {
         const listCopy = [...filteredList];
-        filteredList = listCopy.filter((i) =>
+        filteredList = listCopy.filter((i: BasicInformation) =>
           selectedParents.includes(i.parent),
         );
       }
 
       if (selectedIsCustom && selectedIsCustom.length > 0) {
         const listCopy = [...filteredList];
-        filteredList = listCopy.filter((i) =>
+        filteredList = listCopy.filter((i: BasicInformation) =>
           selectedIsCustom.includes(i.isCustom.toString()),
         );
       }
