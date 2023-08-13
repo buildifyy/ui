@@ -2,17 +2,19 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { Dropdown, TemplateFormData } from "../../../../models";
 import { AddPanel } from "../../../shared";
 import { MetricTypePanel } from "../../Panels";
+import { useEffect, useState } from "react";
 
 interface MetricTypesProps {
   readonly dropdownValues?: Dropdown[];
 }
 
 export const MetricTypes = ({ dropdownValues }: MetricTypesProps) => {
-  const { control, getValues } = useFormContext<TemplateFormData>();
+  const [metricTypesExpansionState, setMetricTypesExpansionState] =
+    useState<Record<number, boolean>>();
+  const { control } = useFormContext<TemplateFormData>();
   const {
     fields: metricTypes,
     prepend,
-    update,
     remove,
   } = useFieldArray({ control, name: "metricTypes", keyName: "_id" });
 
@@ -29,11 +31,27 @@ export const MetricTypes = ({ dropdownValues }: MetricTypesProps) => {
     });
   };
 
+  useEffect(() => {
+    if (metricTypes) {
+      if (metricTypes.length === 1) {
+        setMetricTypesExpansionState({ [0]: true });
+      } else {
+        metricTypes.map((_, index) =>
+          setMetricTypesExpansionState((prev) => {
+            return {
+              ...prev,
+              [index]: false,
+            };
+          }),
+        );
+      }
+    }
+  }, [metricTypes]);
+
   const handleToggleExpandMetricType = (index: number) => {
-    update(index, {
-      ...getValues(`metricTypes.${index}`),
-      isExpanded: !getValues(`metricTypes.${index}.isExpanded`),
-    });
+    const newState = { ...metricTypesExpansionState };
+    newState[index] = !newState[index];
+    setMetricTypesExpansionState(newState);
   };
 
   return (
@@ -57,6 +75,7 @@ export const MetricTypes = ({ dropdownValues }: MetricTypesProps) => {
               onRemove={handleRemoveMetricType}
               onToggleExpand={handleToggleExpandMetricType}
               dropdownValues={dropdownValues}
+              expansionState={metricTypesExpansionState}
             />
           );
         })}

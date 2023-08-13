@@ -2,18 +2,20 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { Dropdown, TemplateFormData } from "../../../../models";
 import { AddPanel } from "../../../shared";
 import { AttributePanel } from "../../Panels";
+import { useEffect, useState } from "react";
 
 interface AttributesProps {
   readonly dropdownValues?: Dropdown[];
 }
 
 export const Attributes = ({ dropdownValues }: AttributesProps) => {
-  const { control, getValues } = useFormContext<TemplateFormData>();
+  const [attributeExpansionState, setAttributeExpansionState] =
+    useState<Record<number, boolean>>();
+  const { control } = useFormContext<TemplateFormData>();
   const {
     fields: attributes,
     prepend,
     remove,
-    update,
   } = useFieldArray({ control, name: "attributes", keyName: "_id" });
 
   const handleRemoveAttribute = (index: number) => {
@@ -24,11 +26,27 @@ export const Attributes = ({ dropdownValues }: AttributesProps) => {
     prepend({ name: "", dataType: "", isExpanded: true });
   };
 
+  useEffect(() => {
+    if (attributes) {
+      if (attributes.length === 1) {
+        setAttributeExpansionState({ [0]: true });
+      } else {
+        attributes.map((_, index) =>
+          setAttributeExpansionState((prev) => {
+            return {
+              ...prev,
+              [index]: false,
+            };
+          }),
+        );
+      }
+    }
+  }, [attributes]);
+
   const handleToggleExpandAttribute = (index: number) => {
-    update(index, {
-      ...getValues(`attributes.${index}`),
-      isExpanded: !getValues(`attributes.${index}.isExpanded`),
-    });
+    const newState = { ...attributeExpansionState };
+    newState[index] = !newState[index];
+    setAttributeExpansionState(newState);
   };
 
   return (
@@ -52,6 +70,7 @@ export const Attributes = ({ dropdownValues }: AttributesProps) => {
               onRemove={handleRemoveAttribute}
               onToggleExpand={handleToggleExpandAttribute}
               dropdownValues={dropdownValues}
+              expansionState={attributeExpansionState}
             />
           );
         })}
