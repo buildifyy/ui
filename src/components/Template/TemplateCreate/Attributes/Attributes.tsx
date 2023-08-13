@@ -1,9 +1,13 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { TemplateFormData } from "../../../../models";
+import { Dropdown, TemplateFormData } from "../../../../models";
 import { AddPanel } from "../../../shared";
 import { AttributePanel } from "../../Panels";
 
-export const Attributes = () => {
+interface AttributesProps {
+  readonly dropdownValues?: Dropdown[];
+}
+
+export const Attributes = ({ dropdownValues }: AttributesProps) => {
   const { control, getValues } = useFormContext<TemplateFormData>();
   const {
     fields: attributes,
@@ -47,6 +51,7 @@ export const Attributes = () => {
               index={index}
               onRemove={handleRemoveAttribute}
               onToggleExpand={handleToggleExpandAttribute}
+              dropdownValues={dropdownValues}
             />
           );
         })}

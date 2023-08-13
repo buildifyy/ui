@@ -1,8 +1,12 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { TemplateFormData } from "../../../../models";
+import { Dropdown, TemplateFormData } from "../../../../models";
 import { MetricTypePanel } from "../../Panels";
 
-export const MetricTypes = () => {
+interface MetricTypesProps {
+  readonly dropdownValues?: Dropdown[];
+}
+
+export const MetricTypes = ({ dropdownValues }: MetricTypesProps) => {
   const { control, getValues } = useFormContext<TemplateFormData>();
   const { fields: metricTypes, update } = useFieldArray({
     control,
@@ -38,6 +42,7 @@ export const MetricTypes = () => {
               index={index}
               onToggleExpand={handleToggleExpandMetricType}
               isReadonly
+              dropdownValues={dropdownValues}
             />
           );
         })}

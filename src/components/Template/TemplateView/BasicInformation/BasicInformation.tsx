@@ -1,19 +1,13 @@
 import { useFormContext } from "react-hook-form";
-import { TemplateFormData } from "../../../../models";
-import { Select, SelectData, Toggle } from "../../../shared";
+import { Dropdown, TemplateFormData } from "../../../../models";
+import { Select, Toggle } from "../../../shared";
 
-export const BasicInformation = () => {
+interface BasicInformationProps {
+  readonly dropdownValues?: Dropdown[];
+}
+
+export const BasicInformation = ({ dropdownValues }: BasicInformationProps) => {
   const { register } = useFormContext<TemplateFormData>();
-
-  const parentTemplateData: SelectData[] = [
-    { id: "JM", value: "John Mayer" },
-    { id: "SRV", value: "Stevie Ray Vaughn" },
-    { id: "JH", value: "Jimi Hendrix" },
-    { id: "BBK", value: "B.B King" },
-    { id: "AK", value: "Albert King" },
-    { id: "BG", value: "Buddy Guy" },
-    { id: "EC", value: "Eric Clapton" },
-  ];
 
   return (
     <div className="flex flex-col mt-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto max-h-[35rem]">
@@ -34,7 +28,7 @@ export const BasicInformation = () => {
           <Select
             id="parent"
             widthClassName="w-64"
-            data={parentTemplateData}
+            data={dropdownValues}
             {...register("basicInformation.parent")}
             isDisabled
           />

@@ -1,9 +1,20 @@
-import { TemplateFormData } from "../../models";
+import { Dropdown, TemplateFormData } from "../../models";
 import axios, { AxiosResponse } from "axios";
 
 export class TemplateService {
   getTemplate = async (templateId?: string): Promise<TemplateFormData> => {
     const url = `http://localhost:8080/api/v1/tenants/the-binary/templates/${templateId}`;
+
+    try {
+      const response = await axios.get(url);
+      return response.data.data;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
+  getParentTemplates = async (): Promise<Dropdown[]> => {
+    const url = `http://localhost:8080/api/v1/tenants/the-binary/templates/parent`;
 
     try {
       const response = await axios.get(url);

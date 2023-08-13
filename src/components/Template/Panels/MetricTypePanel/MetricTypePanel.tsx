@@ -1,7 +1,7 @@
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { FaChevronUp, FaChevronDown, FaTrashAlt } from "react-icons/fa";
-import { TemplateFormData } from "../../../../models";
-import { AddPanel, Select, SelectData } from "../../../shared";
+import { Dropdown, TemplateFormData } from "../../../../models";
+import { AddPanel, Select } from "../../../shared";
 import { MetricPanel } from "../MetricPanel";
 
 interface MetricTypePanelProps {
@@ -9,6 +9,7 @@ interface MetricTypePanelProps {
   readonly onRemove?: (index: number) => void;
   readonly onToggleExpand: (index: number) => void;
   readonly isReadonly?: boolean;
+  readonly dropdownValues?: Dropdown[];
 }
 
 export const MetricTypePanel = ({
@@ -16,6 +17,7 @@ export const MetricTypePanel = ({
   onRemove,
   onToggleExpand,
   isReadonly,
+  dropdownValues,
 }: MetricTypePanelProps) => {
   const {
     register,
@@ -62,16 +64,6 @@ export const MetricTypePanel = ({
       ),
     });
   };
-
-  const metricTypeData: SelectData[] = [
-    { id: "JM", value: "John Mayer" },
-    { id: "SRV", value: "Stevie Ray Vaughn" },
-    { id: "JH", value: "Jimi Hendrix" },
-    { id: "BBK", value: "B.B King" },
-    { id: "AK", value: "Albert King" },
-    { id: "BG", value: "Buddy Guy" },
-    { id: "EC", value: "Eric Clapton" },
-  ];
 
   return (
     <div className="flex justify-between items-center gap-2">
@@ -158,7 +150,7 @@ export const MetricTypePanel = ({
               <Select
                 id={`metricType.${metricType?._id}`}
                 widthClassName="w-64"
-                data={metricTypeData}
+                data={dropdownValues}
                 {...register(`metricTypes.${index}.metricType`)}
                 errorClassName={
                   !isReadonly && errors.metricTypes?.[index]?.metricType

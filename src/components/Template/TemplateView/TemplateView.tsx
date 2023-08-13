@@ -7,7 +7,11 @@ import { MetricTypes } from "./MetricTypes";
 import { Header } from "../../shared";
 import { Footer } from "../../skeleton";
 import { useEffect } from "react";
-import { useTemplateView } from "../../../service";
+import { useParentTemplates, useTemplateView } from "../../../service";
+import {
+  useAttributeTypeDropdown,
+  useMetricTypeDropdown,
+} from "../../../service/common";
 
 interface TemplateViewProps {
   readonly stepSelection:
@@ -22,6 +26,9 @@ export const TemplateView = ({ stepSelection }: TemplateViewProps) => {
   const { templateId } = useParams();
 
   const { data } = useTemplateView(templateId);
+  const { data: parentTemplates } = useParentTemplates();
+  const { data: attributeTypeValues } = useAttributeTypeDropdown();
+  const { data: metricTypeValues } = useMetricTypeDropdown();
 
   useEffect(() => {
     if (data) {
@@ -32,11 +39,11 @@ export const TemplateView = ({ stepSelection }: TemplateViewProps) => {
   const toRender = () => {
     switch (stepSelection) {
       case "Basic Information":
-        return <BasicInformation />;
+        return <BasicInformation dropdownValues={parentTemplates} />;
       case "Attributes":
-        return <Attributes />;
+        return <Attributes dropdownValues={attributeTypeValues} />;
       case "Metric Types":
-        return <MetricTypes />;
+        return <MetricTypes dropdownValues={metricTypeValues} />;
       default:
         return null;
     }

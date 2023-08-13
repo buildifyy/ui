@@ -2,9 +2,9 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../../../assets/logo.svg";
 import me from "../../../assets/me.jpg";
 import "./Sidebar.css";
-import { TemplateFormData } from "../../../models";
+import { Dropdown, TemplateFormData } from "../../../models";
 import { useFormContext } from "react-hook-form";
-import { Select, SelectData } from "../../shared";
+import { Select } from "../../shared";
 
 export const Sidebar = () => {
   const {
@@ -14,15 +14,7 @@ export const Sidebar = () => {
   } = useFormContext<TemplateFormData>();
   const location = useLocation();
 
-  const tenantData: SelectData[] = [
-    { id: "JM", value: "John Mayer" },
-    { id: "SRV", value: "Stevie Ray Vaughn" },
-    { id: "JH", value: "Jimi Hendrix" },
-    { id: "BBK", value: "B.B King" },
-    { id: "AK", value: "Albert King" },
-    { id: "BG", value: "Buddy Guy" },
-    { id: "EC", value: "Eric Clapton" },
-  ];
+  const tenantData: Dropdown[] = [{ label: "the-binary", value: "the-binary" }];
 
   const handleFormReset = () => {
     const defaultValue = {

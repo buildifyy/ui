@@ -9,6 +9,11 @@ import { useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useTemplateCreate } from "../../../service/template/use-template-create.tsx";
+import {
+  useAttributeTypeDropdown,
+  useMetricTypeDropdown,
+} from "../../../service/common";
+import { useParentTemplates } from "../../../service";
 
 interface TemplateCreateProps {
   readonly stepSelection:
@@ -44,6 +49,10 @@ export const TemplateCreate = ({
   const { mutate: createTemplate, isSuccess: isCreateTemplateSuccess } =
     useTemplateCreate();
 
+  const { data: parentTemplates } = useParentTemplates();
+  const { data: attributeTypeValues } = useAttributeTypeDropdown();
+  const { data: metricTypeValues } = useMetricTypeDropdown();
+
   useEffect(() => {
     if (isCreateTemplateSuccess) {
       reset();
@@ -57,11 +66,11 @@ export const TemplateCreate = ({
   const toRender = () => {
     switch (stepSelection) {
       case "Basic Information":
-        return <BasicInformation />;
+        return <BasicInformation dropdownValues={parentTemplates} />;
       case "Attributes":
-        return <Attributes />;
+        return <Attributes dropdownValues={attributeTypeValues} />;
       case "Metric Types":
-        return <MetricTypes />;
+        return <MetricTypes dropdownValues={metricTypeValues} />;
       default:
         return null;
     }

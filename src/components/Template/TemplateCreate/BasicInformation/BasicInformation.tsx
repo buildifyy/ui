@@ -1,25 +1,19 @@
 import { useFormContext, useWatch } from "react-hook-form";
-import { TemplateFormData } from "../../../../models";
+import { Dropdown, TemplateFormData } from "../../../../models";
 import { useEffect } from "react";
-import { Select, SelectData, Toggle } from "../../../shared";
+import { Select, Toggle } from "../../../shared";
 
-export const BasicInformation = () => {
+interface BasicInformationProps {
+  readonly dropdownValues?: Dropdown[];
+}
+
+export const BasicInformation = ({ dropdownValues }: BasicInformationProps) => {
   const {
     control,
     register,
     setValue,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
-
-  const parentTemplateData: SelectData[] = [
-    { id: "JM", value: "John Mayer" },
-    { id: "SRV", value: "Stevie Ray Vaughn" },
-    { id: "JH", value: "Jimi Hendrix" },
-    { id: "BBK", value: "B.B King" },
-    { id: "AK", value: "Albert King" },
-    { id: "BG", value: "Buddy Guy" },
-    { id: "EC", value: "Eric Clapton" },
-  ];
 
   const basicInformationNameLive = useWatch({
     name: "basicInformation.name",
@@ -54,7 +48,7 @@ export const BasicInformation = () => {
           <Select
             id="parent"
             widthClassName="w-64"
-            data={parentTemplateData}
+            data={dropdownValues}
             {...register("basicInformation.parent")}
             errorClassName={
               errors.basicInformation?.parent ? "border-red-600" : ""

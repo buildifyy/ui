@@ -1,16 +1,12 @@
 import React from "react";
 import "./Select.css";
-
-export interface SelectData {
-  id: string;
-  value: string | number;
-}
+import { Dropdown } from "../../../models";
 
 interface SelectProps {
   readonly id?: string;
   readonly widthClassName?: string;
   readonly errorClassName?: string;
-  readonly data?: SelectData[];
+  readonly data?: Dropdown[];
   readonly isDisabled?: boolean;
 }
 
@@ -24,12 +20,12 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         ref={ref}
         className={`-ml-[2px] mt-1.5 ${widthClassName} rounded-lg border-gray-300 text-gray-700 py-2 px-2 border text-xs ${errorClassName}`}
         {...rest}
-        disabled={isDisabled}
+        disabled={isDisabled || !data}
       >
         <option value="">Please select</option>
         {data?.map((d) => (
-          <option value={d.id} key={d.id}>
-            {d.value}
+          <option value={d.value} key={d.value}>
+            {d.label}
           </option>
         ))}
       </select>

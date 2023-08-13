@@ -1,14 +1,15 @@
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
-import { TemplateFormData } from "../../../../models";
+import { Dropdown, TemplateFormData } from "../../../../models";
 import { useEffect } from "react";
 import { FaChevronDown, FaChevronUp, FaTrashAlt } from "react-icons/fa";
-import { Select, SelectData, Toggle } from "../../../shared";
+import { Select, Toggle } from "../../../shared";
 
 interface AttributePanelProps {
   readonly index: number;
   readonly onRemove?: (index: number) => void;
   readonly onToggleExpand: (index: number) => void;
   readonly isReadonly?: boolean;
+  readonly dropdownValues?: Dropdown[];
 }
 
 export const AttributePanel = ({
@@ -16,6 +17,7 @@ export const AttributePanel = ({
   onRemove,
   onToggleExpand,
   isReadonly,
+  dropdownValues,
 }: AttributePanelProps) => {
   const {
     register,
@@ -47,16 +49,6 @@ export const AttributePanel = ({
       setValue(`attributes.${index}.isHidden`, false);
     }
   }, [attributeIsRequiredLive, index, setValue]);
-
-  const dataTypeData: SelectData[] = [
-    { id: "JM", value: "John Mayer" },
-    { id: "SRV", value: "Stevie Ray Vaughn" },
-    { id: "JH", value: "Jimi Hendrix" },
-    { id: "BBK", value: "B.B King" },
-    { id: "AK", value: "Albert King" },
-    { id: "BG", value: "Buddy Guy" },
-    { id: "EC", value: "Eric Clapton" },
-  ];
 
   return (
     <div className="flex justify-between items-center gap-2">
@@ -143,7 +135,7 @@ export const AttributePanel = ({
               <Select
                 id={`dataType.${attribute?._id}`}
                 widthClassName="w-64"
-                data={dataTypeData}
+                data={dropdownValues}
                 {...register(`attributes.${index}.dataType`)}
                 errorClassName={
                   !isReadonly && errors.attributes?.[index]?.dataType

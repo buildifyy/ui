@@ -23,7 +23,7 @@ function App() {
 
   const methods = useForm<TemplateFormData>({
     resolver: yupResolver(schema),
-    mode: "onTouched",
+    mode: "all",
   });
 
   return (
