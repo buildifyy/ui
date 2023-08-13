@@ -10,6 +10,7 @@ interface AttributePanelProps {
   readonly onToggleExpand: (index: number) => void;
   readonly isReadonly?: boolean;
   readonly dropdownValues?: Dropdown[];
+  readonly expansionState?: Record<number, boolean>;
 }
 
 export const AttributePanel = ({
@@ -18,12 +19,12 @@ export const AttributePanel = ({
   onToggleExpand,
   isReadonly,
   dropdownValues,
+  expansionState,
 }: AttributePanelProps) => {
   const {
     register,
     control,
     setValue,
-    getValues,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
 
@@ -54,7 +55,7 @@ export const AttributePanel = ({
     <div className="flex justify-between items-center gap-2">
       <details
         className="group rounded-lg bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden w-full"
-        open={getValues(`attributes.${index}.isExpanded`)}
+        open={expansionState?.[index]}
       >
         <summary
           className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900"
@@ -68,11 +69,7 @@ export const AttributePanel = ({
           </span>
 
           <div className="flex gap-5">
-            {getValues(`attributes.${index}.isExpanded`) ? (
-              <FaChevronUp />
-            ) : (
-              <FaChevronDown />
-            )}
+            {expansionState?.[index] ? <FaChevronUp /> : <FaChevronDown />}
             <button disabled={isReadonly}>
               <FaTrashAlt
                 onClick={(event: React.MouseEvent) => {

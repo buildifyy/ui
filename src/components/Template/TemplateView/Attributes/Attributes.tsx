@@ -1,24 +1,43 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Dropdown, TemplateFormData } from "../../../../models";
 import { AttributePanel } from "../../Panels";
+import { useEffect, useState } from "react";
 
 interface AttributesProps {
   readonly dropdownValues?: Dropdown[];
 }
 
 export const Attributes = ({ dropdownValues }: AttributesProps) => {
-  const { control, getValues } = useFormContext<TemplateFormData>();
-  const { fields: attributes, update } = useFieldArray({
+  const [attributeExpansionState, setAttributeExpansionState] =
+    useState<Record<number, boolean>>();
+  const { control } = useFormContext<TemplateFormData>();
+  const { fields: attributes } = useFieldArray({
     control,
     name: "attributes",
     keyName: "_id",
   });
 
+  useEffect(() => {
+    if (attributes) {
+      if (attributes.length === 1) {
+        setAttributeExpansionState({ [0]: true });
+      } else {
+        attributes.map((_, index) =>
+          setAttributeExpansionState((prev) => {
+            return {
+              ...prev,
+              [index]: false,
+            };
+          }),
+        );
+      }
+    }
+  }, [attributes]);
+
   const handleToggleExpandAttribute = (index: number) => {
-    update(index, {
-      ...getValues(`attributes.${index}`),
-      isExpanded: !getValues(`attributes.${index}.isExpanded`),
-    });
+    const newState = { ...attributeExpansionState };
+    newState[index] = !newState[index];
+    setAttributeExpansionState(newState);
   };
 
   return (
@@ -43,6 +62,7 @@ export const Attributes = ({ dropdownValues }: AttributesProps) => {
               onToggleExpand={handleToggleExpandAttribute}
               isReadonly
               dropdownValues={dropdownValues}
+              expansionState={attributeExpansionState}
             />
           );
         })}

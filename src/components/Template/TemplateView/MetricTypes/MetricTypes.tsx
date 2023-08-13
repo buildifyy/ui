@@ -1,24 +1,26 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Dropdown, TemplateFormData } from "../../../../models";
 import { MetricTypePanel } from "../../Panels";
+import { useState } from "react";
 
 interface MetricTypesProps {
   readonly dropdownValues?: Dropdown[];
 }
 
 export const MetricTypes = ({ dropdownValues }: MetricTypesProps) => {
-  const { control, getValues } = useFormContext<TemplateFormData>();
-  const { fields: metricTypes, update } = useFieldArray({
+  const [metricTypesExpansionState, setMetricTypesExpansionState] =
+    useState<Record<number, boolean>>();
+  const { control } = useFormContext<TemplateFormData>();
+  const { fields: metricTypes } = useFieldArray({
     control,
     name: "metricTypes",
     keyName: "_id",
   });
 
   const handleToggleExpandMetricType = (index: number) => {
-    update(index, {
-      ...getValues(`metricTypes.${index}`),
-      isExpanded: !getValues(`metricTypes.${index}.isExpanded`),
-    });
+    const newState = { ...metricTypesExpansionState };
+    newState[index] = !newState[index];
+    setMetricTypesExpansionState(newState);
   };
 
   return (
@@ -43,6 +45,7 @@ export const MetricTypes = ({ dropdownValues }: MetricTypesProps) => {
               onToggleExpand={handleToggleExpandMetricType}
               isReadonly
               dropdownValues={dropdownValues}
+              expansionState={metricTypesExpansionState}
             />
           );
         })}

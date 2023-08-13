@@ -11,6 +11,7 @@ interface MetricTypePanelProps {
   readonly onToggleExpand: (index: number) => void;
   readonly isReadonly?: boolean;
   readonly dropdownValues?: Dropdown[];
+  readonly expansionState?: Record<number, boolean>;
 }
 
 export const MetricTypePanel = ({
@@ -19,11 +20,11 @@ export const MetricTypePanel = ({
   onToggleExpand,
   isReadonly,
   dropdownValues,
+  expansionState,
 }: MetricTypePanelProps) => {
   const {
     register,
     control,
-    getValues,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
   const { fields: metricTypes } = useFieldArray({
@@ -77,7 +78,6 @@ export const MetricTypePanel = ({
 
   const handleToggleExpandMetric = (metricIndex: number) => {
     const newState = { ...metricExpansionState };
-    console.log("newState: ", newState);
     newState[metricIndex] = !newState[metricIndex];
     setMetricExpansionState(newState);
   };
@@ -86,7 +86,7 @@ export const MetricTypePanel = ({
     <div className="flex justify-between items-center gap-2">
       <details
         className="group rounded-lg bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden w-full"
-        open={getValues(`metricTypes.${index}.isExpanded`)}
+        open={expansionState?.[index]}
       >
         <summary
           className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900"
@@ -100,11 +100,7 @@ export const MetricTypePanel = ({
           </span>
 
           <div className="flex gap-5">
-            {getValues(`metricTypes.${index}.isExpanded`) ? (
-              <FaChevronUp />
-            ) : (
-              <FaChevronDown />
-            )}
+            {expansionState?.[index] ? <FaChevronUp /> : <FaChevronDown />}
             <button disabled={isReadonly}>
               <FaTrashAlt
                 onClick={(event: React.MouseEvent) => {
