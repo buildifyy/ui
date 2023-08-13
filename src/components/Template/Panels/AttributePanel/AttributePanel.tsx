@@ -73,16 +73,19 @@ export const AttributePanel = ({
             ) : (
               <FaChevronDown />
             )}
-            <FaTrashAlt
-              onClick={(event: React.MouseEvent) => {
-                if (onRemove) {
-                  onRemove(index);
-                }
-                event?.stopPropagation();
-              }}
-              className="hover:cursor-pointer"
-              disabled={isReadonly}
-            />
+            <button disabled={isReadonly}>
+              <FaTrashAlt
+                onClick={(event: React.MouseEvent) => {
+                  if (onRemove) {
+                    onRemove(index);
+                  }
+                  event?.stopPropagation();
+                }}
+                className={`hover:cursor-pointer ${
+                  isReadonly ? "hover:pointer-events-none" : ""
+                }`}
+              />
+            </button>
           </div>
         </summary>
         <div className="mt-4 leading-relaxed text-gray-700 text-sm">

@@ -3,6 +3,7 @@ import { FaChevronUp, FaChevronDown, FaTrashAlt } from "react-icons/fa";
 import { Dropdown, TemplateFormData } from "../../../../models";
 import { AddPanel, Select } from "../../../shared";
 import { MetricPanel } from "../MetricPanel";
+import { useEffect, useState } from "react";
 
 interface MetricTypePanelProps {
   readonly index: number;
@@ -30,13 +31,14 @@ export const MetricTypePanel = ({
     name: `metricTypes`,
     keyName: "_id",
   });
+  const [metricExpansionState, setMetricExpansionState] =
+    useState<Record<number, boolean>>();
   const metricType = metricTypes[index];
 
   const {
     fields: metrics,
     prepend,
     remove,
-    update,
   } = useFieldArray({
     control,
     name: `metricTypes.${index}.metrics`,
@@ -56,13 +58,28 @@ export const MetricTypePanel = ({
     remove(index);
   };
 
+  useEffect(() => {
+    if (metrics) {
+      if (metrics.length === 1) {
+        setMetricExpansionState({ [0]: true });
+      } else {
+        metrics.map((_, index) =>
+          setMetricExpansionState((prev) => {
+            return {
+              ...prev,
+              [index]: false,
+            };
+          }),
+        );
+      }
+    }
+  }, [metrics]);
+
   const handleToggleExpandMetric = (metricIndex: number) => {
-    update(index, {
-      ...getValues(`metricTypes.${index}.metrics.${metricIndex}`),
-      isExpanded: !getValues(
-        `metricTypes.${index}.metrics.${metricIndex}.isExpanded`,
-      ),
-    });
+    const newState = { ...metricExpansionState };
+    console.log("newState: ", newState);
+    newState[metricIndex] = !newState[metricIndex];
+    setMetricExpansionState(newState);
   };
 
   return (
@@ -88,16 +105,19 @@ export const MetricTypePanel = ({
             ) : (
               <FaChevronDown />
             )}
-            <FaTrashAlt
-              onClick={(event: React.MouseEvent) => {
-                if (onRemove) {
-                  onRemove(index);
-                }
-                event?.stopPropagation();
-              }}
-              className="hover:cursor-pointer"
-              disabled={isReadonly}
-            />
+            <button disabled={isReadonly}>
+              <FaTrashAlt
+                onClick={(event: React.MouseEvent) => {
+                  if (onRemove) {
+                    onRemove(index);
+                  }
+                  event?.stopPropagation();
+                }}
+                className={`hover:cursor-pointer ${
+                  isReadonly ? "hover:pointer-events-none" : ""
+                }`}
+              />
+            </button>
           </div>
         </summary>
         <div className="mt-4 leading-relaxed text-gray-700 text-sm">
@@ -195,6 +215,7 @@ export const MetricTypePanel = ({
                 onRemove={handleRemoveMetric}
                 onToggleExpand={handleToggleExpandMetric}
                 isReadonly={isReadonly}
+                expansionState={metricExpansionState}
               />
             );
           })}

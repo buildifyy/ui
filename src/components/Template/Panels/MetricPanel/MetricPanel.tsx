@@ -10,6 +10,7 @@ interface MetricPanelProps {
   readonly onRemove?: (index: number) => void;
   readonly onToggleExpand: (index: number) => void;
   readonly isReadonly?: boolean;
+  readonly expansionState?: Record<number, boolean>;
 }
 
 export const MetricPanel = ({
@@ -18,12 +19,12 @@ export const MetricPanel = ({
   onRemove,
   onToggleExpand,
   isReadonly,
+  expansionState,
 }: MetricPanelProps) => {
   const {
     register,
     unregister,
     control,
-    getValues,
     trigger,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
@@ -82,13 +83,14 @@ export const MetricPanel = ({
     trigger(`metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`);
   }, [index, metricIsSourcedLive, metricTypeIndex, trigger]);
 
+  console.log("state: ", expansionState);
+  console.log("metrics: ", metric);
+
   return (
     <div className="flex justify-between items-center gap-2 mt-4">
       <details
         className="group rounded-lg bg-white p-6 [&_summary::-webkit-details-marker]:hidden w-full"
-        open={getValues(
-          `metricTypes.${metricTypeIndex}.metrics.${index}.isExpanded`,
-        )}
+        open={expansionState?.[index]}
       >
         <summary
           className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900"
@@ -102,23 +104,20 @@ export const MetricPanel = ({
           </span>
 
           <div className="flex gap-5">
-            {getValues(
-              `metricTypes.${metricTypeIndex}.metrics.${index}.isExpanded`,
-            ) ? (
-              <FaChevronUp />
-            ) : (
-              <FaChevronDown />
-            )}
-            <FaTrashAlt
-              onClick={(event: React.MouseEvent) => {
-                if (onRemove) {
-                  onRemove(index);
-                }
-                event?.stopPropagation();
-              }}
-              className="hover:cursor-pointer"
-              disabled={isReadonly}
-            />
+            {expansionState?.[index] ? <FaChevronUp /> : <FaChevronDown />}
+            <button disabled={isReadonly}>
+              <FaTrashAlt
+                onClick={(event: React.MouseEvent) => {
+                  if (onRemove) {
+                    onRemove(index);
+                  }
+                  event?.stopPropagation();
+                }}
+                className={`hover:cursor-pointer ${
+                  isReadonly ? "hover:pointer-events-none" : ""
+                }`}
+              />
+            </button>
           </div>
         </summary>
         <div className="mt-4 leading-relaxed text-gray-700 text-sm">
