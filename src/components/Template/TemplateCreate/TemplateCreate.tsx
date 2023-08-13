@@ -8,6 +8,7 @@ import { Footer } from "../../skeleton";
 import { useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useTemplateCreate } from "../../../service/template/use-template-create.tsx";
 
 interface TemplateCreateProps {
   readonly stepSelection:
@@ -27,7 +28,7 @@ export const TemplateCreate = ({
   const {
     handleSubmit,
     reset,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
   } = useFormContext<TemplateFormData>();
 
   const showSuccessToast = () => {
@@ -40,13 +41,16 @@ export const TemplateCreate = ({
     });
   };
 
+  const { mutate: createTemplate, isSuccess: isCreateTemplateSuccess } =
+    useTemplateCreate();
+
   useEffect(() => {
-    if (isSubmitSuccessful) {
+    if (isCreateTemplateSuccess) {
       reset();
       setStepSelection("Basic Information");
       showSuccessToast();
     }
-  }, [isSubmitSuccessful]);
+  }, [isCreateTemplateSuccess]);
 
   console.log("errors: ", errors);
 
@@ -65,8 +69,6 @@ export const TemplateCreate = ({
 
   const onSubmit: SubmitHandler<TemplateFormData> = (data) => {
     console.log("createTemplateFormData: ", data);
-    const localData = localStorage.getItem("templates");
-    const jsonData: TemplateFormData[] = localData ? JSON.parse(localData) : [];
     const toPush: TemplateFormData = {
       ...data,
       attributes: data.attributes.map((a) => {
@@ -88,11 +90,9 @@ export const TemplateCreate = ({
         };
       }),
     };
-    jsonData.push(toPush);
-    localStorage.setItem("templates", JSON.stringify(jsonData));
+    createTemplate(toPush);
   };
 
-  console.log("rendering");
   return (
     <>
       <ToastContainer />

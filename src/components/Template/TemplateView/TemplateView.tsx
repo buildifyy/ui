@@ -7,6 +7,7 @@ import { MetricTypes } from "./MetricTypes";
 import { Header } from "../../shared";
 import { Footer } from "../../skeleton";
 import { useEffect } from "react";
+import { useTemplateView } from "../../../service";
 
 interface TemplateViewProps {
   readonly stepSelection:
@@ -20,18 +21,13 @@ export const TemplateView = ({ stepSelection }: TemplateViewProps) => {
   const { reset } = useFormContext<TemplateFormData>();
   const { templateId } = useParams();
 
+  const { data } = useTemplateView(templateId);
+
   useEffect(() => {
-    if (templateId) {
-      const localData = localStorage.getItem("templates");
-      const jsonData: TemplateFormData[] = localData
-        ? JSON.parse(localData)
-        : [];
-      const currentTemplate = jsonData.find(
-        (data) => data.basicInformation.externalId === templateId,
-      );
-      reset(currentTemplate);
+    if (data) {
+      reset(data);
     }
-  }, [templateId]);
+  }, [data]);
 
   const toRender = () => {
     switch (stepSelection) {

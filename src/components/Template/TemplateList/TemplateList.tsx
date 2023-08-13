@@ -1,12 +1,13 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { BasicInformation, TemplateFormData } from "../../../models";
+import { TemplateFormData } from "../../../models";
 import { Link } from "react-router-dom";
 import { FaEye, FaBan, FaCheck } from "react-icons/fa6";
 import Loader from "../../../assets/loading.gif";
 import { Filter, FilterOption, Header } from "../../shared";
+import { useTemplateList } from "../../../service";
 
 export const TemplateList = () => {
-  const [dataToRender, setDataToRender] = useState<BasicInformation[]>([]);
+  const [dataToRender, setDataToRender] = useState<TemplateFormData[]>([]);
   const [searchText, setSearchText] = useState<string>();
   const [externalIdFilterOptions, setExternalIdFilterOptions] = useState<
     FilterOption[]
@@ -24,8 +25,9 @@ export const TemplateList = () => {
     FilterOption[]
   >([]);
   const [selectedIsCustom, setSelectedIsCustom] = useState<string[]>();
-  const cachedList = useRef<BasicInformation[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const cachedList = useRef<TemplateFormData[]>([]);
+  const [isLoadingFilters, setIsLoadingFilters] = useState<boolean>(false);
+  const { data: templateList, isLoading } = useTemplateList();
   const showFilteredResultsHelper =
     (searchText ||
       (selectedExternalIds && selectedExternalIds.length > 0) ||
@@ -40,107 +42,111 @@ export const TemplateList = () => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
+    if (templateList) {
+      cachedList.current = templateList;
+      setDataToRender(templateList);
 
-    const localData = localStorage.getItem("templates");
-    const jsonData: TemplateFormData[] = localData ? JSON.parse(localData) : [];
-    const toAdd: BasicInformation[] = [];
-    jsonData.forEach((data) => {
-      toAdd.push({
-        ...data.basicInformation,
+      setExternalIdFilterOptions(
+        templateList.map((data) => {
+          return {
+            label: data.basicInformation.externalId,
+            value: data.basicInformation.externalId,
+          };
+        }),
+      );
+
+      const newNameFilterOptions: FilterOption[] = [];
+      templateList.forEach((data) => {
+        if (
+          newNameFilterOptions.findIndex(
+            (f) => f.value === data.basicInformation.name,
+          ) === -1
+        ) {
+          newNameFilterOptions.push({
+            label: data.basicInformation.name,
+            value: data.basicInformation.name,
+          });
+        }
       });
-    });
+      setNameFilterOptions(newNameFilterOptions);
 
-    cachedList.current = toAdd;
+      const newParentFilterOptions: FilterOption[] = [];
+      templateList.forEach((data) => {
+        if (
+          newParentFilterOptions.findIndex(
+            (f) => f.value === data.basicInformation.parent,
+          ) === -1
+        ) {
+          newParentFilterOptions.push({
+            label: data.basicInformation.parent,
+            value: data.basicInformation.parent,
+          });
+        }
+      });
+      setParentFilterOptions(newParentFilterOptions);
 
-    setExternalIdFilterOptions(
-      toAdd.map((data) => {
-        return {
-          label: data.externalId,
-          value: data.externalId,
-        };
-      }),
-    );
-
-    const newNameFilterOptions: FilterOption[] = [];
-    toAdd.forEach((data) => {
-      if (newNameFilterOptions.findIndex((f) => f.value === data.name) === -1) {
-        newNameFilterOptions.push({ label: data.name, value: data.name });
-      }
-    });
-    setNameFilterOptions(newNameFilterOptions);
-
-    const newParentFilterOptions: FilterOption[] = [];
-    toAdd.forEach((data) => {
-      if (
-        newParentFilterOptions.findIndex((f) => f.value === data.parent) === -1
-      ) {
-        newParentFilterOptions.push({
-          label: data.parent,
-          value: data.parent,
-        });
-      }
-    });
-    setParentFilterOptions(newParentFilterOptions);
-
-    const newIsCustomFilterOptions: FilterOption[] = [];
-    toAdd.forEach((data) => {
-      if (
-        newIsCustomFilterOptions.findIndex(
-          (f) => f.value === data.isCustom.toString(),
-        ) === -1
-      ) {
-        newIsCustomFilterOptions.push({
-          label: data.isCustom.toString(),
-          value: data.isCustom.toString(),
-        });
-      }
-    });
-    setIsCustomFilterOptions(newIsCustomFilterOptions);
-
-    setDataToRender(toAdd);
-    setIsLoading(false);
-  }, []);
+      const newIsCustomFilterOptions: FilterOption[] = [];
+      templateList.forEach((data) => {
+        if (
+          newIsCustomFilterOptions.findIndex(
+            (f) => f.value === data.basicInformation.isCustom.toString(),
+          ) === -1
+        ) {
+          newIsCustomFilterOptions.push({
+            label: data.basicInformation.isCustom.toString(),
+            value: data.basicInformation.isCustom.toString(),
+          });
+        }
+      });
+      setIsCustomFilterOptions(newIsCustomFilterOptions);
+    }
+  }, [templateList]);
 
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoadingFilters(true);
     const getFilteredResults = setTimeout(() => {
       let filteredList = cachedList.current;
       if (searchText) {
         const listCopy = [...cachedList.current];
         filteredList = listCopy.filter(
-          (i: BasicInformation) =>
-            i.externalId.toLowerCase().includes(searchText.toLowerCase()) ||
-            i.name.toLowerCase().includes(searchText.toLowerCase()) ||
-            i.parent.toLowerCase().includes(searchText.toLowerCase()),
+          (i: TemplateFormData) =>
+            i.basicInformation.externalId
+              .toLowerCase()
+              .includes(searchText.toLowerCase()) ||
+            i.basicInformation.name
+              .toLowerCase()
+              .includes(searchText.toLowerCase()) ||
+            i.basicInformation.parent
+              .toLowerCase()
+              .includes(searchText.toLowerCase()),
         );
       }
 
       if (selectedExternalIds && selectedExternalIds.length > 0) {
         const listCopy = [...filteredList];
-        filteredList = listCopy.filter((i: BasicInformation) =>
-          selectedExternalIds.includes(i.externalId),
+        filteredList = listCopy.filter((i: TemplateFormData) =>
+          selectedExternalIds.includes(i.basicInformation.externalId),
         );
       }
 
       if (selectedNames && selectedNames.length > 0) {
         const listCopy = [...filteredList];
-        filteredList = listCopy.filter((i: BasicInformation) =>
-          selectedNames.includes(i.name),
+        filteredList = listCopy.filter((i: TemplateFormData) =>
+          selectedNames.includes(i.basicInformation.name),
         );
       }
 
       if (selectedParents && selectedParents.length > 0) {
         const listCopy = [...filteredList];
-        filteredList = listCopy.filter((i: BasicInformation) =>
-          selectedParents.includes(i.parent),
+        filteredList = listCopy.filter((i: TemplateFormData) =>
+          selectedParents.includes(i.basicInformation.parent),
         );
       }
 
       if (selectedIsCustom && selectedIsCustom.length > 0) {
         const listCopy = [...filteredList];
-        filteredList = listCopy.filter((i: BasicInformation) =>
-          selectedIsCustom.includes(i.isCustom.toString()),
+        filteredList = listCopy.filter((i: TemplateFormData) =>
+          selectedIsCustom.includes(i.basicInformation.isCustom.toString()),
         );
       }
 
@@ -155,7 +161,7 @@ export const TemplateList = () => {
       }
 
       setDataToRender(filteredList);
-      setIsLoading(false);
+      setIsLoadingFilters(false);
     }, 1000);
 
     return () => clearTimeout(getFilteredResults);
@@ -232,28 +238,33 @@ export const TemplateList = () => {
             </tr>
           </thead>
           <tbody>
-            {dataToRender.length === 0 ? (
-              <tr>
-                <td colSpan={4} className="p-4">
-                  No templates found
-                </td>
-              </tr>
-            ) : isLoading ? (
+            {isLoading || isLoadingFilters ? (
               <td colSpan={4} className="p-4">
                 <div className="flex justify-center">
                   <img src={Loader} alt="loading" width="30px" />
                 </div>
               </td>
+            ) : dataToRender.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="p-4">
+                  No templates found
+                </td>
+              </tr>
             ) : (
               dataToRender.map((data, i) => (
                 <tr key={i} className="border-b">
-                  <td className="p-2 pl-4">{data.externalId}</td>
-                  <td className="p-2">{data.name}</td>
-                  <td className="p-2">{data.parent}</td>
-                  <td className="p-2">
-                    {data.isCustom ? <FaCheck /> : <FaBan />}
+                  <td className="p-2 pl-4">
+                    {data.basicInformation.externalId}
                   </td>
-                  <Link key={i} to={`/templates/${data.externalId}`}>
+                  <td className="p-2">{data.basicInformation.name}</td>
+                  <td className="p-2">{data.basicInformation.parent}</td>
+                  <td className="p-2">
+                    {data.basicInformation.isCustom ? <FaCheck /> : <FaBan />}
+                  </td>
+                  <Link
+                    key={i}
+                    to={`/templates/${data.basicInformation.externalId}`}
+                  >
                     <td className="p-2 w-fit hover:cursor-pointer">
                       <FaEye className="border rounded-3xl h-8 w-8 p-2 hover:scale-110" />
                     </td>
