@@ -1,15 +1,12 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Dropdown, TemplateFormData } from "../../../../models";
 import { MetricTypePanel } from "../../Panels";
-import { useEffect, useState } from "react";
 
 interface MetricTypesProps {
   readonly dropdownValues?: Dropdown[];
 }
 
 export const MetricTypes = ({ dropdownValues }: MetricTypesProps) => {
-  const [metricTypesExpansionState, setMetricTypesExpansionState] =
-    useState<Record<number, boolean>>();
   const { control } = useFormContext<TemplateFormData>();
   const { fields: metricTypes } = useFieldArray({
     control,
@@ -17,31 +14,8 @@ export const MetricTypes = ({ dropdownValues }: MetricTypesProps) => {
     keyName: "_id",
   });
 
-  useEffect(() => {
-    if (metricTypes) {
-      if (metricTypes.length === 1) {
-        setMetricTypesExpansionState({ [0]: true });
-      } else {
-        metricTypes.map((_, index) =>
-          setMetricTypesExpansionState((prev) => {
-            return {
-              ...prev,
-              [index]: false,
-            };
-          }),
-        );
-      }
-    }
-  }, [metricTypes]);
-
-  const handleToggleExpandMetricType = (index: number) => {
-    const newState = { ...metricTypesExpansionState };
-    newState[index] = !newState[index];
-    setMetricTypesExpansionState(newState);
-  };
-
   return (
-    <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-y-auto max-h-[35rem]">
+    <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-y-auto max-h-[30rem]">
       <div className="space-y-4 w-full">
         {metricTypes.length !== 0 ? (
           <div className="flex justify-between">
@@ -59,10 +33,8 @@ export const MetricTypes = ({ dropdownValues }: MetricTypesProps) => {
             <MetricTypePanel
               key={mt._id}
               index={index}
-              onToggleExpand={handleToggleExpandMetricType}
               isReadonly
               dropdownValues={dropdownValues}
-              expansionState={metricTypesExpansionState}
             />
           );
         })}

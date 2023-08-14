@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
-import { FaChevronUp, FaChevronDown, FaTrashAlt } from "react-icons/fa";
+import { FaChevronUp, FaTrashAlt, FaChevronRight } from "react-icons/fa";
 import { TemplateFormData } from "../../../../models";
 import { Toggle } from "../../../shared";
 
@@ -8,18 +8,14 @@ interface MetricPanelProps {
   readonly index: number;
   readonly metricTypeIndex: number;
   readonly onRemove?: (index: number) => void;
-  readonly onToggleExpand: (index: number) => void;
   readonly isReadonly?: boolean;
-  readonly expansionState?: Record<number, boolean>;
 }
 
 export const MetricPanel = ({
   index,
   metricTypeIndex,
   onRemove,
-  onToggleExpand,
   isReadonly,
-  expansionState,
 }: MetricPanelProps) => {
   const {
     register,
@@ -28,7 +24,7 @@ export const MetricPanel = ({
     trigger,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
-
+  const [isVisible, setIsVisible] = useState(index === 0);
   const { fields: metrics } = useFieldArray({
     control,
     name: `metricTypes.${metricTypeIndex}.metrics`,
@@ -83,20 +79,17 @@ export const MetricPanel = ({
     trigger(`metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`);
   }, [index, metricIsSourcedLive, metricTypeIndex, trigger]);
 
-  console.log("state: ", expansionState);
-  console.log("metrics: ", metric);
-
   return (
     <div className="flex justify-between items-center gap-2 mt-4">
       <details
         className="group rounded-lg bg-white p-6 [&_summary::-webkit-details-marker]:hidden w-full"
-        open={expansionState?.[index]}
+        open={isVisible}
       >
         <summary
           className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900"
           onClick={() => {
             event?.preventDefault();
-            onToggleExpand(index);
+            setIsVisible(!isVisible);
           }}
         >
           <span className="font-normal italic text-sm">
@@ -104,20 +97,19 @@ export const MetricPanel = ({
           </span>
 
           <div className="flex gap-5">
-            {expansionState?.[index] ? <FaChevronUp /> : <FaChevronDown />}
-            <button disabled={isReadonly}>
-              <FaTrashAlt
-                onClick={(event: React.MouseEvent) => {
-                  if (onRemove) {
-                    onRemove(index);
-                  }
-                  event?.stopPropagation();
-                }}
-                className={`hover:cursor-pointer ${
-                  isReadonly ? "hover:pointer-events-none" : ""
-                }`}
-              />
-            </button>
+            {isVisible ? <FaChevronUp /> : <FaChevronRight />}
+            {!isReadonly ? (
+              <button>
+                <FaTrashAlt
+                  onClick={(event: React.MouseEvent) => {
+                    if (onRemove) {
+                      onRemove(index);
+                    }
+                    event?.stopPropagation();
+                  }}
+                />
+              </button>
+            ) : null}
           </div>
         </summary>
         <div className="mt-4 leading-relaxed text-gray-700 text-sm">
@@ -235,10 +227,10 @@ export const MetricPanel = ({
                     }
                   </span>
                 )}
-              {(!isReadonly || !metricIsManualLive) && (
+              {!isReadonly && !metricIsManualLive && (
                 <span className="text-xs text-yellow-600">
                   Since this metric is not configured to be a manual metric, any
-                  value defined here won't be configured.
+                  value defined will not be configured.
                 </span>
               )}
             </div>

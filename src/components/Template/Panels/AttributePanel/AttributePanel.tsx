@@ -1,25 +1,21 @@
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { Dropdown, TemplateFormData } from "../../../../models";
-import { useEffect } from "react";
-import { FaChevronDown, FaChevronUp, FaTrashAlt } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FaChevronRight, FaChevronUp, FaTrashAlt } from "react-icons/fa";
 import { Select, Toggle } from "../../../shared";
 
 interface AttributePanelProps {
   readonly index: number;
   readonly onRemove?: (index: number) => void;
-  readonly onToggleExpand: (index: number) => void;
   readonly isReadonly?: boolean;
   readonly dropdownValues?: Dropdown[];
-  readonly expansionState?: Record<number, boolean>;
 }
 
 export const AttributePanel = ({
   index,
   onRemove,
-  onToggleExpand,
   isReadonly,
   dropdownValues,
-  expansionState,
 }: AttributePanelProps) => {
   const {
     register,
@@ -27,12 +23,14 @@ export const AttributePanel = ({
     setValue,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
+  const [isVisible, setIsVisible] = useState(index === 0);
 
   const { fields: attributes } = useFieldArray({
     control,
     name: `attributes`,
     keyName: "_id",
   });
+
   const attribute = attributes[index];
 
   const attributeNameLive = useWatch({
@@ -55,13 +53,13 @@ export const AttributePanel = ({
     <div className="flex justify-between items-center gap-2">
       <details
         className="group rounded-lg bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden w-full"
-        open={expansionState?.[index]}
+        open={isVisible}
       >
         <summary
           className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900"
           onClick={() => {
             event?.preventDefault();
-            onToggleExpand(index);
+            setIsVisible(!isVisible);
           }}
         >
           <span className="font-normal italic text-sm">
@@ -69,7 +67,7 @@ export const AttributePanel = ({
           </span>
 
           <div className="flex gap-5">
-            {expansionState?.[index] ? <FaChevronUp /> : <FaChevronDown />}
+            {isVisible ? <FaChevronUp /> : <FaChevronRight />}
             <button disabled={isReadonly}>
               <FaTrashAlt
                 onClick={(event: React.MouseEvent) => {

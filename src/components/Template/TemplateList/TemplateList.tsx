@@ -75,7 +75,8 @@ export const TemplateList = () => {
         if (
           newParentFilterOptions.findIndex(
             (f) => f.value === data.basicInformation.parent,
-          ) === -1
+          ) === -1 &&
+          data.basicInformation.parent
         ) {
           newParentFilterOptions.push({
             label: data.basicInformation.parent,
@@ -93,7 +94,12 @@ export const TemplateList = () => {
           ) === -1
         ) {
           newIsCustomFilterOptions.push({
-            label: data.basicInformation.isCustom.toString(),
+            label:
+              data.basicInformation.isCustom
+                .toString()
+                .charAt(0)
+                .toUpperCase() +
+              data.basicInformation.isCustom.toString().slice(1),
             value: data.basicInformation.isCustom.toString(),
           });
         }
@@ -230,11 +236,11 @@ export const TemplateList = () => {
         <table className="w-full border-collapse">
           <thead className="sticky top-0 bg-[#f5f4f6]">
             <tr className="border-b">
-              <th className="p-2 pl-4 text-left">External ID</th>
-              <th className="p-2 text-left">Name</th>
-              <th className="p-2 text-left">Parent</th>
-              <th className="p-2 text-left">Custom</th>
-              <th className="p-2 text-left w-20"></th>
+              <th className="p-2 pl-4 text-left text-[0.9rem]">External ID</th>
+              <th className="p-2 text-left text-[0.9rem]">Name</th>
+              <th className="p-2 text-left text-[0.9rem]">Parent</th>
+              <th className="p-2 text-left text-[0.9rem]">Custom</th>
+              <th className="p-2 text-left w-20 text-[0.9rem]"></th>
             </tr>
           </thead>
           <tbody>
@@ -253,19 +259,23 @@ export const TemplateList = () => {
             ) : (
               dataToRender.map((data, i) => (
                 <tr key={i} className="border-b">
-                  <td className="p-2 pl-4">
+                  <td className="p-2 pl-4 text-[0.9rem] italic">
                     {data.basicInformation.externalId}
                   </td>
-                  <td className="p-2">{data.basicInformation.name}</td>
-                  <td className="p-2">{data.basicInformation.parent}</td>
-                  <td className="p-2">
+                  <td className="p-2 text-[0.9rem]">
+                    {data.basicInformation.name}
+                  </td>
+                  <td className="p-2 text-[0.9rem]">
+                    {data.basicInformation.parent}
+                  </td>
+                  <td className="p-2 text-[0.9rem]">
                     {data.basicInformation.isCustom ? <FaCheck /> : <FaBan />}
                   </td>
                   <Link
                     key={i}
                     to={`/templates/${data.basicInformation.externalId}`}
                   >
-                    <td className="p-2 w-fit hover:cursor-pointer">
+                    <td className="p-2 w-fit hover:cursor-pointer text-[0.9rem]">
                       <FaEye className="border rounded-3xl h-8 w-8 p-2 hover:scale-110" />
                     </td>
                   </Link>
