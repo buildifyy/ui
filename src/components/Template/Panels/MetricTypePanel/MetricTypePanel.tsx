@@ -78,7 +78,7 @@ export const MetricTypePanel = ({
 
           <div className="flex gap-5">
             {isVisible ? <FaChevronUp /> : <FaChevronRight />}
-            {!isReadonly ? (
+            {!isReadonly && metricType?.isNew ? (
               <button>
                 <FaTrashAlt
                   onClick={(event: React.MouseEvent) => {

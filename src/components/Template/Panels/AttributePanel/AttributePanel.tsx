@@ -68,19 +68,18 @@ export const AttributePanel = ({
 
           <div className="flex gap-5">
             {isVisible ? <FaChevronUp /> : <FaChevronRight />}
-            <button disabled={isReadonly}>
-              <FaTrashAlt
-                onClick={(event: React.MouseEvent) => {
-                  if (onRemove) {
-                    onRemove(index);
-                  }
-                  event?.stopPropagation();
-                }}
-                className={`hover:cursor-pointer ${
-                  isReadonly ? "hover:pointer-events-none" : ""
-                }`}
-              />
-            </button>
+            {!isReadonly && attribute?.isNew ? (
+              <button>
+                <FaTrashAlt
+                  onClick={(event: React.MouseEvent) => {
+                    if (onRemove) {
+                      onRemove(index);
+                    }
+                    event?.stopPropagation();
+                  }}
+                />
+              </button>
+            ) : null}
           </div>
         </summary>
         <div className="mt-4 leading-relaxed text-gray-700 text-sm">
