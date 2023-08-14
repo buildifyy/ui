@@ -13,7 +13,7 @@ interface StepperProps {
 export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
   const location = useLocation();
   const {
-    formState: { errors, dirtyFields },
+    formState: { errors, isValid, isSubmitted },
   } = useFormContext<TemplateFormData>();
 
   const handleStepClick = (
@@ -42,7 +42,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
             errors.basicInformation?.name ||
             errors.basicInformation?.externalId ? (
               <FaExclamationTriangle className="text-red-600 text-center" />
-            ) : dirtyFields.basicInformation && !errors.basicInformation ? (
+            ) : isSubmitted && isValid ? (
               <FaCheck className="text-green-600" />
             ) : (
               <span
@@ -73,8 +73,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
           >
             {errors.attributes?.length && errors.attributes.length > 0 ? (
               <FaExclamationTriangle className="text-red-600" />
-            ) : dirtyFields.attributes &&
-              (!errors.attributes || errors.attributes?.length === 0) ? (
+            ) : isSubmitted && isValid ? (
               <FaCheck className="text-green-600" />
             ) : (
               <span
@@ -127,8 +126,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
           >
             {errors.metricTypes?.length && errors.metricTypes.length > 0 ? (
               <FaExclamationTriangle className="text-red-600" />
-            ) : dirtyFields.metricTypes &&
-              (!errors.metricTypes || errors.metricTypes?.length === 0) ? (
+            ) : isSubmitted && isValid ? (
               <FaCheck className="text-green-600" />
             ) : (
               <span

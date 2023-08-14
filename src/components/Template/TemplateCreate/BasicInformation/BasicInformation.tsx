@@ -23,9 +23,7 @@ export const BasicInformation = ({ dropdownValues }: BasicInformationProps) => {
   useEffect(() => {
     if (basicInformationNameLive !== null) {
       const valueToSet = basicInformationNameLive?.replace(/\s/g, "");
-      setValue("basicInformation.externalId", valueToSet.toLowerCase(), {
-        shouldValidate: true,
-      });
+      setValue("basicInformation.externalId", valueToSet?.toLowerCase());
     }
   }, [basicInformationNameLive, setValue]);
 
