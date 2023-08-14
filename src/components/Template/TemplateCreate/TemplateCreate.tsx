@@ -35,7 +35,6 @@ export const TemplateCreate = ({
     reset,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
-
   const showSuccessToast = () => {
     toast.success("Template created successfully!", {
       position: "top-right",
@@ -94,6 +93,19 @@ export const TemplateCreate = ({
     createTemplate(toPush);
   };
 
+  const handleOnReset = () => {
+    reset({
+      tenant: "",
+      basicInformation: {
+        name: "",
+        parent: "",
+        externalId: "",
+      },
+      attributes: [],
+      metricTypes: [],
+    });
+  };
+
   return (
     <>
       <ToastContainer />
@@ -101,7 +113,7 @@ export const TemplateCreate = ({
         <div className="w-full">
           <Header value={stepSelection} />
           {toRender()}
-          <Footer />
+          <Footer onReset={handleOnReset} />
         </div>
       </form>
     </>

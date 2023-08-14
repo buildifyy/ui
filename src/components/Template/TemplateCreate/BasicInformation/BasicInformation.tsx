@@ -27,15 +27,14 @@ export const BasicInformation = ({ dropdownValues }: BasicInformationProps) => {
     useTemplateView(selectedParent);
 
   useEffect(() => {
-    console.log("isFetchingParentTemplateData: ", isFetchingParentTemplateData);
-  }, [isFetchingParentTemplateData]);
-
-  useEffect(() => {
     if (parentTemplateData) {
       reset((prev) => {
         return {
           tenant: prev.tenant,
-          basicInformation: prev.basicInformation,
+          basicInformation: {
+            ...prev.basicInformation,
+            parent: selectedParent ?? prev.basicInformation.parent,
+          },
           attributes: parentTemplateData.attributes,
           metricTypes: parentTemplateData.metricTypes,
         };
@@ -82,7 +81,6 @@ export const BasicInformation = ({ dropdownValues }: BasicInformationProps) => {
             }
             isDisabled={isFetchingParentTemplateData}
             onChange={handleOnParentChange}
-            value={selectedParent}
           />
           {errors.basicInformation?.parent && (
             <span className="text-xs text-red-600">
