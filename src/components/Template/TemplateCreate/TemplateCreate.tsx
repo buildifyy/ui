@@ -80,27 +80,13 @@ export const TemplateCreate = ({
     console.log("createTemplateFormData: ", data);
     const toPush: TemplateFormData = {
       ...data,
-      attributes: data.attributes
-        .map((a) => {
-          return {
-            ...a,
-            isExpanded: false,
-          };
-        })
-        .reverse(),
+      attributes: data.attributes.filter((a) => a.isNew).reverse(),
       metricTypes: data.metricTypes
+        .filter((mt) => mt.isNew)
         .map((mt) => {
           return {
             ...mt,
-            isExpanded: false,
-            metrics: mt.metrics
-              .map((m) => {
-                return {
-                  ...m,
-                  isExpanded: false,
-                };
-              })
-              .reverse(),
+            metrics: mt.metrics.reverse(),
           };
         })
         .reverse(),

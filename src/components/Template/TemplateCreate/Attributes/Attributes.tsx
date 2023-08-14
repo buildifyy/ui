@@ -20,17 +20,25 @@ export const Attributes = ({ dropdownValues }: AttributesProps) => {
   };
 
   const handleAddAttribute = () => {
-    prepend({ name: "", dataType: "" });
+    prepend({
+      name: "",
+      dataType: "",
+      isNew: true,
+      isRequired: false,
+      isHidden: false,
+    });
   };
 
   return (
     <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-y-auto max-h-[28rem]">
       <div className="space-y-4 w-full">
-        {attributes.length !== 0 ? (
+        {attributes.filter((a) => a.isNew).length !== 0 ? (
           <div className="flex justify-between">
             <span className="text-green-600">
-              {attributes.length} new
-              {attributes.length > 1 ? " attributes" : " attribute"}
+              {attributes.filter((a) => a.isNew).length} custom
+              {attributes.filter((a) => a.isNew).length > 1
+                ? " attributes"
+                : " attribute"}
             </span>
           </div>
         ) : null}

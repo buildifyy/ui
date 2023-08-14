@@ -8,19 +8,30 @@ interface SelectProps {
   readonly errorClassName?: string;
   readonly data?: Dropdown[];
   readonly isDisabled?: boolean;
+  readonly onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  readonly value?: string;
 }
 
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   (props, ref) => {
-    const { id, widthClassName, errorClassName, data, isDisabled, ...rest } =
-      props;
+    const {
+      id,
+      widthClassName,
+      errorClassName,
+      data,
+      isDisabled,
+      value,
+      ...rest
+    } = props;
+
     return (
       <select
         id={id}
         ref={ref}
         className={`-ml-[2px] mt-1.5 ${widthClassName} rounded-lg border-gray-300 text-gray-700 py-2 px-2 border text-xs ${errorClassName}`}
-        {...rest}
         disabled={isDisabled || !data}
+        value={value}
+        {...rest}
       >
         <option value="">Please select</option>
         {data?.map((d) => (

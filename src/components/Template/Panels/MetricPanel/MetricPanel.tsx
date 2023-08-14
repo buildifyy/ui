@@ -9,6 +9,7 @@ interface MetricPanelProps {
   readonly metricTypeIndex: number;
   readonly onRemove?: (index: number) => void;
   readonly isReadonly?: boolean;
+  readonly isMetricTypeNew?: boolean;
 }
 
 export const MetricPanel = ({
@@ -16,6 +17,7 @@ export const MetricPanel = ({
   metricTypeIndex,
   onRemove,
   isReadonly,
+  isMetricTypeNew,
 }: MetricPanelProps) => {
   const {
     register,
@@ -24,13 +26,13 @@ export const MetricPanel = ({
     trigger,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
-  const [isVisible, setIsVisible] = useState(index === 0);
   const { fields: metrics } = useFieldArray({
     control,
     name: `metricTypes.${metricTypeIndex}.metrics`,
     keyName: "_id",
   });
   const metric = metrics[index];
+  const [isVisible, setIsVisible] = useState(isMetricTypeNew && index === 0);
 
   const metricNameLive = useWatch({
     name: `metricTypes.${metricTypeIndex}.metrics.${index}.name`,

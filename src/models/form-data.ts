@@ -10,12 +10,14 @@ export interface Attribute {
   readonly dataType: string;
   readonly isRequired?: boolean;
   readonly isHidden?: boolean;
+  readonly isNew?: boolean;
 }
 
 export interface MetricType {
   readonly name: string;
   readonly metricType: string;
   readonly metrics: Metric[];
+  readonly isNew?: boolean;
 }
 
 export interface Metric {

@@ -23,18 +23,28 @@ export const MetricTypes = ({ dropdownValues }: MetricTypesProps) => {
     prepend({
       name: "",
       metricType: "",
-      metrics: [{ name: "" }],
+      isNew: true,
+      metrics: [
+        {
+          name: "",
+          isCalculated: false,
+          isManual: false,
+          isSourced: false,
+        },
+      ],
     });
   };
 
   return (
     <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-y-auto max-h-[28rem]">
       <div className="space-y-4 w-full">
-        {metricTypes.length !== 0 ? (
+        {metricTypes.filter((mt) => mt.isNew).length !== 0 ? (
           <div className="flex justify-between">
             <span className="text-green-600">
-              {metricTypes.length} new
-              {metricTypes.length > 1 ? " metric types" : " metric type"}
+              {metricTypes.filter((mt) => mt.isNew).length} custom
+              {metricTypes.filter((mt) => mt.isNew).length > 1
+                ? " metric types"
+                : " metric type"}
             </span>
           </div>
         ) : null}

@@ -1,7 +1,8 @@
 import { useFormContext, useWatch } from "react-hook-form";
 import { Dropdown, TemplateFormData } from "../../../../models";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Select, Toggle } from "../../../shared";
+import { useTemplateView } from "../../../../service";
 
 interface BasicInformationProps {
   readonly dropdownValues?: Dropdown[];
@@ -12,13 +13,35 @@ export const BasicInformation = ({ dropdownValues }: BasicInformationProps) => {
     control,
     register,
     setValue,
+    reset,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
+  const [selectedParent, setSelectedParent] = useState<string>();
 
   const basicInformationNameLive = useWatch({
     name: "basicInformation.name",
     control,
   });
+
+  const { data: parentTemplateData, isFetching: isFetchingParentTemplateData } =
+    useTemplateView(selectedParent);
+
+  useEffect(() => {
+    console.log("isFetchingParentTemplateData: ", isFetchingParentTemplateData);
+  }, [isFetchingParentTemplateData]);
+
+  useEffect(() => {
+    if (parentTemplateData) {
+      reset((prev) => {
+        return {
+          tenant: prev.tenant,
+          basicInformation: prev.basicInformation,
+          attributes: parentTemplateData.attributes,
+          metricTypes: parentTemplateData.metricTypes,
+        };
+      });
+    }
+  }, [parentTemplateData]);
 
   useEffect(() => {
     if (basicInformationNameLive !== null) {
@@ -26,6 +49,12 @@ export const BasicInformation = ({ dropdownValues }: BasicInformationProps) => {
       setValue("basicInformation.externalId", valueToSet?.toLowerCase());
     }
   }, [basicInformationNameLive, setValue]);
+
+  const handleOnParentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (e.target.value) {
+      setSelectedParent(e.target.value);
+    }
+  };
 
   return (
     <div className="flex flex-col mt-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto max-h-[35rem]">
@@ -51,6 +80,9 @@ export const BasicInformation = ({ dropdownValues }: BasicInformationProps) => {
             errorClassName={
               errors.basicInformation?.parent ? "border-red-600" : ""
             }
+            isDisabled={isFetchingParentTemplateData}
+            onChange={handleOnParentChange}
+            value={selectedParent}
           />
           {errors.basicInformation?.parent && (
             <span className="text-xs text-red-600">
@@ -80,6 +112,7 @@ export const BasicInformation = ({ dropdownValues }: BasicInformationProps) => {
               errors.basicInformation?.name ? "border-red-600" : ""
             }`}
             {...register("basicInformation.name")}
+            disabled={isFetchingParentTemplateData}
           />
           {errors.basicInformation?.name && (
             <span className="text-xs text-red-600">
@@ -109,6 +142,7 @@ export const BasicInformation = ({ dropdownValues }: BasicInformationProps) => {
               errors.basicInformation?.externalId ? "border-red-600" : ""
             }`}
             {...register("basicInformation.externalId")}
+            disabled={isFetchingParentTemplateData}
           />
           {errors.basicInformation?.externalId && (
             <span className="text-xs text-red-600">

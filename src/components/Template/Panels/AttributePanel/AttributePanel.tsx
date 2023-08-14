@@ -23,7 +23,6 @@ export const AttributePanel = ({
     setValue,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
-  const [isVisible, setIsVisible] = useState(index === 0);
 
   const { fields: attributes } = useFieldArray({
     control,
@@ -32,6 +31,7 @@ export const AttributePanel = ({
   });
 
   const attribute = attributes[index];
+  const [isVisible, setIsVisible] = useState(attribute?.isNew && index === 0);
 
   const attributeNameLive = useWatch({
     name: `attributes.${index}.name`,

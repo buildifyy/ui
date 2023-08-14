@@ -28,8 +28,8 @@ export const MetricTypePanel = ({
     name: `metricTypes`,
     keyName: "_id",
   });
-  const [isVisible, setIsVisible] = useState(index === 0);
   const metricType = metricTypes[index];
+  const [isVisible, setIsVisible] = useState(metricType?.isNew && index === 0);
 
   const {
     fields: metrics,
@@ -47,7 +47,12 @@ export const MetricTypePanel = ({
   });
 
   const handleAddMetric = () => {
-    prepend({ name: "" });
+    prepend({
+      name: "",
+      isSourced: false,
+      isManual: false,
+      isCalculated: false,
+    });
   };
 
   const handleRemoveMetric = (index: number) => {
@@ -181,6 +186,7 @@ export const MetricTypePanel = ({
                 metricTypeIndex={index}
                 onRemove={handleRemoveMetric}
                 isReadonly={isReadonly}
+                isMetricTypeNew={metricType?.isNew}
               />
             );
           })}
