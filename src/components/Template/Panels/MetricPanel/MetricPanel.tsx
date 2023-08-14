@@ -95,7 +95,7 @@ export const MetricPanel = ({
           }}
         >
           <span className="font-normal italic text-sm">
-            {metricNameLive ? metricNameLive : "Unititled Metric"}
+            {metricNameLive ? metricNameLive : "Untitled Metric"}
           </span>
 
           <div className="flex gap-5">
