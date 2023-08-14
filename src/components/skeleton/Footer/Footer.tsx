@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 
 interface FooterProps {
-  readonly onReset: () => void;
+  readonly onReset?: () => void;
 }
 
 export const Footer = ({ onReset }: FooterProps) => {
@@ -15,7 +15,9 @@ export const Footer = ({ onReset }: FooterProps) => {
   }
 
   const handleOnCancel = () => {
-    onReset();
+    if (onReset) {
+      onReset();
+    }
   };
 
   return (
