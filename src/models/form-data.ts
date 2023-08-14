@@ -23,7 +23,7 @@ export interface MetricType {
 export interface Metric {
   readonly name: string;
   readonly isManual?: boolean;
-  readonly value?: string | number | boolean;
+  readonly value?: string | number | boolean | null;
   readonly isCalculated?: boolean;
   readonly isSourced?: boolean;
 }
