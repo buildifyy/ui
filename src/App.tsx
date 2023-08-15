@@ -10,12 +10,14 @@ import { Sidebar, Stepper } from "./components/skeleton";
 import { FormProvider, useForm } from "react-hook-form";
 import { TemplateFormData, schema } from "./models";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Popup } from "./components/shared/Popup";
 
 function App() {
   const location = useLocation();
   const [stepSelection, setStepSelection] = useState<
     "Basic Information" | "Attributes" | "Relationships" | "Metric Types"
   >("Basic Information");
+  const [showCancelPopup, setShowCancelPopup] = useState(false);
 
   useEffect(() => {
     setStepSelection("Basic Information");
@@ -26,8 +28,30 @@ function App() {
     mode: "all",
   });
 
+  const handleOnReset = () => {
+    methods.reset({
+      tenant: "",
+      basicInformation: {
+        name: "",
+        parent: "",
+        externalId: "",
+      },
+      attributes: [],
+      metricTypes: [],
+    });
+    setStepSelection("Basic Information");
+    setShowCancelPopup(false);
+  };
+
+  const handleOnBack = () => {
+    setShowCancelPopup(false);
+  };
+
   return (
     <FormProvider {...methods}>
+      {showCancelPopup && (
+        <Popup onReset={handleOnReset} onBack={handleOnBack} />
+      )}
       <div className="flex h-full">
         <Sidebar />
         <div className="flex w-full flex-col justify-between">
@@ -44,6 +68,7 @@ function App() {
                   <TemplateCreate
                     stepSelection={stepSelection}
                     setStepSelection={setStepSelection}
+                    setShowCancelPopup={setShowCancelPopup}
                   />
                 }
               />

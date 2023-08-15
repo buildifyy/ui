@@ -19,7 +19,8 @@ export const Footer = ({
   setStepSelection,
   isReadonly,
 }: FooterProps) => {
-  const handleOnCancel = () => {
+  const handleOnCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (onReset) {
       onReset();
     }

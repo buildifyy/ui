@@ -24,11 +24,13 @@ interface TemplateCreateProps {
   readonly setStepSelection: (
     val: "Basic Information" | "Attributes" | "Relationships" | "Metric Types",
   ) => void;
+  readonly setShowCancelPopup: (show: boolean) => void;
 }
 
 export const TemplateCreate = ({
   stepSelection,
   setStepSelection,
+  setShowCancelPopup,
 }: TemplateCreateProps) => {
   const {
     handleSubmit,
@@ -93,16 +95,7 @@ export const TemplateCreate = ({
   };
 
   const handleOnReset = () => {
-    reset({
-      tenant: "",
-      basicInformation: {
-        name: "",
-        parent: "",
-        externalId: "",
-      },
-      attributes: [],
-      metricTypes: [],
-    });
+    setShowCancelPopup(true);
   };
 
   return (
