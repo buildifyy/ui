@@ -19,9 +19,15 @@ interface TemplateViewProps {
     | "Attributes"
     | "Relationships"
     | "Metric Types";
+  readonly setStepSelection: (
+    val: "Basic Information" | "Attributes" | "Relationships" | "Metric Types",
+  ) => void;
 }
 
-export const TemplateView = ({ stepSelection }: TemplateViewProps) => {
+export const TemplateView = ({
+  stepSelection,
+  setStepSelection,
+}: TemplateViewProps) => {
   const { reset } = useFormContext<TemplateFormData>();
   const { templateId } = useParams();
 
@@ -50,12 +56,14 @@ export const TemplateView = ({ stepSelection }: TemplateViewProps) => {
   };
 
   return (
-    <form className="h-full w-full">
-      <div className="w-full">
-        <Header value={stepSelection} />
-        {toRender()}
-        <Footer />
-      </div>
-    </form>
+    <div className="w-full">
+      <Header value={stepSelection} />
+      {toRender()}
+      <Footer
+        stepSelection={stepSelection}
+        setStepSelection={setStepSelection}
+        isReadonly
+      />
+    </div>
   );
 };

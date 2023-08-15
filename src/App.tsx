@@ -49,7 +49,12 @@ function App() {
               />
               <Route
                 path="/templates/:templateId"
-                element={<TemplateView stepSelection={stepSelection} />}
+                element={
+                  <TemplateView
+                    stepSelection={stepSelection}
+                    setStepSelection={setStepSelection}
+                  />
+                }
               />
               <Route
                 path="/templates/edit/:templateId"

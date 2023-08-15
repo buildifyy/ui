@@ -76,7 +76,6 @@ export const TemplateCreate = ({
   };
 
   const onSubmit: SubmitHandler<TemplateFormData> = (data) => {
-    console.log("createTemplateFormData: ", data);
     const toPush: TemplateFormData = {
       ...data,
       attributes: data.attributes.filter((a) => a.isNew).reverse(),
@@ -113,7 +112,12 @@ export const TemplateCreate = ({
         <div className="w-full">
           <Header value={stepSelection} />
           {toRender()}
-          <Footer onReset={handleOnReset} />
+          <Footer
+            onReset={handleOnReset}
+            stepSelection={stepSelection}
+            setStepSelection={setStepSelection}
+            isReadonly={false}
+          />
         </div>
       </form>
     </>

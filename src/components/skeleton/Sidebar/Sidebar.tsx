@@ -33,7 +33,7 @@ export const Sidebar = () => {
     <div className="flex flex-col justify-between border-e bg-white w-[300px]">
       <div className="px-4 py-6">
         <span className="grid h-10 w-32 place-content-center rounded-lg text-lg grid-cols-2 items-center ml-10">
-          <img src={logo} width={50} height={50} />
+          <img src={logo} width={50} height={50} alt="logo" />
           <span>Buildify</span>
         </span>
 
