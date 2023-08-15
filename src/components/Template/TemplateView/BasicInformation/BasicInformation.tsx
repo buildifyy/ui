@@ -1,13 +1,13 @@
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { Dropdown, TemplateFormData } from "../../../../models";
-import { Select, Toggle } from "../../../shared";
+import { Select, OnOff } from "../../../shared";
 
 interface BasicInformationProps {
   readonly dropdownValues?: Dropdown[];
 }
 
 export const BasicInformation = ({ dropdownValues }: BasicInformationProps) => {
-  const { register } = useFormContext<TemplateFormData>();
+  const { register, control } = useFormContext<TemplateFormData>();
 
   return (
     <div className="flex flex-col mt-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto max-h-[35rem]">
@@ -95,11 +95,18 @@ export const BasicInformation = ({ dropdownValues }: BasicInformationProps) => {
         </div>
         <div className="flex w-64">
           <div className="flex flex-col w-96 items-end">
-            <Toggle
-              id="custom"
-              value={true}
-              {...register("basicInformation.isCustom")}
-              isDisabled
+            <Controller
+              control={control}
+              name="basicInformation.isCustom"
+              defaultValue={true}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <OnOff
+                  value={value}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  disabled
+                />
+              )}
             />
           </div>
         </div>

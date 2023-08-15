@@ -10,7 +10,7 @@ import { Sidebar, Stepper } from "./components/skeleton";
 import { FormProvider, useForm } from "react-hook-form";
 import { TemplateFormData, schema } from "./models";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Popup } from "./components/shared/Popup";
+import { Popup } from "./components/shared";
 
 function App() {
   const location = useLocation();

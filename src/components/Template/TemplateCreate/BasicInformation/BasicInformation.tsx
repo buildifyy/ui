@@ -1,7 +1,7 @@
-import { useFormContext, useWatch } from "react-hook-form";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 import { Dropdown, TemplateFormData } from "../../../../models";
 import { useEffect, useState } from "react";
-import { Select, Toggle } from "../../../shared";
+import { Select, OnOff } from "../../../shared";
 import { useTemplateView } from "../../../../service";
 
 interface BasicInformationProps {
@@ -164,11 +164,18 @@ export const BasicInformation = ({ dropdownValues }: BasicInformationProps) => {
         </div>
         <div className="flex w-64">
           <div className="flex flex-col w-96 items-end">
-            <Toggle
-              id="custom"
-              value={true}
-              {...register("basicInformation.isCustom")}
-              isDisabled
+            <Controller
+              control={control}
+              name="basicInformation.isCustom"
+              defaultValue={true}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <OnOff
+                  value={value}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  disabled
+                />
+              )}
             />
             <span className="text-xs text-gray-400 mt-2">
               This value cannot be changed
