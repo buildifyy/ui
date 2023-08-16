@@ -1,19 +1,18 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { Dropdown, TemplateFormData } from "../../../../models";
-import { AddPanel } from "../../../shared";
+import { TemplateFormData } from "@/models";
+import { AddPanel } from "@/components/shared";
 import { AttributePanel } from "../../Panels";
+import { useAttributeTypeDropdown } from "@/service/common";
 
-interface AttributesProps {
-  readonly dropdownValues?: Dropdown[];
-}
-
-export const Attributes = ({ dropdownValues }: AttributesProps) => {
+export const Attributes = () => {
   const { control } = useFormContext<TemplateFormData>();
   const {
     fields: attributes,
     prepend,
     remove,
   } = useFieldArray({ control, name: "attributes", keyName: "_id" });
+
+  const { data: attributeTypeValues } = useAttributeTypeDropdown();
 
   const handleRemoveAttribute = (index: number) => {
     remove(index);
@@ -50,7 +49,7 @@ export const Attributes = ({ dropdownValues }: AttributesProps) => {
               key={attr._id}
               index={index}
               onRemove={handleRemoveAttribute}
-              dropdownValues={dropdownValues}
+              dropdownValues={attributeTypeValues}
             />
           );
         })}

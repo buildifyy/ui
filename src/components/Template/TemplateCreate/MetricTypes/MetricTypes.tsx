@@ -1,19 +1,18 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { Dropdown, TemplateFormData } from "../../../../models";
-import { AddPanel } from "../../../shared";
+import { TemplateFormData } from "@/models";
+import { AddPanel } from "@/components/shared";
 import { MetricTypePanel } from "../../Panels";
+import { useMetricTypeDropdown } from "@/service/common";
 
-interface MetricTypesProps {
-  readonly dropdownValues?: Dropdown[];
-}
-
-export const MetricTypes = ({ dropdownValues }: MetricTypesProps) => {
+export const MetricTypes = () => {
   const { control } = useFormContext<TemplateFormData>();
   const {
     fields: metricTypes,
     prepend,
     remove,
   } = useFieldArray({ control, name: "metricTypes", keyName: "_id" });
+
+  const { data: metricTypeValues } = useMetricTypeDropdown();
 
   const handleRemoveMetricType = (index: number) => {
     remove(index);
@@ -56,7 +55,7 @@ export const MetricTypes = ({ dropdownValues }: MetricTypesProps) => {
               key={mt._id}
               index={index}
               onRemove={handleRemoveMetricType}
-              dropdownValues={dropdownValues}
+              dropdownValues={metricTypeValues}
             />
           );
         })}

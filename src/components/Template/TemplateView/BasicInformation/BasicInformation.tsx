@@ -1,13 +1,12 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { Dropdown, TemplateFormData } from "../../../../models";
-import { Select, OnOff } from "../../../shared";
+import { TemplateFormData } from "@/models";
+import { Select, OnOff } from "@/components/shared";
+import { useParentTemplates } from "@/service";
 
-interface BasicInformationProps {
-  readonly dropdownValues?: Dropdown[];
-}
-
-export const BasicInformation = ({ dropdownValues }: BasicInformationProps) => {
+export const BasicInformation = () => {
   const { register, control } = useFormContext<TemplateFormData>();
+
+  const { data: parentTemplates } = useParentTemplates();
 
   return (
     <div className="flex flex-col mt-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto max-h-[35rem]">
@@ -28,7 +27,7 @@ export const BasicInformation = ({ dropdownValues }: BasicInformationProps) => {
           <Select
             id="parent"
             widthClassName="w-64"
-            data={dropdownValues}
+            data={parentTemplates}
             {...register("basicInformation.parent")}
             isDisabled
           />

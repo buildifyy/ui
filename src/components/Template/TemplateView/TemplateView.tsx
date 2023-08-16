@@ -1,17 +1,13 @@
 import { useParams } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
-import { TemplateFormData } from "../../../models";
+import { TemplateFormData } from "@/models";
 import { BasicInformation } from "./BasicInformation";
 import { Attributes } from "./Attributes";
 import { MetricTypes } from "./MetricTypes";
-import { Header } from "../../shared";
-import { Footer } from "../../skeleton";
+import { Header } from "@/components/shared";
+import { Footer } from "@/components/skeleton";
 import { useEffect } from "react";
-import { useParentTemplates, useTemplateView } from "../../../service";
-import {
-  useAttributeTypeDropdown,
-  useMetricTypeDropdown,
-} from "../../../service/common";
+import { useTemplateView } from "@/service";
 
 interface TemplateViewProps {
   readonly stepSelection:
@@ -32,9 +28,6 @@ export const TemplateView = ({
   const { templateId } = useParams();
 
   const { data } = useTemplateView(templateId);
-  const { data: parentTemplates } = useParentTemplates();
-  const { data: attributeTypeValues } = useAttributeTypeDropdown();
-  const { data: metricTypeValues } = useMetricTypeDropdown();
 
   useEffect(() => {
     if (data) {
@@ -45,11 +38,11 @@ export const TemplateView = ({
   const toRender = () => {
     switch (stepSelection) {
       case "Basic Information":
-        return <BasicInformation dropdownValues={parentTemplates} />;
+        return <BasicInformation />;
       case "Attributes":
-        return <Attributes dropdownValues={attributeTypeValues} />;
+        return <Attributes />;
       case "Metric Types":
-        return <MetricTypes dropdownValues={metricTypeValues} />;
+        return <MetricTypes />;
       default:
         return null;
     }

@@ -2,18 +2,13 @@ import { BasicInformation } from "./BasicInformation";
 import { Attributes } from "./Attributes";
 import { MetricTypes } from "./MetricTypes";
 import { SubmitHandler, useFormContext } from "react-hook-form";
-import { TemplateFormData } from "../../../models";
-import { Header } from "../../shared";
-import { Footer } from "../../skeleton";
+import { TemplateFormData } from "@/models";
+import { Header } from "@/components/shared";
+import { Footer } from "@/components/skeleton";
 import { useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useTemplateCreate } from "../../../service/template/use-template-create.tsx";
-import {
-  useAttributeTypeDropdown,
-  useMetricTypeDropdown,
-} from "../../../service/common";
-import { useParentTemplates } from "../../../service";
+import { useTemplateCreate } from "@/service";
 
 interface TemplateCreateProps {
   readonly stepSelection:
@@ -50,10 +45,6 @@ export const TemplateCreate = ({
   const { mutate: createTemplate, isSuccess: isCreateTemplateSuccess } =
     useTemplateCreate();
 
-  const { data: parentTemplates } = useParentTemplates();
-  const { data: attributeTypeValues } = useAttributeTypeDropdown();
-  const { data: metricTypeValues } = useMetricTypeDropdown();
-
   useEffect(() => {
     if (isCreateTemplateSuccess) {
       reset();
@@ -67,11 +58,11 @@ export const TemplateCreate = ({
   const toRender = () => {
     switch (stepSelection) {
       case "Basic Information":
-        return <BasicInformation dropdownValues={parentTemplates} />;
+        return <BasicInformation />;
       case "Attributes":
-        return <Attributes dropdownValues={attributeTypeValues} />;
+        return <Attributes />;
       case "Metric Types":
-        return <MetricTypes dropdownValues={metricTypeValues} />;
+        return <MetricTypes />;
       default:
         return null;
     }
