@@ -86,6 +86,8 @@ export const MetricPanel = ({
     trigger(`metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`);
   }, [index, metricIsSourcedLive, metricTypeIndex, trigger]);
 
+  const showTrashButton = isMetricTypeNew || !isReadonly;
+
   return (
     <div className="flex justify-between items-center gap-2 mt-4">
       <details
@@ -109,7 +111,7 @@ export const MetricPanel = ({
             ) : (
               <ChevronRight height={17} width={17} />
             )}
-            {!isReadonly && isMetricTypeNew ? (
+            {showTrashButton ? (
               <button>
                 <Trash
                   width={17}

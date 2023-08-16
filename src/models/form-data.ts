@@ -11,6 +11,7 @@ export interface Attribute {
   readonly isRequired?: boolean;
   readonly isHidden?: boolean;
   readonly isNew?: boolean;
+  readonly owningTemplate?: string;
 }
 
 export interface MetricType {
@@ -18,6 +19,7 @@ export interface MetricType {
   readonly metricType: string;
   readonly metrics: Metric[];
   readonly isNew?: boolean;
+  readonly owningTemplate?: string;
 }
 
 export interface Metric {

@@ -56,6 +56,7 @@ export const MetricTypes = () => {
               index={index}
               onRemove={handleRemoveMetricType}
               dropdownValues={metricTypeValues}
+              isNew={mt.isNew}
             />
           );
         })}

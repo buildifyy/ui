@@ -1,16 +1,17 @@
 import { useParams, useSearchParams } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTemplateView } from "@/service";
 import { BasicInformation } from "@/components/Template/TemplateCreate/BasicInformation";
 import { Attributes } from "@/components/Template/TemplateCreate/Attributes";
 import { MetricTypes } from "@/components/Template/TemplateCreate/MetricTypes";
-import { Header } from "@/components/shared";
+import { Header, Popup } from "@/components/shared";
 import { Footer } from "@/components/skeleton";
 
 export const TemplateEdit = () => {
   const { reset } = useFormContext<TemplateFormData>();
+  const [showCancelPopup, setShowCancelPopup] = useState(false);
   const { templateId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const config = searchParams.get("config");
@@ -50,11 +51,25 @@ export const TemplateEdit = () => {
     }
   };
 
+  const handleConfirmReset = () => {
+    reset(data);
+    searchParams.set("config", "basic-information");
+    setSearchParams(searchParams);
+    setShowCancelPopup(false);
+  };
+
   return (
     <div className="w-full">
+      {showCancelPopup && (
+        <Popup
+          onReset={handleConfirmReset}
+          onBack={() => setShowCancelPopup(false)}
+          confirmationMessage="Are you sure you want to cancel the template edit process? All your recent changes will be reset"
+        />
+      )}
       <Header value={config ? configMap[config] : "Basic Information"} />
       {toRender()}
-      <Footer />
+      <Footer onReset={() => setShowCancelPopup(true)} />
     </div>
   );
 };

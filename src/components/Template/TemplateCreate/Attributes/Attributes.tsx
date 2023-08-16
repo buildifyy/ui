@@ -50,6 +50,7 @@ export const Attributes = () => {
               index={index}
               onRemove={handleRemoveAttribute}
               dropdownValues={attributeTypeValues}
+              isNew={attr.isNew}
             />
           );
         })}

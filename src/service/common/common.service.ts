@@ -1,4 +1,4 @@
-import { Dropdown } from "../../models";
+import { Dropdown } from "@/models";
 import axios from "axios";
 
 export class CommonService {

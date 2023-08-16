@@ -1,17 +1,16 @@
 interface PopupProps {
   readonly onReset?: () => void;
   readonly onBack?: () => void;
+  readonly confirmationMessage?: string;
 }
 
-export const Popup = ({ onReset, onBack }: PopupProps) => {
+export const Popup = ({ onReset, onBack, confirmationMessage }: PopupProps) => {
   return (
-    <div className="fixed h-full w-full z-50 backdrop-blur-sm">
-      <div className="rounded-lg bg-white p-8 shadow-2xl fixed left-1/3 top-48">
+    <div className="absolute top-0 left-0 h-full w-full z-50 backdrop-blur-sm">
+      <div className="rounded-lg bg-white p-8 shadow-2xl fixed left-1/3 top-48 w-[40%]">
         <h2 className="text-lg font-bold">Are you sure you want to do that?</h2>
 
-        <p className="mt-2 text-sm text-gray-500">
-          Are you sure you want to cancel the template creation process?
-        </p>
+        <p className="mt-2 text-sm text-gray-500">{confirmationMessage}</p>
 
         <div className="mt-4 flex gap-2">
           <button

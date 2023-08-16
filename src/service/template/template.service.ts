@@ -1,4 +1,4 @@
-import { Dropdown, TemplateFormData } from "../../models";
+import { Dropdown, TemplateFormData } from "@/models";
 import axios, { AxiosResponse } from "axios";
 
 export class TemplateService {

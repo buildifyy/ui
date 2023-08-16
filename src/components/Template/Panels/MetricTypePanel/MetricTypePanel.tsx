@@ -10,6 +10,7 @@ interface MetricTypePanelProps {
   readonly onRemove?: (index: number) => void;
   readonly isReadonly?: boolean;
   readonly dropdownValues?: Dropdown[];
+  readonly isNew?: boolean;
 }
 
 export const MetricTypePanel = ({
@@ -17,10 +18,12 @@ export const MetricTypePanel = ({
   onRemove,
   isReadonly,
   dropdownValues,
+  isNew,
 }: MetricTypePanelProps) => {
   const {
     register,
     control,
+    getValues,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
   const { fields: metricTypes } = useFieldArray({
@@ -59,6 +62,11 @@ export const MetricTypePanel = ({
     remove(index);
   };
 
+  const showTrashButton =
+    isNew ||
+    (metricType?.owningTemplate === getValues("basicInformation.externalId") &&
+      !isReadonly);
+
   return (
     <div className="flex justify-between items-center gap-2">
       <details
@@ -82,7 +90,7 @@ export const MetricTypePanel = ({
             ) : (
               <ChevronRight height={17} width={17} />
             )}
-            {!isReadonly && metricType?.isNew ? (
+            {showTrashButton && (
               <button>
                 <Trash
                   width={17}
@@ -95,7 +103,7 @@ export const MetricTypePanel = ({
                   }}
                 />
               </button>
-            ) : null}
+            )}
           </div>
         </summary>
         <div className="mt-4 leading-relaxed text-gray-700 text-sm">

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { TemplateService } from "./template.service.ts";
+import { TemplateService } from "@/service";
 
 export const useTemplateList = () => {
   return useQuery(["template-list"], () => {

@@ -3,24 +3,22 @@ import { Attributes } from "./Attributes";
 import { MetricTypes } from "./MetricTypes";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
-import { Header } from "@/components/shared";
+import { Header, Popup } from "@/components/shared";
 import { Footer } from "@/components/skeleton";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useTemplateCreate } from "@/service";
 import { useSearchParams } from "react-router-dom";
 
-interface TemplateCreateProps {
-  readonly setShowCancelPopup: (show: boolean) => void;
-}
-
-export const TemplateCreate = ({ setShowCancelPopup }: TemplateCreateProps) => {
+export const TemplateCreate = () => {
   const {
     handleSubmit,
     reset,
     formState: { errors },
+    getValues,
   } = useFormContext<TemplateFormData>();
+  const [showCancelPopup, setShowCancelPopup] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const config = searchParams.get("config");
 
@@ -78,9 +76,23 @@ export const TemplateCreate = ({ setShowCancelPopup }: TemplateCreateProps) => {
   const onSubmit: SubmitHandler<TemplateFormData> = (data) => {
     const toPush: TemplateFormData = {
       ...data,
-      attributes: data.attributes.filter((a) => a.isNew).reverse(),
+      attributes: data.attributes
+        .filter((a) => a.isNew)
+        .map((a) => {
+          return {
+            ...a,
+            owningTemplate: getValues("basicInformation.externalId"),
+          };
+        })
+        .reverse(),
       metricTypes: data.metricTypes
         .filter((mt) => mt.isNew)
+        .map((mt) => {
+          return {
+            ...mt,
+            owningTemplate: getValues("basicInformation.externalId"),
+          };
+        })
         .map((mt) => {
           return {
             ...mt,
@@ -92,18 +104,36 @@ export const TemplateCreate = ({ setShowCancelPopup }: TemplateCreateProps) => {
     createTemplate(toPush);
   };
 
-  const handleOnReset = () => {
-    setShowCancelPopup(true);
+  const handleConfirmReset = () => {
+    reset({
+      basicInformation: {
+        name: "",
+        parent: "",
+        externalId: "",
+      },
+      attributes: [],
+      metricTypes: [],
+    });
+    searchParams.set("config", "basic-information");
+    setSearchParams(searchParams);
+    setShowCancelPopup(false);
   };
 
   return (
     <>
       <ToastContainer />
+      {showCancelPopup && (
+        <Popup
+          onReset={handleConfirmReset}
+          onBack={() => setShowCancelPopup(false)}
+          confirmationMessage="Are you sure you want to cancel the template creation process?"
+        />
+      )}
       <form onSubmit={handleSubmit(onSubmit)} className="h-full w-full">
         <div className="w-full">
           <Header value={config ? configMap[config] : "Basic Information"} />
           {toRender()}
-          <Footer onReset={handleOnReset} />
+          <Footer onReset={() => setShowCancelPopup(true)} />
         </div>
       </form>
     </>

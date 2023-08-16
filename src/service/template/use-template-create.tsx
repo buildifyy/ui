@@ -3,8 +3,8 @@ import {
   UseMutationResult,
   useQueryClient,
 } from "@tanstack/react-query";
-import { TemplateFormData } from "../../models";
-import { TemplateService } from "./template.service.ts";
+import { TemplateFormData } from "@/models";
+import { TemplateService } from "@/service";
 
 export const useTemplateCreate = (): UseMutationResult<
   unknown,
