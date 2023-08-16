@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Routes, Route, useSearchParams } from "react-router-dom";
 import {
   TemplateCreate,
   TemplateEdit,
@@ -13,15 +13,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Popup } from "./components/shared";
 
 function App() {
-  const location = useLocation();
-  const [stepSelection, setStepSelection] = useState<
-    "Basic Information" | "Attributes" | "Relationships" | "Metric Types"
-  >("Basic Information");
   const [showCancelPopup, setShowCancelPopup] = useState(false);
-
-  useEffect(() => {
-    setStepSelection("Basic Information");
-  }, [location]);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const methods = useForm<TemplateFormData>({
     resolver: yupResolver(schema),
@@ -30,7 +23,6 @@ function App() {
 
   const handleOnReset = () => {
     methods.reset({
-      tenant: "",
       basicInformation: {
         name: "",
         parent: "",
@@ -39,7 +31,8 @@ function App() {
       attributes: [],
       metricTypes: [],
     });
-    setStepSelection("Basic Information");
+    searchParams.set("config", "basic-information");
+    setSearchParams(searchParams);
     setShowCancelPopup(false);
   };
 
@@ -55,35 +48,20 @@ function App() {
       <div className="flex h-full">
         <Sidebar />
         <div className="flex w-full flex-col justify-between">
-          <Stepper
-            stepSelection={stepSelection}
-            setStepSelection={setStepSelection}
-          />
+          <Stepper />
           <div className="flex h-full p-5">
             <Routes>
               <Route path="/templates" element={<TemplateList />} />
               <Route
                 path="/templates/create"
                 element={
-                  <TemplateCreate
-                    stepSelection={stepSelection}
-                    setStepSelection={setStepSelection}
-                    setShowCancelPopup={setShowCancelPopup}
-                  />
+                  <TemplateCreate setShowCancelPopup={setShowCancelPopup} />
                 }
               />
-              <Route
-                path="/templates/:templateId"
-                element={
-                  <TemplateView
-                    stepSelection={stepSelection}
-                    setStepSelection={setStepSelection}
-                  />
-                }
-              />
+              <Route path="/templates/:templateId" element={<TemplateView />} />
               <Route
                 path="/templates/edit/:templateId"
-                element={<TemplateEdit stepSelection={stepSelection} />}
+                element={<TemplateEdit />}
               />
             </Routes>
           </div>

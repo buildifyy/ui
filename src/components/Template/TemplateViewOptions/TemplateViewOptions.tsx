@@ -22,14 +22,28 @@ export const TemplateViewOptions = ({
         <Eye height={15} width={15} />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>View</DropdownMenuLabel>
+        <DropdownMenuLabel>View Options</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <Link to={`/templates/${externalId}`}>Template</Link>
+          <Link to={`/templates/${externalId}?config=basic-information`}>
+            Template
+          </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>Attributes</DropdownMenuItem>
-        <DropdownMenuItem>Relationships</DropdownMenuItem>
-        <DropdownMenuItem>Metric Types</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link to={`/templates/${externalId}?config=attributes`}>
+            Attributes
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link to={`/templates/${externalId}?config=relationships`}>
+            Relationships
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link to={`/templates/${externalId}?config=metric-types`}>
+            Metric Types
+          </Link>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

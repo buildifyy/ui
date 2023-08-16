@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
 import { BasicInformation } from "./BasicInformation";
@@ -9,25 +9,27 @@ import { Footer } from "@/components/skeleton";
 import { useEffect } from "react";
 import { useTemplateView } from "@/service";
 
-interface TemplateViewProps {
-  readonly stepSelection:
-    | "Basic Information"
-    | "Attributes"
-    | "Relationships"
-    | "Metric Types";
-  readonly setStepSelection: (
-    val: "Basic Information" | "Attributes" | "Relationships" | "Metric Types",
-  ) => void;
-}
-
-export const TemplateView = ({
-  stepSelection,
-  setStepSelection,
-}: TemplateViewProps) => {
+export const TemplateView = () => {
   const { reset } = useFormContext<TemplateFormData>();
   const { templateId } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const config = searchParams.get("config");
+
+  useEffect(() => {
+    if (!config) {
+      searchParams.set("config", "basic-information");
+      setSearchParams(searchParams);
+    }
+  }, [config]);
 
   const { data } = useTemplateView(templateId);
+
+  const configMap: Record<string, string> = {
+    "basic-information": "Basic Information",
+    attributes: "Attributes",
+    relationships: "Relationships",
+    "metric-types": "Metric Types",
+  };
 
   useEffect(() => {
     if (data) {
@@ -36,12 +38,12 @@ export const TemplateView = ({
   }, [data]);
 
   const toRender = () => {
-    switch (stepSelection) {
-      case "Basic Information":
+    switch (config) {
+      case "basic-information":
         return <BasicInformation />;
-      case "Attributes":
+      case "attributes":
         return <Attributes />;
-      case "Metric Types":
+      case "metric-types":
         return <MetricTypes />;
       default:
         return null;
@@ -50,13 +52,9 @@ export const TemplateView = ({
 
   return (
     <div className="w-full">
-      <Header value={stepSelection} />
+      <Header value={config ? configMap[config] : "Basic Information"} />
       {toRender()}
-      <Footer
-        stepSelection={stepSelection}
-        setStepSelection={setStepSelection}
-        isReadonly
-      />
+      <Footer isReadonly />
     </div>
   );
 };

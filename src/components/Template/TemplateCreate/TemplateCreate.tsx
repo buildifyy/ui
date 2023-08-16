@@ -9,29 +9,35 @@ import { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useTemplateCreate } from "@/service";
+import { useSearchParams } from "react-router-dom";
 
 interface TemplateCreateProps {
-  readonly stepSelection:
-    | "Basic Information"
-    | "Attributes"
-    | "Relationships"
-    | "Metric Types";
-  readonly setStepSelection: (
-    val: "Basic Information" | "Attributes" | "Relationships" | "Metric Types",
-  ) => void;
   readonly setShowCancelPopup: (show: boolean) => void;
 }
 
-export const TemplateCreate = ({
-  stepSelection,
-  setStepSelection,
-  setShowCancelPopup,
-}: TemplateCreateProps) => {
+export const TemplateCreate = ({ setShowCancelPopup }: TemplateCreateProps) => {
   const {
     handleSubmit,
     reset,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const config = searchParams.get("config");
+
+  useEffect(() => {
+    if (!config) {
+      searchParams.set("config", "basic-information");
+      setSearchParams(searchParams);
+    }
+  }, [config]);
+
+  const configMap: Record<string, string> = {
+    "basic-information": "Basic Information",
+    attributes: "Attributes",
+    relationships: "Relationships",
+    "metric-types": "Metric Types",
+  };
+
   const showSuccessToast = () => {
     toast.success("Template created successfully!", {
       position: "top-right",
@@ -48,7 +54,8 @@ export const TemplateCreate = ({
   useEffect(() => {
     if (isCreateTemplateSuccess) {
       reset();
-      setStepSelection("Basic Information");
+      searchParams.set("config", "basic-information");
+      setSearchParams(searchParams);
       showSuccessToast();
     }
   }, [isCreateTemplateSuccess]);
@@ -56,12 +63,12 @@ export const TemplateCreate = ({
   console.log("errors: ", errors);
 
   const toRender = () => {
-    switch (stepSelection) {
-      case "Basic Information":
+    switch (config) {
+      case "basic-information":
         return <BasicInformation />;
-      case "Attributes":
+      case "attributes":
         return <Attributes />;
-      case "Metric Types":
+      case "metric-types":
         return <MetricTypes />;
       default:
         return null;
@@ -94,14 +101,9 @@ export const TemplateCreate = ({
       <ToastContainer />
       <form onSubmit={handleSubmit(onSubmit)} className="h-full w-full">
         <div className="w-full">
-          <Header value={stepSelection} />
+          <Header value={config ? configMap[config] : "Basic Information"} />
           {toRender()}
-          <Footer
-            onReset={handleOnReset}
-            stepSelection={stepSelection}
-            setStepSelection={setStepSelection}
-            isReadonly={false}
-          />
+          <Footer onReset={handleOnReset} />
         </div>
       </form>
     </>

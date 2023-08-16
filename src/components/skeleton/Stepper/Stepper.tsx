@@ -1,26 +1,27 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
 import { FaCheck, FaExclamationTriangle } from "react-icons/fa";
 
-interface StepperProps {
-  readonly stepSelection: string;
-  readonly setStepSelection: (
-    val: "Basic Information" | "Attributes" | "Relationships" | "Metric Types",
-  ) => void;
-}
-
-export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
+export const Stepper = () => {
   const location = useLocation();
   const {
     formState: { errors, isValid, isSubmitted },
   } = useFormContext<TemplateFormData>();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const config = searchParams.get("config");
 
-  const handleStepClick = (
-    val: "Basic Information" | "Attributes" | "Relationships" | "Metric Types",
-  ) => {
-    if (stepSelection !== val) {
-      setStepSelection(val);
+  const handleStepClick = (val: string) => {
+    switch (val) {
+      case "basic-information":
+      case "attributes":
+      case "relationships":
+      case "metric-types":
+        searchParams.set("config", val);
+        setSearchParams(searchParams);
+        break;
+      default:
+        break;
     }
   };
 
@@ -36,7 +37,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
         <ol className="relative z-10 flex justify-between text-sm font-medium text-gray-500">
           <li
             className="flex items-center gap-2 bg-white p-2"
-            onClick={() => handleStepClick("Basic Information")}
+            onClick={() => handleStepClick("basic-information")}
           >
             {errors.basicInformation?.parent ||
             errors.basicInformation?.name ||
@@ -47,9 +48,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
             ) : (
               <span
                 className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
-                  stepSelection === "Basic Information"
-                    ? "bg-blue-600"
-                    : "bg-gray-100"
+                  config === "basic-information" ? "bg-blue-600" : "bg-gray-100"
                 }`}
               >
                 1
@@ -59,7 +58,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
             <div className="flex gap-2 items-center">
               <span
                 className={`hidden sm:block ${
-                  stepSelection === "Basic Information" ? "font-bold" : ""
+                  config === "basic-information" ? "font-bold" : ""
                 }`}
               >
                 Basic Information
@@ -69,7 +68,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
 
           <li
             className="flex items-center gap-2 bg-white p-2"
-            onClick={() => handleStepClick("Attributes")}
+            onClick={() => handleStepClick("attributes")}
           >
             {errors.attributes?.length && errors.attributes.length > 0 ? (
               <FaExclamationTriangle className="text-red-600" />
@@ -78,7 +77,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
             ) : (
               <span
                 className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
-                  stepSelection === "Attributes" ? "bg-blue-600" : "bg-gray-100"
+                  config === "attributes" ? "bg-blue-600" : "bg-gray-100"
                 }`}
               >
                 2
@@ -88,7 +87,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
             <div className="flex gap-2 items-center">
               <span
                 className={`hidden sm:block ${
-                  stepSelection === "Attributes" ? "font-bold" : ""
+                  config === "attributes" ? "font-bold" : ""
                 }`}
               >
                 Attributes
@@ -98,13 +97,11 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
 
           <li
             className="flex items-center gap-2 bg-white p-2"
-            onClick={() => handleStepClick("Relationships")}
+            onClick={() => handleStepClick("relationships")}
           >
             <span
               className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
-                stepSelection === "Relationships"
-                  ? "bg-blue-600"
-                  : "bg-gray-100"
+                config === "relationships" ? "bg-blue-600" : "bg-gray-100"
               }`}
             >
               3
@@ -112,7 +109,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
 
             <span
               className={`hidden sm:block ${
-                stepSelection === "Relationships" ? "font-bold" : ""
+                config === "relationships" ? "font-bold" : ""
               }`}
             >
               {" "}
@@ -122,7 +119,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
 
           <li
             className="flex items-center gap-2 bg-white p-2"
-            onClick={() => handleStepClick("Metric Types")}
+            onClick={() => handleStepClick("metric-types")}
           >
             {errors.metricTypes?.length && errors.metricTypes.length > 0 ? (
               <FaExclamationTriangle className="text-red-600" />
@@ -131,9 +128,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
             ) : (
               <span
                 className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
-                  stepSelection === "Metric Types"
-                    ? "bg-blue-600"
-                    : "bg-gray-100"
+                  config === "metric-types" ? "bg-blue-600" : "bg-gray-100"
                 }`}
               >
                 4
@@ -142,7 +137,7 @@ export const Stepper = ({ stepSelection, setStepSelection }: StepperProps) => {
 
             <span
               className={`hidden sm:block ${
-                stepSelection === "Metric Types" ? "font-bold" : ""
+                config === "metric-types" ? "font-bold" : ""
               }`}
             >
               {" "}

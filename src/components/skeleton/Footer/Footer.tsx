@@ -1,52 +1,50 @@
 import { FaCircleArrowLeft, FaCircleArrowRight } from "react-icons/fa6";
+import { useSearchParams } from "react-router-dom";
 
 interface FooterProps {
   readonly onReset?: () => void;
-  readonly stepSelection:
-    | "Basic Information"
-    | "Attributes"
-    | "Relationships"
-    | "Metric Types";
-  readonly setStepSelection: (
-    val: "Basic Information" | "Attributes" | "Relationships" | "Metric Types",
-  ) => void;
   readonly isReadonly?: boolean;
 }
 
-export const Footer = ({
-  onReset,
-  stepSelection,
-  setStepSelection,
-  isReadonly,
-}: FooterProps) => {
+export const Footer = ({ onReset, isReadonly }: FooterProps) => {
   const handleOnCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (onReset) {
       onReset();
     }
   };
+  const [searchParams, setSearchParams] = useSearchParams();
+  const config = searchParams.get("config");
 
-  const isBackButtonDisabled = stepSelection === "Basic Information";
+  const isBackButtonDisabled = config === "basic-information";
 
-  const isNextButtonDisabled = stepSelection === "Metric Types";
+  const isNextButtonDisabled = config === "metric-types";
 
-  const handleOnBackClick = () => {
-    if (stepSelection === "Attributes") {
-      setStepSelection("Basic Information");
-    } else if (stepSelection === "Relationships") {
-      setStepSelection("Attributes");
-    } else if (stepSelection === "Metric Types") {
-      setStepSelection("Relationships");
+  const handleOnBackClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (config === "attributes") {
+      searchParams.set("config", "basic-information");
+      setSearchParams(searchParams);
+    } else if (config === "relationships") {
+      searchParams.set("config", "attributes");
+      setSearchParams(searchParams);
+    } else if (config === "metric-types") {
+      searchParams.set("config", "relationships");
+      setSearchParams(searchParams);
     }
   };
 
-  const handleOnNextClick = () => {
-    if (stepSelection === "Basic Information") {
-      setStepSelection("Attributes");
-    } else if (stepSelection === "Attributes") {
-      setStepSelection("Relationships");
-    } else if (stepSelection === "Relationships") {
-      setStepSelection("Metric Types");
+  const handleOnNextClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (config === "basic-information") {
+      searchParams.set("config", "attributes");
+      setSearchParams(searchParams);
+    } else if (config === "attributes") {
+      searchParams.set("config", "relationships");
+      setSearchParams(searchParams);
+    } else if (config === "relationships") {
+      searchParams.set("config", "metric-types");
+      setSearchParams(searchParams);
     }
   };
 

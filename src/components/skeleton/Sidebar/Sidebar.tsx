@@ -17,7 +17,7 @@ export const Sidebar = () => {
   const tenantData: Dropdown[] = [{ label: "the-binary", value: "the-binary" }];
 
   const handleFormReset = () => {
-    const defaultValue = {
+    reset({
       basicInformation: {
         name: "",
         parent: "",
@@ -25,8 +25,7 @@ export const Sidebar = () => {
       },
       attributes: [],
       metricTypes: [],
-    };
-    reset(defaultValue);
+    });
   };
 
   return (
