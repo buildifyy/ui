@@ -1,7 +1,7 @@
 import { BasicInformation } from "./BasicInformation";
 import { Attributes } from "./Attributes";
 import { MetricTypes } from "./MetricTypes";
-import { SubmitHandler, useFormContext, useWatch } from "react-hook-form";
+import { SubmitHandler, useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
 import { Header } from "@/components/shared";
 import { Footer } from "@/components/skeleton";
@@ -17,7 +17,6 @@ interface TemplateCreateProps {
 
 export const TemplateCreate = ({ setShowCancelPopup }: TemplateCreateProps) => {
   const {
-    control,
     handleSubmit,
     reset,
     formState: { errors },
