@@ -1,10 +1,10 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { TemplateFormData } from "@/models";
-import { FaBan, FaCheck } from "react-icons/fa6";
 import Loader from "@/assets/loading.gif";
 import { Filter, FilterOption, Header } from "@/components/shared";
 import { useTemplateList } from "@/service";
 import { TemplateViewOptions } from "@/components/Template";
+import { Check, X } from "lucide-react";
 
 export const TemplateList = () => {
   const [dataToRender, setDataToRender] = useState<TemplateFormData[]>([]);
@@ -269,7 +269,11 @@ export const TemplateList = () => {
                     {data.basicInformation.parent}
                   </td>
                   <td className="p-2 text-[0.9rem]">
-                    {data.basicInformation.isCustom ? <FaCheck /> : <FaBan />}
+                    {data.basicInformation.isCustom ? (
+                      <Check height={17} width={17} />
+                    ) : (
+                      <X height={17} width={17} />
+                    )}
                   </td>
                   <td className="p-3 text-[0.9rem] flex">
                     <TemplateViewOptions

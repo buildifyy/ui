@@ -1,7 +1,7 @@
 import { useLocation, useSearchParams } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
-import { FaCheck, FaExclamationTriangle } from "react-icons/fa";
+import { BadgeAlert, Check } from "lucide-react";
 
 export const Stepper = () => {
   const location = useLocation();
@@ -42,9 +42,13 @@ export const Stepper = () => {
             {errors.basicInformation?.parent ||
             errors.basicInformation?.name ||
             errors.basicInformation?.externalId ? (
-              <FaExclamationTriangle className="text-red-600 text-center" />
+              <BadgeAlert
+                width={17}
+                height={17}
+                className="text-red-600 text-center"
+              />
             ) : isSubmitted && isValid ? (
-              <FaCheck className="text-green-600" />
+              <Check height={17} width={17} className="text-green-600" />
             ) : (
               <span
                 className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
@@ -71,9 +75,13 @@ export const Stepper = () => {
             onClick={() => handleStepClick("attributes")}
           >
             {errors.attributes?.length && errors.attributes.length > 0 ? (
-              <FaExclamationTriangle className="text-red-600" />
+              <BadgeAlert
+                width={17}
+                height={17}
+                className="text-red-600 text-center"
+              />
             ) : isSubmitted && isValid ? (
-              <FaCheck className="text-green-600" />
+              <Check height={17} width={17} className="text-green-600" />
             ) : (
               <span
                 className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
@@ -122,9 +130,13 @@ export const Stepper = () => {
             onClick={() => handleStepClick("metric-types")}
           >
             {errors.metricTypes?.length && errors.metricTypes.length > 0 ? (
-              <FaExclamationTriangle className="text-red-600" />
+              <BadgeAlert
+                width={17}
+                height={17}
+                className="text-red-600 text-center"
+              />
             ) : isSubmitted && isValid ? (
-              <FaCheck className="text-green-600" />
+              <Check height={17} width={17} className="text-green-600" />
             ) : (
               <span
                 className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${

@@ -4,10 +4,10 @@ import {
   useFormContext,
   useWatch,
 } from "react-hook-form";
-import { Dropdown, TemplateFormData } from "../../../../models";
+import { Dropdown, TemplateFormData } from "@/models";
 import { useEffect, useState } from "react";
-import { FaChevronRight, FaChevronUp, FaTrashAlt } from "react-icons/fa";
-import { OnOff, Select } from "../../../shared";
+import { OnOff, Select } from "@/components/shared";
+import { ChevronRight, ChevronUp, Trash } from "lucide-react";
 
 interface AttributePanelProps {
   readonly index: number;
@@ -72,10 +72,16 @@ export const AttributePanel = ({
           </span>
 
           <div className="flex gap-5">
-            {isVisible ? <FaChevronUp /> : <FaChevronRight />}
+            {isVisible ? (
+              <ChevronUp height={17} width={17} />
+            ) : (
+              <ChevronRight height={17} width={17} />
+            )}
             {!isReadonly && attribute?.isNew ? (
               <button>
-                <FaTrashAlt
+                <Trash
+                  width={17}
+                  height={17}
                   onClick={(event: React.MouseEvent) => {
                     if (onRemove) {
                       onRemove(index);

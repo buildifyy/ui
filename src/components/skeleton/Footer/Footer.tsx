@@ -1,5 +1,5 @@
-import { FaCircleArrowLeft, FaCircleArrowRight } from "react-icons/fa6";
 import { useSearchParams } from "react-router-dom";
+import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
 
 interface FooterProps {
   readonly onReset?: () => void;
@@ -56,14 +56,14 @@ export const Footer = ({ onReset, isReadonly }: FooterProps) => {
           onClick={handleOnBackClick}
           className="text-indigo-600 disabled:text-gray-500 text-2xl"
         >
-          <FaCircleArrowLeft />
+          <ChevronLeftCircle height={25} width={25} />
         </button>
         <button
           disabled={isNextButtonDisabled}
           onClick={handleOnNextClick}
           className="text-indigo-600 disabled:text-gray-500 text-2xl"
         >
-          <FaCircleArrowRight />
+          <ChevronRightCircle height={25} width={25} />
         </button>
       </div>
       <div className="grid-item"></div>

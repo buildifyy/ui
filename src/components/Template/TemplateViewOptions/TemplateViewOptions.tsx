@@ -19,7 +19,7 @@ export const TemplateViewOptions = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Eye height={15} width={15} />
+        <Eye height={17} width={17} />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>View Options</DropdownMenuLabel>

@@ -5,9 +5,9 @@ import {
   useFormContext,
   useWatch,
 } from "react-hook-form";
-import { FaChevronUp, FaTrashAlt, FaChevronRight } from "react-icons/fa";
-import { TemplateFormData } from "../../../../models";
-import { OnOff } from "../../../shared";
+import { TemplateFormData } from "@/models";
+import { OnOff } from "@/components/shared";
+import { ChevronRight, ChevronUp, Trash } from "lucide-react";
 
 interface MetricPanelProps {
   readonly index: number;
@@ -104,10 +104,16 @@ export const MetricPanel = ({
           </span>
 
           <div className="flex gap-5">
-            {isVisible ? <FaChevronUp /> : <FaChevronRight />}
+            {isVisible ? (
+              <ChevronUp height={17} width={17} />
+            ) : (
+              <ChevronRight height={17} width={17} />
+            )}
             {!isReadonly && isMetricTypeNew ? (
               <button>
-                <FaTrashAlt
+                <Trash
+                  width={17}
+                  height={17}
                   onClick={(event: React.MouseEvent) => {
                     if (onRemove) {
                       onRemove(index);
