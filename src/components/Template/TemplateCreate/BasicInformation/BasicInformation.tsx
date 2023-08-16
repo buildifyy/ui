@@ -3,8 +3,10 @@ import { TemplateFormData } from "@/models";
 import { useEffect, useState } from "react";
 import { Select, OnOff } from "@/components/shared";
 import { useParentTemplates, useTemplateView } from "@/service";
+import { useLocation } from "react-router-dom";
 
 export const BasicInformation = () => {
+  const location = useLocation();
   const {
     control,
     register,
@@ -13,6 +15,7 @@ export const BasicInformation = () => {
     formState: { errors },
   } = useFormContext<TemplateFormData>();
   const [selectedParent, setSelectedParent] = useState<string>();
+  const isEditMode = location.pathname.includes("/edit");
 
   const { data: parentTemplates } = useParentTemplates();
 
@@ -77,7 +80,7 @@ export const BasicInformation = () => {
             errorClassName={
               errors.basicInformation?.parent ? "border-red-600" : ""
             }
-            isDisabled={isFetchingParentTemplateData}
+            isDisabled={isFetchingParentTemplateData || isEditMode}
             onChange={handleOnParentChange}
           />
           {errors.basicInformation?.parent && (
