@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
-import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
+import {
+  Controller,
+  useFieldArray,
+  useFormContext,
+  useWatch,
+} from "react-hook-form";
 import { FaChevronUp, FaTrashAlt, FaChevronRight } from "react-icons/fa";
 import { TemplateFormData } from "../../../../models";
-import { Toggle } from "../../../shared";
+import { OnOff } from "../../../shared";
 
 interface MetricPanelProps {
   readonly index: number;
@@ -170,12 +175,18 @@ export const MetricPanel = ({
               </span>
             </div>
             <div className="flex flex-col items-end">
-              <Toggle
-                id={`manual.${metric?._id}`}
-                {...register(
-                  `metricTypes.${metricTypeIndex}.metrics.${index}.isManual`,
+              <Controller
+                control={control}
+                name={`metricTypes.${metricTypeIndex}.metrics.${index}.isManual`}
+                defaultValue={true}
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <OnOff
+                    value={value}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    disabled={isReadonly}
+                  />
                 )}
-                isDisabled={isReadonly}
               />
               {!isReadonly &&
                 errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
@@ -253,12 +264,18 @@ export const MetricPanel = ({
               </span>
             </div>
             <div className="flex flex-col items-end">
-              <Toggle
-                id={`calculated.${metric?._id}`}
-                {...register(
-                  `metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`,
+              <Controller
+                control={control}
+                name={`metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`}
+                defaultValue={true}
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <OnOff
+                    value={value}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    disabled={isReadonly}
+                  />
                 )}
-                isDisabled={isReadonly}
               />
               {!isReadonly &&
                 errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
@@ -288,12 +305,18 @@ export const MetricPanel = ({
               </span>
             </div>
             <div className="flex flex-col items-end">
-              <Toggle
-                id={`sourced.${metric?._id}`}
-                {...register(
-                  `metricTypes.${metricTypeIndex}.metrics.${index}.isSourced`,
+              <Controller
+                control={control}
+                name={`metricTypes.${metricTypeIndex}.metrics.${index}.isSourced`}
+                defaultValue={true}
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <OnOff
+                    value={value}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    disabled={isReadonly}
+                  />
                 )}
-                isDisabled={isReadonly}
               />
               {!isReadonly &&
                 errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]

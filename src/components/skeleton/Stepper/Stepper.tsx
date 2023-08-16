@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
-import { TemplateFormData } from "../../../models";
+import { TemplateFormData } from "@/models";
 import { FaCheck, FaExclamationTriangle } from "react-icons/fa";
 
 interface StepperProps {

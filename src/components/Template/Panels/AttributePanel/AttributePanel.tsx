@@ -1,8 +1,13 @@
-import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
+import {
+  Controller,
+  useFieldArray,
+  useFormContext,
+  useWatch,
+} from "react-hook-form";
 import { Dropdown, TemplateFormData } from "../../../../models";
 import { useEffect, useState } from "react";
 import { FaChevronRight, FaChevronUp, FaTrashAlt } from "react-icons/fa";
-import { Select, Toggle } from "../../../shared";
+import { OnOff, Select } from "../../../shared";
 
 interface AttributePanelProps {
   readonly index: number;
@@ -163,10 +168,18 @@ export const AttributePanel = ({
               </span>
             </div>
             <div className="flex flex-col items-end">
-              <Toggle
-                id={`required.${attribute?._id}`}
-                {...register(`attributes.${index}.isRequired`)}
-                isDisabled={isReadonly}
+              <Controller
+                control={control}
+                name={`attributes.${index}.isRequired`}
+                defaultValue={true}
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <OnOff
+                    value={value}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    disabled={isReadonly}
+                  />
+                )}
               />
               {!isReadonly && errors.attributes?.[index]?.isRequired && (
                 <span className="text-xs text-red-600">
@@ -191,13 +204,21 @@ export const AttributePanel = ({
               </span>
             </div>
             <div className="flex flex-col items-end">
-              <Toggle
-                id={`hidden.${attribute?._id}`}
-                {...register(`attributes.${index}.isHidden`)}
-                isDisabled={isReadonly || attributeIsRequiredLive}
+              <Controller
+                control={control}
+                name={`attributes.${index}.isHidden`}
+                defaultValue={true}
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <OnOff
+                    value={value}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    disabled={isReadonly || attributeIsRequiredLive}
+                  />
+                )}
               />
               {!isReadonly && attributeIsRequiredLive ? (
-                <span className="text-gray-600 text-xs">
+                <span className="text-yellow-600 text-xs">
                   An attribute marked as required cannot be hidden
                 </span>
               ) : null}

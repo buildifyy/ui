@@ -3,7 +3,7 @@ import React, { ChangeEventHandler } from "react";
 import "./OnOff.css";
 
 interface OnOffProps {
-  readonly value: boolean;
+  readonly value?: boolean;
   readonly onChange?: ChangeEventHandler;
   readonly onBlur?: () => void;
   readonly disabled?: boolean;

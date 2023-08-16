@@ -1,10 +1,10 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { TemplateFormData } from "../../../models";
-import { Link } from "react-router-dom";
-import { FaEye, FaBan, FaCheck } from "react-icons/fa6";
-import Loader from "../../../assets/loading.gif";
-import { Filter, FilterOption, Header } from "../../shared";
-import { useTemplateList } from "../../../service";
+import { TemplateFormData } from "@/models";
+import { FaBan, FaCheck } from "react-icons/fa6";
+import Loader from "@/assets/loading.gif";
+import { Filter, FilterOption, Header } from "@/components/shared";
+import { useTemplateList } from "@/service";
+import { TemplateViewOptions } from "@/components/Template";
 
 export const TemplateList = () => {
   const [dataToRender, setDataToRender] = useState<TemplateFormData[]>([]);
@@ -271,14 +271,11 @@ export const TemplateList = () => {
                   <td className="p-2 text-[0.9rem]">
                     {data.basicInformation.isCustom ? <FaCheck /> : <FaBan />}
                   </td>
-                  <Link
-                    key={i}
-                    to={`/templates/${data.basicInformation.externalId}`}
-                  >
-                    <td className="p-2 w-fit hover:cursor-pointer text-[0.9rem]">
-                      <FaEye className="border rounded-3xl h-8 w-8 p-2 hover:scale-110" />
-                    </td>
-                  </Link>
+                  <td className="p-3 text-[0.9rem] flex">
+                    <TemplateViewOptions
+                      externalId={data.basicInformation.externalId}
+                    />
+                  </td>
                 </tr>
               ))
             )}
