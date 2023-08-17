@@ -141,7 +141,7 @@ export const BasicInformation = () => {
               errors.basicInformation?.externalId ? "border-red-600" : ""
             }`}
             {...register("basicInformation.externalId")}
-            disabled={isFetchingParentTemplateData}
+            disabled={isFetchingParentTemplateData || isEditMode}
           />
           {errors.basicInformation?.externalId && (
             <span className="text-xs text-red-600">
