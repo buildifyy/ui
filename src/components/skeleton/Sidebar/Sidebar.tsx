@@ -1,10 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
-import logo from "../../../assets/logo.svg";
-import me from "../../../assets/me.jpg";
+import logo from "@/assets/logo.svg";
+import me from "@/assets/me.jpg";
 import "./Sidebar.css";
-import { Dropdown, TemplateFormData } from "../../../models";
+import { Dropdown, TemplateFormData } from "@/models";
 import { useFormContext } from "react-hook-form";
-import { Select } from "../../shared";
+import { Select } from "@/components/shared";
 
 export const Sidebar = () => {
   const {

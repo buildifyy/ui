@@ -3,9 +3,8 @@ import { TemplateFormData } from "@/models";
 import Loader from "@/assets/loading.gif";
 import { Filter, FilterOption, Header } from "@/components/shared";
 import { useTemplateList } from "@/service";
-import { TemplateViewOptions } from "@/components/Template";
-import { Check, Edit, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { TemplateMoreOptions } from "@/components/Template";
+import { Check, X } from "lucide-react";
 
 export const TemplateList = () => {
   const [dataToRender, setDataToRender] = useState<TemplateFormData[]>([]);
@@ -277,15 +276,16 @@ export const TemplateList = () => {
                     )}
                   </td>
                   <td className="p-3 text-[0.9rem] flex gap-2">
-                    <TemplateViewOptions
+                    <TemplateMoreOptions
                       externalId={data.basicInformation.externalId}
+                      message="View Options"
                     />
                     {data.basicInformation.isCustom && (
-                      <Link
-                        to={`/templates/edit/${data.basicInformation.externalId}?config=basic-information`}
-                      >
-                        <Edit width={14} height={14} />
-                      </Link>
+                      <TemplateMoreOptions
+                        externalId={data.basicInformation.externalId}
+                        message="Edit Options"
+                        isEdit
+                      />
                     )}
                   </td>
                 </tr>

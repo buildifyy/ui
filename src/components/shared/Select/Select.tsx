@@ -1,6 +1,6 @@
 import React from "react";
 import "./Select.css";
-import { Dropdown } from "../../../models";
+import { Dropdown } from "@/models";
 
 interface SelectProps {
   readonly id?: string;
