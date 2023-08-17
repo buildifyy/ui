@@ -1,6 +1,6 @@
 import { useFormContext, useWatch } from "react-hook-form";
 import { TemplateFormData } from "@/models";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 interface HeaderProps {
   readonly value: string;
@@ -8,9 +8,10 @@ interface HeaderProps {
 
 export const Header = ({ value }: HeaderProps) => {
   const location = useLocation();
+  const { templateId } = useParams();
   const { control } = useFormContext<TemplateFormData>();
 
-  const externalIdLive = useWatch<TemplateFormData>({
+  const templateNameLive = useWatch<TemplateFormData>({
     name: "basicInformation.name",
     control,
   });
@@ -18,8 +19,10 @@ export const Header = ({ value }: HeaderProps) => {
   const helperText =
     location.pathname.includes("/create") || location.pathname.includes("/edit")
       ? location.pathname.includes("/create")
-        ? `Creating ${externalIdLive ? externalIdLive : "Untitled"}`
-        : `Editing ${externalIdLive ? externalIdLive : "Untitled"}`
+        ? `Creating ${templateNameLive}`
+        : `Editing ${templateNameLive}`
+      : templateId
+      ? `Viewing ${templateNameLive}`
       : null;
 
   return (

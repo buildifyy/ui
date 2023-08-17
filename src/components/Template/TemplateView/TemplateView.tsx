@@ -54,7 +54,7 @@ export const TemplateView = () => {
     <div className="w-full">
       <Header value={config ? configMap[config] : "Basic Information"} />
       {toRender()}
-      <Footer isReadonly />
+      <Footer />
     </div>
   );
 };

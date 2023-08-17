@@ -48,4 +48,18 @@ export class TemplateService {
       return Promise.reject(error);
     }
   };
+
+  updateTemplate = async (data: TemplateFormData): Promise<number> => {
+    const url = `http://localhost:8080/api/v1/tenants/the-binary/templates/${data.basicInformation.externalId}`;
+
+    try {
+      const response = await axios.put<TemplateFormData, AxiosResponse>(
+        url,
+        data,
+      );
+      return response.status;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
 }

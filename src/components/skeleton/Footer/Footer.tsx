@@ -1,12 +1,16 @@
 import { useSearchParams } from "react-router-dom";
 import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
+import { useFormContext } from "react-hook-form";
+import { TemplateFormData } from "@/models";
 
 interface FooterProps {
   readonly onReset?: () => void;
-  readonly isReadonly?: boolean;
 }
 
-export const Footer = ({ onReset, isReadonly }: FooterProps) => {
+export const Footer = ({ onReset }: FooterProps) => {
+  const {
+    formState: { dirtyFields },
+  } = useFormContext<TemplateFormData>();
   const handleOnCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (onReset) {
@@ -67,22 +71,22 @@ export const Footer = ({ onReset, isReadonly }: FooterProps) => {
         </button>
       </div>
       <div className="grid-item"></div>
-      {!isReadonly && (
-        <div className="grid-item">
-          <button
-            className="inline-block rounded px-5 py-1 w-fit text-sm font-medium text-indigo-600 hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring active:bg-indigo-500 disabled:opacity-50 disabled:pointer-events-none"
-            onClick={handleOnCancel}
-          >
-            Cancel
-          </button>
-          <button
-            className="inline-block rounded border border-indigo-600 bg-indigo-600 px-5 py-1 w-fit text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500 ml-5 disabled:opacity-50 disabled:pointer-events-none"
-            type="submit"
-          >
-            Save
-          </button>
-        </div>
-      )}
+      <div className="grid-item">
+        <button
+          className="inline-block rounded px-5 py-1 w-fit text-sm font-medium text-indigo-600 hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring active:bg-indigo-500 disabled:opacity-50 disabled:pointer-events-none"
+          onClick={handleOnCancel}
+          disabled={Object.keys(dirtyFields).length === 0}
+        >
+          Cancel
+        </button>
+        <button
+          className="inline-block rounded border border-indigo-600 bg-indigo-600 px-5 py-1 w-fit text-sm font-medium text-white hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-indigo-500 ml-5 disabled:opacity-50 disabled:pointer-events-none"
+          type="submit"
+          disabled={Object.keys(dirtyFields).length === 0}
+        >
+          Save
+        </button>
+      </div>
     </div>
   );
 };
