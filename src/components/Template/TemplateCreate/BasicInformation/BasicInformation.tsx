@@ -44,7 +44,7 @@ export const BasicInformation = () => {
   }, [parentTemplateData]);
 
   useEffect(() => {
-    if (basicInformationNameLive !== null) {
+    if (basicInformationNameLive !== null && !isEditMode) {
       const valueToSet = basicInformationNameLive?.replace(/\s/g, "");
       setValue("basicInformation.externalId", valueToSet?.toLowerCase());
     }

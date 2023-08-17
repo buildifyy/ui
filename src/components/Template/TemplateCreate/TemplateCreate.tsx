@@ -51,7 +51,15 @@ export const TemplateCreate = () => {
 
   useEffect(() => {
     if (isCreateTemplateSuccess) {
-      reset();
+      reset({
+        basicInformation: {
+          name: "",
+          parent: "",
+          externalId: "",
+        },
+        attributes: [],
+        metricTypes: [],
+      });
       searchParams.set("config", "basic-information");
       setSearchParams(searchParams);
       showSuccessToast();

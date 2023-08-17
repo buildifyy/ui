@@ -14,6 +14,9 @@ function App() {
   const methods = useForm<TemplateFormData>({
     resolver: yupResolver(schema),
     mode: "all",
+    defaultValues: {
+      tenant: "the-binary",
+    },
   });
 
   return (
