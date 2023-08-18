@@ -57,7 +57,7 @@ export const Topbar = () => {
                     className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
                       config === "basic-information"
                         ? "bg-blue-600"
-                        : "bg-gray-100"
+                        : "bg-gray-400"
                     }`}
                   >
                     1
@@ -67,7 +67,7 @@ export const Topbar = () => {
                 <div className="flex gap-2 items-center">
                   <span
                     className={`hidden sm:block ${
-                      config === "basic-information" ? "font-bold" : ""
+                      config === "basic-information" ? "font-extrabold" : ""
                     }`}
                   >
                     Basic Information
@@ -90,7 +90,7 @@ export const Topbar = () => {
                 ) : (
                   <span
                     className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
-                      config === "attributes" ? "bg-blue-600" : "bg-gray-100"
+                      config === "attributes" ? "bg-blue-600" : "bg-gray-400"
                     }`}
                   >
                     2
@@ -100,7 +100,7 @@ export const Topbar = () => {
                 <div className="flex gap-2 items-center">
                   <span
                     className={`hidden sm:block ${
-                      config === "attributes" ? "font-bold" : ""
+                      config === "attributes" ? "font-extrabold" : ""
                     }`}
                   >
                     Attributes
@@ -114,7 +114,7 @@ export const Topbar = () => {
               >
                 <span
                   className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
-                    config === "relationships" ? "bg-blue-600" : "bg-gray-100"
+                    config === "relationships" ? "bg-blue-600" : "bg-gray-400"
                   }`}
                 >
                   3
@@ -122,7 +122,7 @@ export const Topbar = () => {
 
                 <span
                   className={`hidden sm:block ${
-                    config === "relationships" ? "font-bold" : ""
+                    config === "relationships" ? "font-extrabold" : ""
                   }`}
                 >
                   {" "}
@@ -145,7 +145,7 @@ export const Topbar = () => {
                 ) : (
                   <span
                     className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
-                      config === "metric-types" ? "bg-blue-600" : "bg-gray-100"
+                      config === "metric-types" ? "bg-blue-600" : "bg-gray-400"
                     }`}
                   >
                     4
@@ -154,7 +154,7 @@ export const Topbar = () => {
 
                 <span
                   className={`hidden sm:block ${
-                    config === "metric-types" ? "font-bold" : ""
+                    config === "metric-types" ? "font-extrabold" : ""
                   }`}
                 >
                   {" "}

@@ -77,7 +77,7 @@ export const AttributePanel = ({
             setIsVisible(!isVisible);
           }}
         >
-          <span className="font-normal italic text-sm">
+          <span className="font-bold italic text-sm">
             {attributeNameLive ? attributeNameLive : "Untitled Attribute"}
           </span>
 

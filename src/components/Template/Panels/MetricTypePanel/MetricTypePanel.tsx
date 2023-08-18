@@ -82,7 +82,7 @@ export const MetricTypePanel = ({
             setIsVisible(!isVisible);
           }}
         >
-          <span className="font-normal italic text-sm">
+          <span className="font-bold italic text-sm">
             {metricTypeNameLive ? metricTypeNameLive : "Untitled Metric Type"}
           </span>
 
