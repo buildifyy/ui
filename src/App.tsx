@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import {
   TemplateCreate,
   TemplateEdit,
@@ -26,6 +26,7 @@ function App() {
         <div className="flex w-full flex-col justify-between">
           <div className="flex h-full px-5 py-3">
             <Routes>
+              <Route path="/" element={<Navigate replace to="/templates" />} />
               <Route path="/templates" element={<TemplateList />} />
               <Route path="/templates/create" element={<TemplateCreate />} />
               <Route path="/templates/:templateId" element={<TemplateView />} />

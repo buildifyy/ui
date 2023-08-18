@@ -6,10 +6,10 @@ import { TemplateFormData } from "@/models";
 import { Header, Popup } from "@/components/shared";
 import { Footer } from "@/components/skeleton";
 import { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useTemplateCreate } from "@/service";
 import { useSearchParams } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster.tsx";
+import { useToast } from "@/components/ui/use-toast.ts";
 
 export const TemplateCreate = () => {
   const {
@@ -21,6 +21,7 @@ export const TemplateCreate = () => {
   const [showCancelPopup, setShowCancelPopup] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const config = searchParams.get("config");
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!config) {
@@ -37,17 +38,25 @@ export const TemplateCreate = () => {
   };
 
   const showSuccessToast = () => {
-    toast.success("Template created successfully!", {
-      position: "top-right",
-      autoClose: 2000,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
+    toast({
+      variant: "destructive",
+      title: "Template Created Successfully",
+      className: "group border-none bg-blue-600 text-primary-foreground",
     });
   };
 
-  const { mutate: createTemplate, isSuccess: isCreateTemplateSuccess } =
-    useTemplateCreate();
+  const showFailureToast = () => {
+    toast({
+      variant: "destructive",
+      title: "Template Creation Failed",
+    });
+  };
+
+  const {
+    mutate: createTemplate,
+    isSuccess: isCreateTemplateSuccess,
+    isError: isCreateTemplateError,
+  } = useTemplateCreate();
 
   useEffect(() => {
     if (isCreateTemplateSuccess) {
@@ -69,6 +78,12 @@ export const TemplateCreate = () => {
       showSuccessToast();
     }
   }, [isCreateTemplateSuccess]);
+
+  useEffect(() => {
+    if (isCreateTemplateError) {
+      showFailureToast();
+    }
+  }, [isCreateTemplateError]);
 
   console.log("errors: ", errors);
 
@@ -137,7 +152,7 @@ export const TemplateCreate = () => {
 
   return (
     <>
-      <ToastContainer />
+      <Toaster />
       {showCancelPopup && (
         <Popup
           onReset={handleConfirmReset}

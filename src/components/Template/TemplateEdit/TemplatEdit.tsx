@@ -8,7 +8,8 @@ import { Attributes } from "@/components/Template/TemplateCreate/Attributes";
 import { MetricTypes } from "@/components/Template/TemplateCreate/MetricTypes";
 import { Header, Popup } from "@/components/shared";
 import { Footer } from "@/components/skeleton";
-import { toast, ToastContainer } from "react-toastify";
+import { useToast } from "@/components/ui/use-toast.ts";
+import { Toaster } from "@/components/ui/toaster.tsx";
 
 export const TemplateEdit = () => {
   const { reset, getValues, handleSubmit } = useFormContext<TemplateFormData>();
@@ -16,6 +17,7 @@ export const TemplateEdit = () => {
   const { templateId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const config = searchParams.get("config");
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!config) {
@@ -26,16 +28,24 @@ export const TemplateEdit = () => {
 
   const { data, refetch: refetchTemplateData } = useTemplateView(templateId);
 
-  const { mutate: updateTemplate, isSuccess: isUpdateTemplateSuccess } =
-    useTemplateEdit();
+  const {
+    mutate: updateTemplate,
+    isSuccess: isUpdateTemplateSuccess,
+    isError: isUpdateTemplateError,
+  } = useTemplateEdit();
 
   const showSuccessToast = () => {
-    toast.success("Template updated successfully!", {
-      position: "top-right",
-      autoClose: 2000,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: false,
+    toast({
+      variant: "destructive",
+      title: "Template Updated Successfully",
+      className: "group border-none bg-blue-600 text-primary-foreground",
+    });
+  };
+
+  const showFailureToast = () => {
+    toast({
+      variant: "destructive",
+      title: "Template Update Failed",
     });
   };
 
@@ -59,6 +69,12 @@ export const TemplateEdit = () => {
       }
     }
   }, [isUpdateTemplateSuccess]);
+
+  useEffect(() => {
+    if (isUpdateTemplateError) {
+      showFailureToast();
+    }
+  }, [isUpdateTemplateError]);
 
   const configMap: Record<string, string> = {
     "basic-information": "Basic Information",
@@ -149,7 +165,7 @@ export const TemplateEdit = () => {
 
   return (
     <>
-      <ToastContainer />
+      <Toaster />
       {showCancelPopup && (
         <Popup
           onReset={handleConfirmReset}
