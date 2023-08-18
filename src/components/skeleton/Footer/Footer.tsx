@@ -53,7 +53,7 @@ export const Footer = ({ onReset }: FooterProps) => {
   };
 
   return (
-    <div className="fixed left-[244px] inset-x-0 bottom-0 grid h-[60px] pr-28 pl-14  items-center border-t grid-cols-[1fr,1fr,auto]">
+    <div className="fixed inset-x-0 bottom-0 grid h-[60px] px-14  items-center border-t grid-cols-[1fr,1fr,auto]">
       <div className="grid-item flex gap-4">
         <button
           disabled={isBackButtonDisabled}

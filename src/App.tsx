@@ -5,7 +5,7 @@ import {
   TemplateList,
   TemplateView,
 } from "@/components/Template";
-import { Sidebar, Stepper } from "@/components/skeleton";
+import { Topbar } from "@/components/skeleton";
 import { FormProvider, useForm } from "react-hook-form";
 import { TemplateFormData, schema } from "@/models";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -21,10 +21,9 @@ function App() {
 
   return (
     <FormProvider {...methods}>
-      <div className="flex h-full">
-        <Sidebar />
+      <div className="flex h-full flex-col">
+        <Topbar />
         <div className="flex w-full flex-col justify-between">
-          <Stepper />
           <div className="flex h-full p-5">
             <Routes>
               <Route path="/templates" element={<TemplateList />} />
