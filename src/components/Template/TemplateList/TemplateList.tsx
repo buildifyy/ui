@@ -232,7 +232,7 @@ export const TemplateList = () => {
           value={searchText}
         />
       </div>
-      <div className="max-h-[calc(100%-7rem)] overflow-y-auto border rounded-2xl mt-5">
+      <div className="max-h-[calc(100%-7rem)] overflow-y-auto border rounded-2xl mt-5 pb-3">
         <table className="w-full border-collapse">
           <thead className="sticky top-0 bg-[#f5f4f6]">
             <tr className="border-b">
@@ -258,7 +258,7 @@ export const TemplateList = () => {
               </tr>
             ) : (
               dataToRender.map((data, i) => (
-                <tr key={i} className="border-b">
+                <tr key={i} className="border-b last:border-none">
                   <td className="p-2 pl-4 text-[0.9rem] italic">
                     {data.basicInformation.externalId}
                   </td>

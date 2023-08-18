@@ -41,11 +41,22 @@ export const TemplateEdit = () => {
 
   useEffect(() => {
     if (isUpdateTemplateSuccess) {
-      reset(data);
-      searchParams.set("config", "basic-information");
-      setSearchParams(searchParams);
-      showSuccessToast();
-      refetchTemplateData();
+      if (data) {
+        reset((prev) => {
+          return {
+            tenant: prev.tenant,
+            basicInformation: {
+              ...data.basicInformation,
+            },
+            attributes: data.attributes,
+            metricTypes: data.metricTypes,
+          };
+        });
+        searchParams.set("config", "basic-information");
+        setSearchParams(searchParams);
+        showSuccessToast();
+        refetchTemplateData();
+      }
     }
   }, [isUpdateTemplateSuccess]);
 
@@ -58,7 +69,16 @@ export const TemplateEdit = () => {
 
   useEffect(() => {
     if (data) {
-      reset(data);
+      reset((prev) => {
+        return {
+          tenant: prev.tenant,
+          basicInformation: {
+            ...data.basicInformation,
+          },
+          attributes: data.attributes,
+          metricTypes: data.metricTypes,
+        };
+      });
     }
   }, [data]);
 
@@ -110,10 +130,21 @@ export const TemplateEdit = () => {
   };
 
   const handleConfirmReset = () => {
-    reset(data);
-    searchParams.set("config", "basic-information");
-    setSearchParams(searchParams);
-    setShowCancelPopup(false);
+    if (data) {
+      reset((prev) => {
+        return {
+          tenant: prev.tenant,
+          basicInformation: {
+            ...data.basicInformation,
+          },
+          attributes: data.attributes,
+          metricTypes: data.metricTypes,
+        };
+      });
+      searchParams.set("config", "basic-information");
+      setSearchParams(searchParams);
+      setShowCancelPopup(false);
+    }
   };
 
   return (

@@ -51,14 +51,18 @@ export const TemplateCreate = () => {
 
   useEffect(() => {
     if (isCreateTemplateSuccess) {
-      reset({
-        basicInformation: {
-          name: "",
-          parent: "",
-          externalId: "",
-        },
-        attributes: [],
-        metricTypes: [],
+      reset((prev) => {
+        return {
+          tenant: prev.tenant,
+          basicInformation: {
+            parent: "",
+            name: "",
+            externalId: "",
+            isCustom: true,
+          },
+          attributes: [],
+          metricTypes: [],
+        };
       });
       searchParams.set("config", "basic-information");
       setSearchParams(searchParams);
@@ -113,14 +117,18 @@ export const TemplateCreate = () => {
   };
 
   const handleConfirmReset = () => {
-    reset({
-      basicInformation: {
-        name: "",
-        parent: "",
-        externalId: "",
-      },
-      attributes: [],
-      metricTypes: [],
+    reset((prev) => {
+      return {
+        tenant: prev.tenant,
+        basicInformation: {
+          parent: "",
+          name: "",
+          externalId: "",
+          isCustom: true,
+        },
+        attributes: [],
+        metricTypes: [],
+      };
     });
     searchParams.set("config", "basic-information");
     setSearchParams(searchParams);

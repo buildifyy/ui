@@ -2,7 +2,7 @@ import { useLocation, useSearchParams } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
 import { BadgeAlert, Check } from "lucide-react";
-import { Menu } from "@/components/skeleton/Menu";
+import { Menu } from "@/components/skeleton";
 
 export const Topbar = () => {
   const location = useLocation();

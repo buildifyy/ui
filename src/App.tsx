@@ -24,7 +24,7 @@ function App() {
       <div className="flex h-full flex-col">
         <Topbar />
         <div className="flex w-full flex-col justify-between">
-          <div className="flex h-full p-5">
+          <div className="flex h-full px-5 py-3">
             <Routes>
               <Route path="/templates" element={<TemplateList />} />
               <Route path="/templates/create" element={<TemplateCreate />} />

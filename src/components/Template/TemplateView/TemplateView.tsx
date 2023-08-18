@@ -33,7 +33,16 @@ export const TemplateView = () => {
 
   useEffect(() => {
     if (data) {
-      reset(data);
+      reset((prev) => {
+        return {
+          tenant: prev.tenant,
+          basicInformation: {
+            ...data.basicInformation,
+          },
+          attributes: data.attributes,
+          metricTypes: data.metricTypes,
+        };
+      });
     }
   }, [data]);
 

@@ -19,16 +19,18 @@ export const Header = ({ value }: HeaderProps) => {
   const helperText =
     location.pathname.includes("/create") || location.pathname.includes("/edit")
       ? location.pathname.includes("/create")
-        ? `Creating ${templateNameLive}`
-        : `Editing ${templateNameLive}`
+        ? `Creating Template ${templateNameLive}`
+        : `Editing Template ${templateNameLive}`
       : templateId
-      ? `Viewing ${templateNameLive}`
+      ? `Viewing Template ${templateNameLive}`
       : null;
 
   return (
     <div className="flex justify-between items-end">
-      <h1 className="text-2xl font-bold text-gray-900">{value}</h1>
-      <span className="text-sm italic">{helperText}</span>
+      <div className="flex flex-col">
+        <span className="text-sm italic">{helperText}</span>
+        <h1 className="text-xl font-bold text-gray-900">{value}</h1>
+      </div>
     </div>
   );
 };
