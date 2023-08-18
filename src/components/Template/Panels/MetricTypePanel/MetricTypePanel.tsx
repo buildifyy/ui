@@ -32,7 +32,9 @@ export const MetricTypePanel = ({
     keyName: "_id",
   });
   const metricType = metricTypes[index];
-  const [isVisible, setIsVisible] = useState(metricType?.isNew && index === 0);
+  const [isVisible, setIsVisible] = useState(
+    metricType?.isNew && (index === 0 || index === metricTypes.length - 1),
+  );
 
   const {
     fields: metrics,

@@ -39,7 +39,9 @@ export const AttributePanel = ({
   });
 
   const attribute = attributes[index];
-  const [isVisible, setIsVisible] = useState(attribute?.isNew && index === 0);
+  const [isVisible, setIsVisible] = useState(
+    attribute?.isNew && (index === 0 || index === attributes.length - 1),
+  );
 
   const attributeNameLive = useWatch({
     name: `attributes.${index}.name`,

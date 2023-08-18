@@ -3,14 +3,19 @@ import { TemplateFormData } from "@/models";
 import { AddPanel } from "@/components/shared";
 import { MetricTypePanel } from "../../Panels";
 import { useMetricTypeDropdown } from "@/service/common";
+import { useLocation } from "react-router-dom";
 
 export const MetricTypes = () => {
+  const location = useLocation();
   const { control } = useFormContext<TemplateFormData>();
   const {
     fields: metricTypes,
     prepend,
+    append,
     remove,
   } = useFieldArray({ control, name: "metricTypes", keyName: "_id" });
+
+  const isEditMode = location.pathname.includes("/edit");
 
   const { data: metricTypeValues } = useMetricTypeDropdown();
 
@@ -19,19 +24,35 @@ export const MetricTypes = () => {
   };
 
   const handleAddMetricType = () => {
-    prepend({
-      name: "",
-      metricType: "",
-      isNew: true,
-      metrics: [
-        {
-          name: "",
-          isCalculated: false,
-          isManual: false,
-          isSourced: false,
-        },
-      ],
-    });
+    if (isEditMode) {
+      append({
+        name: "",
+        metricType: "",
+        isNew: true,
+        metrics: [
+          {
+            name: "",
+            isCalculated: false,
+            isManual: false,
+            isSourced: false,
+          },
+        ],
+      });
+    } else {
+      prepend({
+        name: "",
+        metricType: "",
+        isNew: true,
+        metrics: [
+          {
+            name: "",
+            isCalculated: false,
+            isManual: false,
+            isSourced: false,
+          },
+        ],
+      });
+    }
   };
 
   return (

@@ -3,14 +3,19 @@ import { TemplateFormData } from "@/models";
 import { AddPanel } from "@/components/shared";
 import { AttributePanel } from "../../Panels";
 import { useAttributeTypeDropdown } from "@/service/common";
+import { useLocation } from "react-router-dom";
 
 export const Attributes = () => {
+  const location = useLocation();
   const { control } = useFormContext<TemplateFormData>();
   const {
     fields: attributes,
+    append,
     prepend,
     remove,
   } = useFieldArray({ control, name: "attributes", keyName: "_id" });
+
+  const isEditMode = location.pathname.includes("/edit");
 
   const { data: attributeTypeValues } = useAttributeTypeDropdown();
 
@@ -19,13 +24,23 @@ export const Attributes = () => {
   };
 
   const handleAddAttribute = () => {
-    prepend({
-      name: "",
-      dataType: "",
-      isNew: true,
-      isRequired: false,
-      isHidden: false,
-    });
+    if (isEditMode) {
+      append({
+        name: "",
+        dataType: "",
+        isNew: true,
+        isRequired: false,
+        isHidden: false,
+      });
+    } else {
+      prepend({
+        name: "",
+        dataType: "",
+        isNew: true,
+        isRequired: false,
+        isHidden: false,
+      });
+    }
   };
 
   return (

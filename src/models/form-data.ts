@@ -6,6 +6,7 @@ export interface BasicInformation {
 }
 
 export interface Attribute {
+  readonly id?: string;
   readonly name: string;
   readonly dataType: string;
   readonly isRequired?: boolean;
@@ -15,6 +16,7 @@ export interface Attribute {
 }
 
 export interface MetricType {
+  readonly id?: string;
   readonly name: string;
   readonly metricType: string;
   readonly metrics: Metric[];
@@ -23,6 +25,7 @@ export interface MetricType {
 }
 
 export interface Metric {
+  readonly id?: string;
   readonly name: string;
   readonly isManual?: boolean;
   readonly value?: string | number | boolean | null;
