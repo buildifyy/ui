@@ -227,7 +227,7 @@ export const TemplateList = () => {
         <input
           type="text"
           placeholder="Search"
-          className="pl-4 py-1 pr-1 border-2 rounded-2xl"
+          className="px-4 border-2 rounded-2xl text-[0.8rem]"
           onChange={handleSearchTextChange}
           value={searchText}
         />
