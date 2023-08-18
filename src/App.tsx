@@ -9,6 +9,7 @@ import { Topbar } from "@/components/skeleton";
 import { FormProvider, useForm } from "react-hook-form";
 import { TemplateFormData, schema } from "@/models";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { InstanceCreate } from "@/components/Instance";
 
 function App() {
   const methods = useForm<TemplateFormData>({
@@ -34,6 +35,7 @@ function App() {
                 path="/templates/edit/:templateId"
                 element={<TemplateEdit />}
               />
+              <Route path="/instances/create" element={<InstanceCreate />} />
             </Routes>
           </div>
         </div>

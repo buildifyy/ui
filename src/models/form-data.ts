@@ -1,11 +1,11 @@
-export interface BasicInformation {
+export interface TemplateBasicInformation {
   readonly parent: string;
   readonly name: string;
   readonly externalId: string;
   readonly isCustom: boolean;
 }
 
-export interface Attribute {
+export interface TemplateAttribute {
   readonly id?: string;
   readonly name: string;
   readonly dataType: string;
@@ -15,16 +15,16 @@ export interface Attribute {
   readonly owningTemplate?: string;
 }
 
-export interface MetricType {
+export interface TemplateMetricType {
   readonly id?: string;
   readonly name: string;
   readonly metricType: string;
-  readonly metrics: Metric[];
+  readonly metrics: TemplateMetric[];
   readonly isNew?: boolean;
   readonly owningTemplate?: string;
 }
 
-export interface Metric {
+export interface TemplateMetric {
   readonly id?: string;
   readonly name: string;
   readonly isManual?: boolean;
@@ -35,7 +35,24 @@ export interface Metric {
 
 export interface TemplateFormData {
   readonly tenant: string;
-  readonly basicInformation: BasicInformation;
-  readonly attributes: Attribute[];
-  readonly metricTypes: MetricType[];
+  readonly basicInformation: TemplateBasicInformation;
+  readonly attributes: TemplateAttribute[];
+  readonly metricTypes: TemplateMetricType[];
+}
+
+export interface InstanceBasicInformation {
+  readonly name: string;
+  readonly externalId: string;
+  readonly parent: string;
+}
+
+export interface InstanceAttribute {
+  readonly id: string;
+  readonly value: string | number | boolean;
+}
+
+export interface InstanceFormData {
+  readonly tenant: string;
+  readonly basicInformation: InstanceBasicInformation;
+  readonly attributes: InstanceAttribute[];
 }
