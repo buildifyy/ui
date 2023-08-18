@@ -3,7 +3,7 @@ import { Attributes } from "./Attributes";
 import { MetricTypes } from "./MetricTypes";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
-import { Header, Popup } from "@/components/shared";
+import { Alert, Header } from "@/components/shared";
 import { Footer } from "@/components/skeleton";
 import { useEffect, useState } from "react";
 import { useTemplateCreate } from "@/service";
@@ -153,13 +153,13 @@ export const TemplateCreate = () => {
   return (
     <>
       <Toaster />
-      {showCancelPopup && (
-        <Popup
-          onReset={handleConfirmReset}
-          onBack={() => setShowCancelPopup(false)}
-          confirmationMessage="Are you sure you want to cancel the template creation process?"
-        />
-      )}
+      <Alert
+        title="Cancel Template Creation Process ?"
+        isOpen={showCancelPopup}
+        setIsOpen={setShowCancelPopup}
+        onReset={handleConfirmReset}
+        onCancel={() => setShowCancelPopup(false)}
+      />
       <form onSubmit={handleSubmit(onSubmit)} className="h-full w-full">
         <div className="w-full">
           <Header value={config ? configMap[config] : "Basic Information"} />

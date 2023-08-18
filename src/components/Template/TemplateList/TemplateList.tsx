@@ -236,11 +236,13 @@ export const TemplateList = () => {
         <table className="w-full border-collapse">
           <thead className="sticky top-0 bg-[#f5f4f6]">
             <tr className="border-b">
-              <th className="p-2 pl-4 text-left text-[0.9rem]">External ID</th>
-              <th className="p-2 text-left text-[0.9rem]">Name</th>
-              <th className="p-2 text-left text-[0.9rem]">Parent</th>
-              <th className="p-2 text-left text-[0.9rem]">Custom</th>
-              <th className="p-2 text-left w-20 text-[0.9rem]"></th>
+              <th className="p-2 pl-4 text-left text-[0.9rem] font-bold">
+                External ID
+              </th>
+              <th className="p-2 text-left text-[0.9rem] font-bold">Name</th>
+              <th className="p-2 text-left text-[0.9rem] font-bold">Parent</th>
+              <th className="p-2 text-left text-[0.9rem] font-bold">Custom</th>
+              <th className="p-2 text-left w-20 text-[0.9rem] font-bold"></th>
             </tr>
           </thead>
           <tbody>
@@ -265,7 +267,7 @@ export const TemplateList = () => {
                   <td className="p-2 text-[0.9rem]">
                     {data.basicInformation.name}
                   </td>
-                  <td className="p-2 text-[0.9rem]">
+                  <td className="p-2 text-[0.9rem] italic">
                     {data.basicInformation.parent}
                   </td>
                   <td className="p-2 text-[0.9rem]">

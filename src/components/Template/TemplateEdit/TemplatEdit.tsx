@@ -6,7 +6,7 @@ import { useTemplateEdit, useTemplateView } from "@/service";
 import { BasicInformation } from "@/components/Template/TemplateCreate/BasicInformation";
 import { Attributes } from "@/components/Template/TemplateCreate/Attributes";
 import { MetricTypes } from "@/components/Template/TemplateCreate/MetricTypes";
-import { Header, Popup } from "@/components/shared";
+import { Alert, Header } from "@/components/shared";
 import { Footer } from "@/components/skeleton";
 import { useToast } from "@/components/ui/use-toast.ts";
 import { Toaster } from "@/components/ui/toaster.tsx";
@@ -166,13 +166,13 @@ export const TemplateEdit = () => {
   return (
     <>
       <Toaster />
-      {showCancelPopup && (
-        <Popup
-          onReset={handleConfirmReset}
-          onBack={() => setShowCancelPopup(false)}
-          confirmationMessage="Are you sure you want to cancel the template edit process? All your recent changes will be reset"
-        />
-      )}
+      <Alert
+        title="Cancel Template Update Process ?"
+        isOpen={showCancelPopup}
+        setIsOpen={setShowCancelPopup}
+        onReset={handleConfirmReset}
+        onCancel={() => setShowCancelPopup(false)}
+      />
       <form onSubmit={handleSubmit(onSubmit)} className="h-full w-full">
         <div className="w-full">
           <Header value={config ? configMap[config] : "Basic Information"} />

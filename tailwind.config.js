@@ -72,6 +72,7 @@ module.exports = {
       },
       fontFamily: {
         mina: ["mina", "sans-serif"],
+        lato: ["lato", "sans-serif"],
       },
     },
   },

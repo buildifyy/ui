@@ -29,7 +29,9 @@ export const Header = ({ value }: HeaderProps) => {
     <div className="flex justify-between items-end">
       <div className="flex flex-col">
         <span className="text-sm italic">{helperText}</span>
-        <h1 className="text-xl font-bold text-gray-900">{value}</h1>
+        <h1 className="text-xl font-semibold text-gray-900 tracking-wide">
+          {value}
+        </h1>
       </div>
     </div>
   );
