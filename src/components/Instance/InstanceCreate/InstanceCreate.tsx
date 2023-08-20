@@ -3,10 +3,29 @@ import { Footer } from "@/components/skeleton";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { BasicInformation } from "./BasicInformation";
+import { Attributes } from "@/components/Instance/InstanceCreate/Attributes";
+import { useInstanceCreateForm } from "@/service/instance";
+import { useFormContext, useWatch } from "react-hook-form";
+import { InstanceFormData, InstanceMetaDataField } from "@/models";
 
-export const InstanceCreate = () => {
+interface InstanceCreateProps {
+  readonly setSchemaContext?: (metaData: InstanceMetaDataField[]) => void;
+}
+
+export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const config = searchParams.get("config");
+  const { control } = useFormContext<InstanceFormData>();
+
+  const selectedParentLive = useWatch({
+    control,
+    name: "basicInformation.parent",
+  });
+
+  const {
+    data: instanceCreateFormData,
+    isFetching: isFetchingInstanceCreateFormData,
+  } = useInstanceCreateForm(selectedParentLive);
 
   const configMap: Record<string, string> = {
     "basic-information": "Basic Information",
@@ -22,10 +41,25 @@ export const InstanceCreate = () => {
     }
   }, [config]);
 
+  useEffect(() => {
+    if (instanceCreateFormData && setSchemaContext) {
+      setSchemaContext(instanceCreateFormData.attributes.fields);
+    }
+  }, [instanceCreateFormData]);
+
   const toRender = () => {
     switch (config) {
       case "basic-information":
-        return <BasicInformation />;
+        return (
+          <BasicInformation
+            fields={instanceCreateFormData?.basicInformation.fields}
+            isLoading={isFetchingInstanceCreateFormData}
+          />
+        );
+      case "attributes":
+        return (
+          <Attributes fields={instanceCreateFormData?.attributes.fields} />
+        );
       default:
         return null;
     }

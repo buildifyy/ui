@@ -1,6 +1,7 @@
 import * as yup from "yup";
+import { InstanceMetaDataField } from "@/models/instance";
 
-export const schema = yup.object({
+export const templateSchema = yup.object({
   tenant: yup.string().required("This field is required"),
   basicInformation: yup.object({
     parent: yup.string().required("This field is required"),
@@ -80,4 +81,57 @@ export const schema = yup.object({
     )
     .required()
     .default([]),
+});
+
+export const instanceSchema = yup.object({
+  tenant: yup.string().required("This field is required"),
+  basicInformation: yup.object({
+    parent: yup.string().required("This field is required"),
+    name: yup.string().required("This field is required"),
+    externalId: yup.string().required("This field is required"),
+  }),
+  attributes: yup
+    .array()
+    .of(
+      yup.object({
+        value: yup.string().test("value-validation", "", function (value) {
+          const index = parseInt(this.path.split("[")[1].split("]")[0], 10);
+          const attributeContext = this.options.context?.["attributes"][
+            index
+          ] as InstanceMetaDataField;
+          console.log("attributeContext: ", attributeContext);
+          if (attributeContext.isRequired) {
+            return value == null || value === ""
+              ? this.createError({ message: "This value is required" })
+              : true;
+          }
+
+          if (value) {
+            switch (attributeContext.type) {
+              case "integer":
+                try {
+                  parseInt(value);
+                } catch (e) {
+                  return this.createError({
+                    message: "Please enter a valid integer",
+                  });
+                }
+                break;
+              case "float":
+                try {
+                  parseFloat(value);
+                } catch (e) {
+                  return this.createError({
+                    message: "Please enter a valid decimal value",
+                  });
+                }
+                break;
+            }
+          }
+
+          return true;
+        }),
+      }),
+    )
+    .required(),
 });

@@ -40,19 +40,18 @@ export interface TemplateFormData {
   readonly metricTypes: TemplateMetricType[];
 }
 
-export interface InstanceBasicInformation {
+export interface InstanceBasicInformationForm {
   readonly name: string;
   readonly externalId: string;
   readonly parent: string;
 }
 
-export interface InstanceAttribute {
-  readonly id: string;
-  readonly value: string | number | boolean;
+export interface InstanceAttributeForm {
+  readonly value?: string;
 }
 
 export interface InstanceFormData {
   readonly tenant: string;
-  readonly basicInformation: InstanceBasicInformation;
-  readonly attributes: InstanceAttribute[];
+  readonly basicInformation: InstanceBasicInformationForm;
+  readonly attributes: InstanceAttributeForm[];
 }

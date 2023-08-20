@@ -1,7 +1,10 @@
 import axios from "axios";
+import { InstanceFormMetaData } from "@/models";
 
 export class InstanceService {
-  getInstanceCreateForm = async (templateId?: string): Promise<any> => {
+  getInstanceCreateForm = async (
+    templateId?: string,
+  ): Promise<InstanceFormMetaData> => {
     const url = `http://localhost:8080/api/v1/tenants/the-binary/instances/form/${templateId}`;
 
     try {

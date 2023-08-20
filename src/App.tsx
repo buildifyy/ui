@@ -7,13 +7,34 @@ import {
 } from "@/components/Template";
 import { Topbar } from "@/components/skeleton";
 import { FormProvider, useForm } from "react-hook-form";
-import { TemplateFormData, schema } from "@/models";
+import {
+  TemplateFormData,
+  templateSchema,
+  InstanceFormData,
+  instanceSchema,
+  InstanceMetaDataField,
+} from "@/models";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InstanceCreate } from "@/components/Instance";
+import { useState } from "react";
 
 function App() {
-  const methods = useForm<TemplateFormData>({
-    resolver: yupResolver(schema),
+  const [schemaContext, setSchemaContext] = useState<InstanceMetaDataField[]>(
+    [],
+  );
+  const templateMethods = useForm<TemplateFormData>({
+    resolver: yupResolver(templateSchema),
+    mode: "all",
+    defaultValues: {
+      tenant: "the-binary",
+    },
+  });
+
+  const instanceMethods = useForm<InstanceFormData>({
+    resolver: yupResolver(instanceSchema),
+    context: {
+      attributes: schemaContext,
+    },
     mode: "all",
     defaultValues: {
       tenant: "the-binary",
@@ -21,7 +42,7 @@ function App() {
   });
 
   return (
-    <FormProvider {...methods}>
+    <FormProvider {...templateMethods} {...instanceMethods}>
       <div className="flex h-full flex-col">
         <Topbar />
         <div className="flex w-full flex-col justify-between">
@@ -35,7 +56,10 @@ function App() {
                 path="/templates/edit/:templateId"
                 element={<TemplateEdit />}
               />
-              <Route path="/instances/create" element={<InstanceCreate />} />
+              <Route
+                path="/instances/create"
+                element={<InstanceCreate setSchemaContext={setSchemaContext} />}
+              />
             </Routes>
           </div>
         </div>
