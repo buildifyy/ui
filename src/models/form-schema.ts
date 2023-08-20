@@ -100,32 +100,31 @@ export const instanceSchema = yup.object({
             index
           ] as InstanceMetaDataField;
           console.log("attributeContext: ", attributeContext);
-          if (attributeContext.isRequired) {
+          if (attributeContext?.isRequired) {
             return value == null || value === ""
               ? this.createError({ message: "This value is required" })
               : true;
           }
 
           if (value) {
-            switch (attributeContext.type) {
+            switch (attributeContext?.type) {
               case "integer":
-                try {
-                  parseInt(value);
-                } catch (e) {
+                if (value.includes(".")) {
                   return this.createError({
                     message: "Please enter a valid integer",
                   });
                 }
-                break;
+                return isNaN(parseInt(value))
+                  ? this.createError({
+                      message: "Please enter a valid integer",
+                    })
+                  : true;
               case "float":
-                try {
-                  parseFloat(value);
-                } catch (e) {
-                  return this.createError({
-                    message: "Please enter a valid decimal value",
-                  });
-                }
-                break;
+                return isNaN(parseFloat(value))
+                  ? this.createError({
+                      message: "Please enter a valid decimal value",
+                    })
+                  : true;
             }
           }
 

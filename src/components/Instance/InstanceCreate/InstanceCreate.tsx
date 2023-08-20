@@ -5,7 +5,7 @@ import { useSearchParams } from "react-router-dom";
 import { BasicInformation } from "./BasicInformation";
 import { Attributes } from "@/components/Instance/InstanceCreate/Attributes";
 import { useInstanceCreateForm } from "@/service/instance";
-import { useFormContext, useWatch } from "react-hook-form";
+import { SubmitHandler, useFormContext, useWatch } from "react-hook-form";
 import { InstanceFormData, InstanceMetaDataField } from "@/models";
 
 interface InstanceCreateProps {
@@ -15,7 +15,7 @@ interface InstanceCreateProps {
 export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const config = searchParams.get("config");
-  const { control } = useFormContext<InstanceFormData>();
+  const { control, handleSubmit, reset } = useFormContext<InstanceFormData>();
 
   const selectedParentLive = useWatch({
     control,
@@ -65,8 +65,23 @@ export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
     }
   };
 
+  const onSubmit: SubmitHandler<InstanceFormData> = (data) => {
+    console.log("data: ", data);
+    reset((prev) => {
+      return {
+        tenant: prev.tenant,
+        basicInformation: {
+          parent: "",
+          name: "",
+          externalId: "",
+        },
+        attributes: [],
+      };
+    });
+  };
+
   return (
-    <form className="h-full w-full">
+    <form onSubmit={handleSubmit(onSubmit)} className="h-full w-full">
       <div className="w-full">
         <Header
           value={config ? configMap[config] : "Basic Information"}
