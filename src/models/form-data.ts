@@ -47,6 +47,7 @@ export interface InstanceBasicInformationForm {
 }
 
 export interface InstanceAttributeForm {
+  readonly id: string;
   readonly value?: string;
 }
 

@@ -1,6 +1,7 @@
 import { InstanceFormData, InstanceMetaDataField } from "@/models";
 import { useFormContext } from "react-hook-form";
 import { Select } from "@/components/shared";
+import { useEffect } from "react";
 
 interface AttributesProps {
   readonly fields?: InstanceMetaDataField[];
@@ -9,8 +10,18 @@ interface AttributesProps {
 export const Attributes = ({ fields }: AttributesProps) => {
   const {
     register,
+    setValue,
     formState: { errors },
   } = useFormContext<InstanceFormData>();
+
+  useEffect(() => {
+    if (fields) {
+      fields.forEach((field, index) => {
+        register(`attributes.${index}.id`);
+        setValue(`attributes.${index}.id`, field.id);
+      });
+    }
+  }, [fields]);
 
   const boxToRender = (field: InstanceMetaDataField, index: number) => {
     switch (field.type) {
@@ -19,9 +30,10 @@ export const Attributes = ({ fields }: AttributesProps) => {
           <input
             id={`attribute.${index}.${field.label}`}
             type="text"
-            className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
+            className={`w-64 border h-8 p-2 rounded shadow-sm text-xs text-gray-700 ${
               errors.attributes?.[index]?.value ? "border-red-600" : ""
             }`}
+            placeholder={`Enter ${field.label} (${field.typeLabel})`}
             {...register(`attributes.${index}.value`)}
           />
         );
@@ -30,9 +42,10 @@ export const Attributes = ({ fields }: AttributesProps) => {
           <input
             id={`attribute.${index}.${field.label}`}
             type="number"
-            className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
+            className={`w-64 border h-8 p-2 rounded shadow-sm text-gray-700 text-xs ${
               errors.attributes?.[index]?.value ? "border-red-600" : ""
             }`}
+            placeholder={`Enter ${field.label} (${field.typeLabel})`}
             {...register(`attributes.${index}.value`)}
           />
         );
@@ -41,9 +54,10 @@ export const Attributes = ({ fields }: AttributesProps) => {
           <input
             id={`attribute.${index}.${field.label}`}
             type="text"
-            className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
+            className={`w-64 border h-8 p-2 rounded shadow-sm text-xs text-gray-700 ${
               errors.attributes?.[index]?.value ? "border-red-600" : ""
             }`}
+            placeholder={`Enter ${field.label} (${field.typeLabel})`}
             {...register(`attributes.${index}.value`)}
           />
         );

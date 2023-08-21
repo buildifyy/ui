@@ -7,6 +7,8 @@ import { Attributes } from "@/components/Instance/InstanceCreate/Attributes";
 import { useInstanceCreateForm } from "@/service/instance";
 import { SubmitHandler, useFormContext, useWatch } from "react-hook-form";
 import { InstanceFormData, InstanceMetaDataField } from "@/models";
+import { useToast } from "@/components/ui/use-toast.ts";
+import { Toaster } from "@/components/ui/toaster.tsx";
 
 interface InstanceCreateProps {
   readonly setSchemaContext?: (metaData: InstanceMetaDataField[]) => void;
@@ -15,7 +17,13 @@ interface InstanceCreateProps {
 export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const config = searchParams.get("config");
-  const { control, handleSubmit, reset } = useFormContext<InstanceFormData>();
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useFormContext<InstanceFormData>();
+  const { toast } = useToast();
 
   const selectedParentLive = useWatch({
     control,
@@ -78,18 +86,34 @@ export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
         attributes: [],
       };
     });
+    searchParams.set("config", "basic-information");
+    setSearchParams(searchParams);
+    showSuccessToast();
   };
 
+  const showSuccessToast = () => {
+    toast({
+      variant: "destructive",
+      title: "Instance Created Successfully",
+      className: "group border-none bg-blue-600 text-primary-foreground",
+    });
+  };
+
+  console.log("errors: ", errors);
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="h-full w-full">
-      <div className="w-full">
-        <Header
-          value={config ? configMap[config] : "Basic Information"}
-          type="Instance"
-        />
-        {toRender()}
-        <Footer />
-      </div>
-    </form>
+    <>
+      <Toaster />
+      <form onSubmit={handleSubmit(onSubmit)} className="h-full w-full">
+        <div className="w-full">
+          <Header
+            value={config ? configMap[config] : "Basic Information"}
+            type="Instance"
+          />
+          {toRender()}
+          <Footer />
+        </div>
+      </form>
+    </>
   );
 };

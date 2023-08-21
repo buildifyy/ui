@@ -1,6 +1,8 @@
 export interface InstanceMetaDataField {
+  readonly id: string;
   readonly label: string;
   readonly infoText: string;
+  readonly typeLabel: string;
   readonly type: "string" | "select" | "integer" | "float" | "bool";
   readonly isRequired: boolean;
   readonly isHidden: boolean;

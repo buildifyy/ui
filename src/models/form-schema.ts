@@ -94,12 +94,12 @@ export const instanceSchema = yup.object({
     .array()
     .of(
       yup.object({
+        id: yup.string().required(),
         value: yup.string().test("value-validation", "", function (value) {
           const index = parseInt(this.path.split("[")[1].split("]")[0], 10);
           const attributeContext = this.options.context?.["attributes"][
             index
           ] as InstanceMetaDataField;
-          console.log("attributeContext: ", attributeContext);
           if (attributeContext?.isRequired) {
             return value == null || value === ""
               ? this.createError({ message: "This value is required" })

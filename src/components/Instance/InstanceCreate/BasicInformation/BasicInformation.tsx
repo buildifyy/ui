@@ -1,8 +1,8 @@
 import { useParentTemplates } from "@/service";
 import { Select } from "@/components/shared";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import { InstanceFormData, InstanceMetaDataField } from "@/models";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface BasicInformationProps {
   readonly fields?: InstanceMetaDataField[];
@@ -14,10 +14,24 @@ export const BasicInformation = ({
   isLoading,
 }: BasicInformationProps) => {
   const {
+    control,
     register,
+    setValue,
     formState: { errors },
   } = useFormContext<InstanceFormData>();
   const { data: parentTemplates } = useParentTemplates();
+
+  const basicInformationNameLive = useWatch({
+    name: "basicInformation.name",
+    control,
+  });
+
+  useEffect(() => {
+    if (basicInformationNameLive !== null) {
+      const valueToSet = basicInformationNameLive?.replace(/\s/g, "");
+      setValue("basicInformation.externalId", valueToSet?.toLowerCase());
+    }
+  }, [basicInformationNameLive, setValue]);
 
   return (
     <div className="flex flex-col my-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto max-h-[35rem]">
