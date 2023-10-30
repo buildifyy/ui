@@ -1,6 +1,6 @@
 import { useParentTemplates } from "@/service";
-import { Select } from "@/components/shared";
-import { useFormContext, useWatch } from "react-hook-form";
+import { OnOff, Select } from "@/components/shared";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 import { InstanceFormData, InstanceMetaDataField } from "@/models";
 import React, { useEffect } from "react";
 
@@ -112,6 +112,40 @@ export const BasicInformation = ({
           );
         }
       })}
+      <hr className="w-full my-6" />
+      <div className="flex items-center w-full justify-between mb-3">
+        <div className="flex flex-col w-96">
+          <label
+            htmlFor="custom"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Custom
+          </label>
+          <span className="text-xs text-gray-400 mt-2">
+            Specifies if the template is custom or out-of-the-box.
+          </span>
+        </div>
+        <div className="flex w-64">
+          <div className="flex flex-col w-96 items-end">
+            <Controller
+              control={control}
+              name="basicInformation.isCustom"
+              defaultValue={true}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <OnOff
+                  value={value}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  disabled
+                />
+              )}
+            />
+            <span className="text-xs text-gray-400 mt-2">
+              This value cannot be changed
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

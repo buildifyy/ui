@@ -13,7 +13,7 @@ export const Attributes = () => {
   const { data: attributeTypeValues } = useAttributeTypeDropdown();
 
   return (
-    <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-y-auto h-[calc(100vh-200px)]">
+    <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-y-auto h-[calc(100vh-220px)]">
       <div className="space-y-4 w-full overflow-y-auto">
         {attributes.length !== 0 ? (
           <div className="flex justify-between">

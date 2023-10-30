@@ -25,8 +25,7 @@ export const Header = ({ value, type = "Template" }: HeaderProps) => {
 
   const helperText = () => {
     if (
-      location.pathname.includes("/templates/create") ||
-      location.pathname.includes("/templates/edit")
+      location.pathname.includes("/templates")
     ) {
       if (location.pathname.includes("/create")) {
         return `Creating ${type} ${templateNameLive ?? ""}`;
@@ -36,8 +35,7 @@ export const Header = ({ value, type = "Template" }: HeaderProps) => {
         return `Viewing ${type} ${templateNameLive ?? ""}`;
       }
     } else if (
-      location.pathname.includes("/instances/create") ||
-      location.pathname.includes("/instances/edit")
+      location.pathname.includes("/instances")
     ) {
       if (location.pathname.includes("/create")) {
         return `Creating ${type} ${instanceNameLive ?? ""}`;

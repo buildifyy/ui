@@ -44,6 +44,7 @@ export interface InstanceBasicInformationForm {
   readonly name: string;
   readonly externalId: string;
   readonly parent: string;
+  readonly isCustom: boolean;
 }
 
 export interface InstanceAttributeForm {

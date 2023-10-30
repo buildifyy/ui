@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 
 export const Attributes = () => {
   const location = useLocation();
-  const { control } = useFormContext<TemplateFormData>();
+  const { control, getValues } = useFormContext<TemplateFormData>();
   const {
     fields: attributes,
     append,
@@ -65,7 +65,10 @@ export const Attributes = () => {
               index={index}
               onRemove={handleRemoveAttribute}
               dropdownValues={attributeTypeValues}
-              isNew={attr.isNew}
+              isReadonly={
+                !attr.isNew &&
+                attr.owningTemplate !== getValues("basicInformation.externalId")
+              }
             />
           );
         })}

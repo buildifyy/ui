@@ -14,7 +14,6 @@ interface AttributePanelProps {
   readonly onRemove?: (index: number) => void;
   readonly isReadonly?: boolean;
   readonly dropdownValues?: Dropdown[];
-  readonly isNew?: boolean;
 }
 
 export const AttributePanel = ({
@@ -22,13 +21,11 @@ export const AttributePanel = ({
   onRemove,
   isReadonly,
   dropdownValues,
-  isNew,
 }: AttributePanelProps) => {
   const {
     register,
     control,
     setValue,
-    getValues,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
 
@@ -40,7 +37,7 @@ export const AttributePanel = ({
 
   const attribute = attributes[index];
   const [isVisible, setIsVisible] = useState(
-    attribute?.isNew && (index === 0 || index === attributes.length - 1),
+    attribute?.isNew && (index === 0 || index === attributes.length - 1)
   );
 
   const attributeNameLive = useWatch({
@@ -58,11 +55,6 @@ export const AttributePanel = ({
       setValue(`attributes.${index}.isHidden`, false);
     }
   }, [attributeIsRequiredLive, index, setValue]);
-
-  const showTrashButton =
-    isNew ||
-    (attribute?.owningTemplate === getValues("basicInformation.externalId") &&
-      !isReadonly);
 
   return (
     <div className="flex justify-between items-center gap-2">
@@ -87,7 +79,8 @@ export const AttributePanel = ({
             ) : (
               <ChevronRight height={17} width={17} />
             )}
-            {showTrashButton && (
+
+            {!isReadonly && (
               <button>
                 <Trash
                   width={17}
