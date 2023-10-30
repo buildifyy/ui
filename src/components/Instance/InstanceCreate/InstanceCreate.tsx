@@ -82,6 +82,7 @@ export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
           parent: "",
           name: "",
           externalId: "",
+          isCustom: true,
         },
         attributes: [],
       };
