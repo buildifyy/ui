@@ -30,7 +30,7 @@ export const Filter = ({
       <div className="px-2 my-2">
         <components.Option {...props} className="rounded-2xl">
           <input type="checkbox" checked={props.isSelected} />
-          <span className="ml-2 text-[0.8rem]">{props.children}</span>
+          <span className="ml-2 text-sm">{props.children}</span>
         </components.Option>
       </div>
     );
@@ -40,7 +40,9 @@ export const Filter = ({
     return (
       !props.index && (
         <components.SingleValue {...props}>
-          <span className="text-xs">{selectedValues?.length} selected</span>
+          <span className="text-sm text-gray-400">
+            {selectedValues?.length} selected
+          </span>
         </components.SingleValue>
       )
     );
@@ -67,17 +69,23 @@ export const Filter = ({
         control: (provided) => ({
           ...provided,
           borderRadius: "16px",
+          borderWidth: "1px",
+          borderColor: "inherit",
           fontSize: "0.8rem",
+          backgroundColor: "inherit",
         }),
         menu: (provided) => ({
           ...provided,
           width: "max-content",
           minWidth: "100%",
           borderRadius: "8px",
+          borderWidth: "1px",
+          backgroundColor: "hsl(var(--background))",
         }),
         option: (provided) => ({
           ...provided,
           borderRadius: "8px",
+          backgroundColor: "inherit",
         }),
       }}
     />

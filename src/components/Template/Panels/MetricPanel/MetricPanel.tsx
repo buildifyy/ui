@@ -146,7 +146,7 @@ export const MetricPanel = ({
               <Input
                 id={`name.${metric?._id}`}
                 type="text"
-                className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm ${
+                className={`w-64 h-8 p-2 rounded shadow-sm sm:text-sm ${
                   !isReadonly &&
                   errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]?.name
                     ? "border-red-800"
@@ -229,7 +229,7 @@ export const MetricPanel = ({
               <Input
                 id={`value.${metric?._id}`}
                 type="text"
-                className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm ${
+                className={`w-64 h-8 p-2 rounded shadow-sm sm:text-sm ${
                   !isReadonly &&
                   errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]?.value
                     ? "border-red-800"

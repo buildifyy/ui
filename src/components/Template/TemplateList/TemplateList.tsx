@@ -5,6 +5,7 @@ import { Filter, FilterOption, Header } from "@/components/shared";
 import { useTemplateList } from "@/service";
 import { TemplateMoreOptions } from "@/components/Template";
 import { Check, X } from "lucide-react";
+import { Input } from "../../ui/input";
 
 export const TemplateList = () => {
   const [dataToRender, setDataToRender] = useState<TemplateFormData[]>([]);
@@ -224,10 +225,10 @@ export const TemplateList = () => {
             Clear all filters
           </span>
         </div>
-        <input
+        <Input
           type="text"
           placeholder="Search"
-          className="px-4 border-2 rounded-2xl text-[0.8rem]"
+          className="px-4 rounded-2xl text-sm w-52"
           onChange={handleSearchTextChange}
           value={searchText}
         />

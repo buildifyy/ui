@@ -103,7 +103,7 @@ export const BasicInformation = () => {
           <Input
             id="name"
             type="text"
-            className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm ${
+            className={`w-64 h-8 p-2 rounded shadow-sm sm:text-sm ${
               errors.basicInformation?.name ? "border-red-800" : ""
             }`}
             {...register("basicInformation.name")}
@@ -130,7 +130,7 @@ export const BasicInformation = () => {
           <Input
             id="externalId"
             type="text"
-            className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm ${
+            className={`w-64 h-8 p-2 rounded shadow-sm sm:text-sm ${
               errors.basicInformation?.externalId ? "border-red-800" : ""
             }`}
             {...register("basicInformation.externalId")}

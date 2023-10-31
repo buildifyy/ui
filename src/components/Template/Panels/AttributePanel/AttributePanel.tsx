@@ -115,7 +115,7 @@ export const AttributePanel = ({
               <Input
                 id={`name.${attribute?._id}`}
                 type="text"
-                className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm ${
+                className={`w-64 h-8 p-2 rounded shadow-sm sm:text-sm ${
                   !isReadonly && errors.attributes?.[index]?.name
                     ? "border-red-800"
                     : ""

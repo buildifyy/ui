@@ -46,7 +46,7 @@ export const BasicInformation = () => {
           <Input
             id="name"
             type="text"
-            className={`w-64 border h-8 p-2 rounded shadow-sm`}
+            className={`w-64 h-8 p-2 rounded shadow-sm`}
             {...register("basicInformation.name")}
             disabled
           />
@@ -66,7 +66,7 @@ export const BasicInformation = () => {
           <Input
             id="externalId"
             type="text"
-            className={`w-64 border h-8 p-2 rounded shadow-sm`}
+            className={`w-64 h-8 p-2 rounded shadow-sm`}
             {...register("basicInformation.externalId")}
             disabled
           />
