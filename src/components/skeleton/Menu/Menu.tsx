@@ -49,15 +49,12 @@ export const Menu = () => {
         className="flex w-[400px] sm:w-[540px]"
         onCloseAutoFocus={(event) => event.preventDefault()}
       >
-        <div className="flex flex-col justify-between bg-white w-full -m-2">
+        <div className="flex flex-col justify-between w-full -m-2">
           <div>
             <ul className="mt-6 space-y-1">
               <li>
                 <div className="px-2 py-2">
-                  <label
-                    htmlFor="tenant"
-                    className="block text-sm font-medium text-gray-500"
-                  >
+                  <label htmlFor="tenant" className="block text-sm font-medium">
                     Tenant
                   </label>
                   <div className="flex flex-col">
@@ -80,7 +77,7 @@ export const Menu = () => {
                   className="group"
                   open={location.pathname.includes("/templates")}
                 >
-                  <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                  <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2">
                     <span className="text-sm font-medium"> Templates </span>
 
                     <span className="shrink-0 transition duration-300 group-open:-rotate-180">
@@ -100,27 +97,31 @@ export const Menu = () => {
                   </summary>
 
                   <ul className="mt-2 space-y-1 px-4">
-                    <li>
+                    <li
+                      className={`${
+                        location.pathname === "/templates"
+                          ? "border-solid border rounded-lg"
+                          : ""
+                      } `}
+                    >
                       <Link
-                        to={`/templates`}
-                        className={`block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${
-                          location.pathname === "/templates"
-                            ? "bg-gray-100 text-gray-700"
-                            : ""
-                        }`}
+                        to="/templates"
+                        className="block rounded-lg px-4 py-2 text-sm font-medium"
                         onClick={() => setIsOpen(false)}
                       >
                         List
                       </Link>
                     </li>
-                    <li>
+                    <li
+                      className={`${
+                        location.pathname === "/templates/create"
+                          ? "border-solid border rounded-lg"
+                          : ""
+                      } `}
+                    >
                       <Link
                         to={`/templates/create`}
-                        className={`block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${
-                          location.pathname === "/templates/create"
-                            ? "bg-gray-100 text-gray-700"
-                            : ""
-                        }`}
+                        className="block rounded-lg px-4 py-2 text-sm font-medium"
                         onClick={handleFormReset}
                       >
                         Create
@@ -135,7 +136,7 @@ export const Menu = () => {
                   className="group [&_summary::-webkit-details-marker]:hidden"
                   open={location.pathname.includes("/instances")}
                 >
-                  <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                  <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2">
                     <span className="text-sm font-medium"> Instances </span>
 
                     <span className="shrink-0 transition duration-300 group-open:-rotate-180">
@@ -155,22 +156,31 @@ export const Menu = () => {
                   </summary>
 
                   <ul className="mt-2 space-y-1 px-4">
-                    <li>
-                      <a
-                        href=""
-                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                    <li
+                      className={`${
+                        location.pathname === "/instances"
+                          ? "border-solid border rounded-lg"
+                          : ""
+                      } `}
+                    >
+                      <Link
+                        to="/instances"
+                        className="block rounded-lg px-4 py-2 text-sm font-medium"
+                        onClick={handleFormReset}
                       >
                         List
-                      </a>
+                      </Link>
                     </li>
-                    <li>
+                    <li
+                      className={`${
+                        location.pathname === "/instances/create"
+                          ? "border-solid border rounded-lg"
+                          : ""
+                      } `}
+                    >
                       <Link
-                        to={`/instances/create`}
-                        className={`block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 ${
-                          location.pathname === "/instances/create"
-                            ? "bg-gray-100 text-gray-700"
-                            : ""
-                        }`}
+                        to="/instances/create"
+                        className="block rounded-lg px-4 py-2 text-sm font-medium"
                         onClick={handleFormReset}
                       >
                         Create

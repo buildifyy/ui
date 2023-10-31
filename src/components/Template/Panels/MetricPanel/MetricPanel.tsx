@@ -8,6 +8,8 @@ import {
 import { TemplateFormData } from "@/models";
 import { OnOff } from "@/components/shared";
 import { ChevronRight, ChevronUp, Trash } from "lucide-react";
+import { FormDescription, FormLabel } from "../../../ui/form";
+import { Input } from "../../../ui/input";
 
 interface MetricPanelProps {
   readonly index: number;
@@ -91,17 +93,17 @@ export const MetricPanel = ({
   return (
     <div className="flex justify-between items-center gap-2 mt-4">
       <details
-        className="group rounded-lg bg-white p-6 [&_summary::-webkit-details-marker]:hidden w-full"
+        className="group rounded-lg border p-6 [&_summary::-webkit-details-marker]:hidden w-full"
         open={isVisible}
       >
         <summary
-          className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900"
+          className="flex cursor-pointer items-center justify-between gap-1.5"
           onClick={() => {
             event?.preventDefault();
             setIsVisible(!isVisible);
           }}
         >
-          <span className="font-bold italic text-sm">
+          <span className="font-bold italic">
             {metricNameLive ? metricNameLive : "Untitled Metric"}
           </span>
 
@@ -127,60 +129,60 @@ export const MetricPanel = ({
             ) : null}
           </div>
         </summary>
-        <div className="mt-4 leading-relaxed text-gray-700 text-sm">
+        <div className="mt-4 leading-relaxed text-sm">
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
-              <label
+              <FormLabel
                 htmlFor={`name.${metric?._id}`}
-                className="block text-sm font-medium text-gray-700"
+                className="block font-medium"
               >
                 Name
-              </label>
-              <span className="text-xs text-gray-400 mt-2">
+              </FormLabel>
+              <FormDescription className="mt-1">
                 This will be the name of your metric.
-              </span>
+              </FormDescription>
             </div>
             <div className="flex flex-col items-end">
-              <input
+              <Input
                 id={`name.${metric?._id}`}
                 type="text"
-                className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
+                className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm ${
                   !isReadonly &&
                   errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]?.name
-                    ? "border-red-600"
+                    ? "border-red-800"
                     : ""
                 }`}
                 {...register(
-                  `metricTypes.${metricTypeIndex}.metrics.${index}.name`,
+                  `metricTypes.${metricTypeIndex}.metrics.${index}.name`
                 )}
                 disabled={isReadonly}
               />
               {!isReadonly &&
                 errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
                   ?.name && (
-                  <span className="text-xs text-red-600">
+                  <FormDescription className="mt-1 text-red-800">
                     {
                       errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
                         ?.name?.message
                     }
-                  </span>
+                  </FormDescription>
                 )}
             </div>
           </div>
         </div>
 
-        <div className="mt-4 leading-relaxed text-gray-700 text-sm">
+        <div className="mt-4 leading-relaxed text-sm">
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
-              <label
+              <FormLabel
                 htmlFor={`manual.${metric?._id}`}
-                className="block text-sm font-medium text-gray-700"
+                className="block font-medium"
               >
                 Manual
-              </label>
-              <span className="text-xs text-gray-400 mt-2">
+              </FormLabel>
+              <FormDescription className="mt-1">
                 This will mark the metric as a manual value.
-              </span>
+              </FormDescription>
             </div>
             <div className="flex flex-col items-end">
               <Controller
@@ -199,77 +201,77 @@ export const MetricPanel = ({
               {!isReadonly &&
                 errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
                   ?.isManual && (
-                  <span className="text-xs text-red-600">
+                  <FormDescription className="mt-1 text-red-800">
                     {
                       errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
                         ?.isManual?.message
                     }
-                  </span>
+                  </FormDescription>
                 )}
             </div>
           </div>
         </div>
 
-        <div className="mt-4 leading-relaxed text-gray-700 text-sm">
+        <div className="mt-4 leading-relaxed text-sm">
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
-              <label
+              <FormLabel
                 htmlFor={`value.${metric?._id}`}
-                className="block text-sm font-medium text-gray-700"
+                className="block font-medium"
               >
                 Value
-              </label>
-              <span className="text-xs text-gray-400 mt-2">
+              </FormLabel>
+              <FormDescription className="mt-1">
                 This can be the default value of the metric.
-              </span>
+              </FormDescription>
             </div>
             <div className="flex flex-col items-end">
-              <input
+              <Input
                 id={`value.${metric?._id}`}
                 type="text"
-                className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
+                className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm ${
                   !isReadonly &&
                   errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]?.value
-                    ? "border-red-600"
+                    ? "border-red-800"
                     : ""
                 }`}
                 {...register(
-                  `metricTypes.${metricTypeIndex}.metrics.${index}.value`,
+                  `metricTypes.${metricTypeIndex}.metrics.${index}.value`
                 )}
                 disabled={isReadonly || !metricIsManualLive}
               />
               {!isReadonly &&
                 errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
                   ?.value && (
-                  <span className="text-xs text-red-600">
+                  <FormDescription className="mt-1 text-red-800">
                     {
                       errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
                         ?.value?.message
                     }
-                  </span>
+                  </FormDescription>
                 )}
               {!isReadonly && !metricIsManualLive && (
-                <span className="text-xs text-yellow-600">
+                <FormDescription className="mt-1 text-yellow-800">
                   Since this metric is not configured to be a manual metric, any
                   value defined will not be configured.
-                </span>
+                </FormDescription>
               )}
             </div>
           </div>
         </div>
 
-        <div className="mt-4 leading-relaxed text-gray-700 text-sm">
+        <div className="mt-4 leading-relaxed text-sm">
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
-              <label
+              <FormLabel
                 htmlFor={`calculated.${metric?._id}`}
-                className="block text-sm font-medium text-gray-700"
+                className="block font-medium"
               >
                 Calculated
-              </label>
-              <span className="text-xs text-gray-400 mt-2">
+              </FormLabel>
+              <FormDescription className="mt-1">
                 This will mark the metric as a calculated value.
-              </span>
+              </FormDescription>
             </div>
             <div className="flex flex-col items-end">
               <Controller
@@ -288,29 +290,29 @@ export const MetricPanel = ({
               {!isReadonly &&
                 errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
                   ?.isCalculated && (
-                  <span className="text-xs text-red-600">
+                  <FormDescription className="mt-1 text-red-800">
                     {
                       errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
                         ?.isCalculated?.message
                     }
-                  </span>
+                  </FormDescription>
                 )}
             </div>
           </div>
         </div>
 
-        <div className="mt-4 leading-relaxed text-gray-700 text-sm">
+        <div className="mt-4 leading-relaxedtext-sm">
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
-              <label
+              <FormLabel
                 htmlFor={`sourced.${metric?._id}`}
-                className="block text-sm font-medium text-gray-700"
+                className="block font-medium"
               >
                 Sourced
-              </label>
-              <span className="text-xs text-gray-400 mt-2">
+              </FormLabel>
+              <FormDescription className="mt-1">
                 This will mark the metric as a sourced value.
-              </span>
+              </FormDescription>
             </div>
             <div className="flex flex-col items-end">
               <Controller
@@ -329,12 +331,12 @@ export const MetricPanel = ({
               {!isReadonly &&
                 errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
                   ?.isSourced && (
-                  <span className="text-xs text-red-600">
+                  <FormDescription className="mt-1 text-red-800">
                     {
                       errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
                         ?.isSourced?.message
                     }
-                  </span>
+                  </FormDescription>
                 )}
             </div>
           </div>

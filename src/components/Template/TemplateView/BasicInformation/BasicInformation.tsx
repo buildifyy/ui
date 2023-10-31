@@ -2,6 +2,8 @@ import { Controller, useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
 import { Select, OnOff } from "@/components/shared";
 import { useParentTemplates } from "@/service";
+import { FormDescription, FormLabel } from "../../../ui/form";
+import { Input } from "../../../ui/input";
 
 export const BasicInformation = () => {
   const { register, control } = useFormContext<TemplateFormData>();
@@ -10,18 +12,15 @@ export const BasicInformation = () => {
 
   return (
     <div className="flex flex-col mt-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto h-[calc(100vh-220px)]">
-      <div className="flex items-center w-full justify-between pt-5 overflow-y-auto">
+      <div className="flex items-center w-full justify-between pt-5 overflow-y-auto px-2">
         <div className="flex flex-col w-96">
-          <label
-            htmlFor="parent"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <FormLabel htmlFor="parent" className="block font-medium">
             Parent Template
-          </label>
-          <span className="text-xs text-gray-400 mt-2 w-60">
+          </FormLabel>
+          <FormDescription className="mt-1 w-60">
             Attributes, Relationships and Metric Types will be inherited from
             this template.
-          </span>
+          </FormDescription>
         </div>
         <div className="flex flex-col">
           <Select
@@ -34,63 +33,54 @@ export const BasicInformation = () => {
         </div>
       </div>
       <hr className="w-full my-6" />
-      <div className="flex items-center w-full justify-between">
+      <div className="flex items-center w-full justify-between px-2">
         <div className="flex flex-col w-96">
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <FormLabel htmlFor="name" className="block font-medium">
             Template Name
-          </label>
-          <span className="text-xs text-gray-400 mt-2 w-60">
+          </FormLabel>
+          <FormDescription className="mt-1 w-60">
             This will be the name of your template.
-          </span>
+          </FormDescription>
         </div>
         <div className="flex flex-col">
-          <input
+          <Input
             id="name"
             type="text"
-            className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700`}
+            className={`w-64 border h-8 p-2 rounded shadow-sm`}
             {...register("basicInformation.name")}
             disabled
           />
         </div>
       </div>
       <hr className="w-full my-6" />
-      <div className="flex items-center w-full justify-between">
+      <div className="flex items-center w-full justify-between px-2">
         <div className="flex flex-col w-96">
-          <label
-            htmlFor="externalId"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <FormLabel htmlFor="externalId" className="block font-medium">
             External ID
-          </label>
-          <span className="text-xs text-gray-400 mt-2">
+          </FormLabel>
+          <FormDescription className="mt-1">
             A unique identifier for your template.
-          </span>
+          </FormDescription>
         </div>
         <div className="flex flex-col">
-          <input
+          <Input
             id="externalId"
             type="text"
-            className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700`}
+            className={`w-64 border h-8 p-2 rounded shadow-sm`}
             {...register("basicInformation.externalId")}
             disabled
           />
         </div>
       </div>
       <hr className="w-full my-6" />
-      <div className="flex items-center w-full justify-between mb-3">
+      <div className="flex items-center w-full justify-between mb-3 px-2">
         <div className="flex flex-col w-96">
-          <label
-            htmlFor="custom"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <FormLabel htmlFor="custom" className="block font-medium">
             Custom
-          </label>
-          <span className="text-xs text-gray-400 mt-2">
+          </FormLabel>
+          <FormDescription className="mt-1">
             Specifies if the template is custom or out-of-the-box.
-          </span>
+          </FormDescription>
         </div>
         <div className="flex w-64">
           <div className="flex flex-col w-96 items-end">

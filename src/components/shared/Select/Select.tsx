@@ -20,7 +20,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
       <select
         id={id}
         ref={ref}
-        className={`-ml-[2px] mt-1.5 ${widthClassName} rounded-lg border-gray-300 text-gray-700 py-2 px-2 border text-xs ${errorClassName}`}
+        className={`-ml-[2px] mt-1.5 ${widthClassName} rounded-lg py-2 px-2 border text-sm ${errorClassName}`}
         disabled={isDisabled || !data}
         {...rest}
       >

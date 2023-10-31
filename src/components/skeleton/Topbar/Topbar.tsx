@@ -35,11 +35,10 @@ export const Topbar = () => {
       {shouldDisplaySteps && (
         <div className="flex flex-grow px-28 items-center">
           <h2 className="sr-only">Steps</h2>
-
-          <div className="relative after:absolute after:inset-x-0 after:top-1/2 after:block after:h-0.5 after:-translate-y-1/2 after:rounded-lg after:bg-gray-100 w-full">
-            <ol className="relative z-10 flex justify-between text-sm font-medium text-gray-500">
+          <div className="relative after:absolute after:inset-x-0 after:top-1/2 after:block after:h-0.5 after:-translate-y-1/2 after:rounded-lg w-full">
+            <ol className="relative z-10 flex justify-between text-sm font-medium">
               <li
-                className="flex items-center gap-2 bg-white p-2"
+                className="flex items-center gap-2 p-2"
                 onClick={() => handleStepClick("basic-information")}
               >
                 {errors.basicInformation?.parent ||
@@ -48,13 +47,13 @@ export const Topbar = () => {
                   <BadgeAlert
                     width={17}
                     height={17}
-                    className="text-red-600 text-center"
+                    className="text-red-800 text-center"
                   />
                 ) : isSubmitted && isValid ? (
                   <Check height={17} width={17} className="text-green-600" />
                 ) : (
                   <span
-                    className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
+                    className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold ${
                       config === "basic-information"
                         ? "bg-blue-600"
                         : "bg-gray-400"
@@ -76,20 +75,20 @@ export const Topbar = () => {
               </li>
 
               <li
-                className="flex items-center gap-2 bg-white p-2"
+                className="flex items-center gap-2 p-2"
                 onClick={() => handleStepClick("attributes")}
               >
                 {errors.attributes?.length && errors.attributes.length > 0 ? (
                   <BadgeAlert
                     width={17}
                     height={17}
-                    className="text-red-600 text-center"
+                    className="text-red-800 text-center"
                   />
                 ) : isSubmitted && isValid ? (
                   <Check height={17} width={17} className="text-green-600" />
                 ) : (
                   <span
-                    className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
+                    className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold ${
                       config === "attributes" ? "bg-blue-600" : "bg-gray-400"
                     }`}
                   >
@@ -109,11 +108,11 @@ export const Topbar = () => {
               </li>
 
               <li
-                className="flex items-center gap-2 bg-white p-2"
+                className="flex items-center gap-2 p-2"
                 onClick={() => handleStepClick("relationships")}
               >
                 <span
-                  className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
+                  className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold ${
                     config === "relationships" ? "bg-blue-600" : "bg-gray-400"
                   }`}
                 >
@@ -131,7 +130,7 @@ export const Topbar = () => {
               </li>
 
               <li
-                className="flex items-center gap-2 bg-white p-2"
+                className="flex items-center gap-2 p-2"
                 onClick={() => handleStepClick("metric-types")}
               >
                 {errors.metricTypes?.length && errors.metricTypes.length > 0 ? (
@@ -144,7 +143,7 @@ export const Topbar = () => {
                   <Check height={17} width={17} className="text-green-600" />
                 ) : (
                   <span
-                    className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold text-white ${
+                    className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold ${
                       config === "metric-types" ? "bg-blue-600" : "bg-gray-400"
                     }`}
                   >

@@ -1,19 +1,20 @@
 import { Plus } from "lucide-react";
+import { Button } from "../../ui/button";
 
 interface AddPanelProps {
   readonly title: string;
   readonly onAdd?: () => void;
-  readonly className?: string;
 }
 
-export const AddPanel = ({ title, onAdd, className }: AddPanelProps) => {
+export const AddPanel = ({ title, onAdd }: AddPanelProps) => {
   return (
-    <div
-      className={`flex rounded-lg p-3 border-dotted border-2 border-green-500 hover:bg-gray-50 hover:cursor-pointer items-center ${className}`}
+    <Button
+      variant="outline"
+      className="w-full justify-start border-green-500 border-dashed"
       onClick={onAdd}
     >
       <Plus width={17} height={17} />
-      <span className="ml-2 text-sm">{title}</span>
-    </div>
+      <span className="ml-2">{title}</span>
+    </Button>
   );
 };

@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { TemplateFormData } from "@/models";
-import Loader from "@/assets/loading.gif";
+import Loader from "@/assets/loader.gif";
 import { Filter, FilterOption, Header } from "@/components/shared";
 import { useTemplateList } from "@/service";
 import { TemplateMoreOptions } from "@/components/Template";
@@ -234,7 +234,7 @@ export const TemplateList = () => {
       </div>
       <div className="max-h-[calc(100%-7rem)] overflow-y-auto border rounded-2xl mt-5 pb-3">
         <table className="w-full border-collapse">
-          <thead className="sticky top-0 bg-[#f5f4f6]">
+          <thead className="sticky top-0">
             <tr className="border-b">
               <th className="p-2 pl-4 text-left text-[0.9rem] font-bold">
                 External ID
@@ -249,7 +249,7 @@ export const TemplateList = () => {
             {isLoading || isLoadingFilters ? (
               <td colSpan={4} className="p-4">
                 <div className="flex justify-center">
-                  <img src={Loader} alt="loading" width="30px" />
+                  <img src={Loader} alt="loading" width="50px" />
                 </div>
               </td>
             ) : dataToRender.length === 0 ? (

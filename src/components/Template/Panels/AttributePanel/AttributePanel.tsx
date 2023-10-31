@@ -8,6 +8,8 @@ import { Dropdown, TemplateFormData } from "@/models";
 import { useEffect, useState } from "react";
 import { OnOff, Select } from "@/components/shared";
 import { ChevronRight, ChevronUp, Trash } from "lucide-react";
+import { FormDescription, FormLabel } from "../../../ui/form";
+import { Input } from "../../../ui/input";
 
 interface AttributePanelProps {
   readonly index: number;
@@ -59,17 +61,17 @@ export const AttributePanel = ({
   return (
     <div className="flex justify-between items-center gap-2">
       <details
-        className="group rounded-lg bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden w-full"
+        className="group rounded-lg border p-6 [&_summary::-webkit-details-marker]:hidden w-full"
         open={isVisible}
       >
         <summary
-          className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900"
+          className="flex cursor-pointer items-center justify-between gap-1.5"
           onClick={() => {
             event?.preventDefault();
             setIsVisible(!isVisible);
           }}
         >
-          <span className="font-bold italic text-sm">
+          <span className="font-bold italic">
             {attributeNameLive ? attributeNameLive : "Untitled Attribute"}
           </span>
 
@@ -96,51 +98,51 @@ export const AttributePanel = ({
             )}
           </div>
         </summary>
-        <div className="mt-4 leading-relaxed text-gray-700 text-sm">
+        <div className="mt-4 leading-relaxed text-sm">
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
-              <label
+              <FormLabel
                 htmlFor={`name.${attribute?._id}`}
-                className="block text-sm font-medium text-gray-700"
+                className="block font-medium"
               >
                 Name
-              </label>
-              <span className="text-xs text-gray-400 mt-2">
+              </FormLabel>
+              <FormDescription className="mt-1">
                 This will be the name of your attribute.
-              </span>
+              </FormDescription>
             </div>
             <div className="flex flex-col items-end">
-              <input
+              <Input
                 id={`name.${attribute?._id}`}
                 type="text"
-                className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
+                className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm ${
                   !isReadonly && errors.attributes?.[index]?.name
-                    ? "border-red-600"
+                    ? "border-red-800"
                     : ""
                 }`}
                 {...register(`attributes.${index}.name`)}
                 disabled={isReadonly}
               />
               {!isReadonly && errors.attributes?.[index]?.name && (
-                <span className="text-xs text-red-600">
+                <FormDescription className="text-red-800 mt-1">
                   {errors.attributes?.[index]?.name?.message}
-                </span>
+                </FormDescription>
               )}
             </div>
           </div>
         </div>
-        <div className="mt-4 leading-relaxed text-gray-700 text-sm">
+        <div className="mt-4 leading-relaxed text-sm">
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
-              <label
+              <FormLabel
                 htmlFor={`dataType.${attribute?._id}`}
-                className="block text-sm font-medium text-gray-700"
+                className="block font-medium"
               >
                 Data Type
-              </label>
-              <span className="text-xs text-gray-400 mt-2">
+              </FormLabel>
+              <FormDescription className="mt-1">
                 This will be the data type of your attribute.
-              </span>
+              </FormDescription>
             </div>
             <div className="flex flex-col items-end">
               <Select
@@ -150,31 +152,31 @@ export const AttributePanel = ({
                 {...register(`attributes.${index}.dataType`)}
                 errorClassName={
                   !isReadonly && errors.attributes?.[index]?.dataType
-                    ? "border-red-600"
+                    ? "border-red-800"
                     : ""
                 }
                 isDisabled={isReadonly}
               />
               {!isReadonly && errors.attributes?.[index]?.dataType && (
-                <span className="text-xs text-red-600">
+                <FormDescription className="text-red-800 mt-1">
                   {errors.attributes?.[index]?.dataType?.message}
-                </span>
+                </FormDescription>
               )}
             </div>
           </div>
         </div>
-        <div className="mt-4 leading-relaxed text-gray-700 text-sm">
+        <div className="mt-4 leading-relaxed text-sm">
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
-              <label
+              <FormLabel
                 htmlFor={`required.${attribute?._id}`}
-                className="block text-sm font-medium text-gray-700"
+                className="block font-medium"
               >
                 Required
-              </label>
-              <span className="text-xs text-gray-400 mt-2">
+              </FormLabel>
+              <FormDescription className="mt-1">
                 This will mark the attribute as a required field.
-              </span>
+              </FormDescription>
             </div>
             <div className="flex flex-col items-end">
               <Controller
@@ -191,26 +193,26 @@ export const AttributePanel = ({
                 )}
               />
               {!isReadonly && errors.attributes?.[index]?.isRequired && (
-                <span className="text-xs text-red-600">
+                <FormDescription className="text-red-800 mt-1">
                   {errors.attributes?.[index]?.isRequired?.message}
-                </span>
+                </FormDescription>
               )}
             </div>
           </div>
         </div>
 
-        <div className="mt-4 leading-relaxed text-gray-700 text-sm">
+        <div className="mt-4 leading-relaxed text-sm">
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
-              <label
+              <FormLabel
                 htmlFor={`hidden.${attribute?._id}`}
-                className="block text-sm font-medium text-gray-700"
+                className="block font-medium"
               >
                 Hidden
-              </label>
-              <span className="text-xs text-gray-400 mt-2">
+              </FormLabel>
+              <FormDescription className="mt-1">
                 This will mark the attribute as a hidden field.
-              </span>
+              </FormDescription>
             </div>
             <div className="flex flex-col items-end">
               <Controller
@@ -227,14 +229,14 @@ export const AttributePanel = ({
                 )}
               />
               {!isReadonly && attributeIsRequiredLive ? (
-                <span className="text-yellow-600 text-xs">
+                <FormDescription className="text-yellow-800 mt-1">
                   An attribute marked as required cannot be hidden
-                </span>
+                </FormDescription>
               ) : null}
               {!isReadonly && errors.attributes?.[index]?.isHidden && (
-                <span className="text-xs text-red-600">
+                <FormDescription className="text-red-800 mt-1">
                   {errors.attributes?.[index]?.isHidden?.message}
-                </span>
+                </FormDescription>
               )}
             </div>
           </div>

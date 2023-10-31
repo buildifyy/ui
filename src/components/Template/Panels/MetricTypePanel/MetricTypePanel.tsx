@@ -4,6 +4,8 @@ import { AddPanel, Select } from "@/components/shared";
 import { MetricPanel } from "../MetricPanel";
 import { useState } from "react";
 import { ChevronRight, ChevronUp, Trash } from "lucide-react";
+import { FormDescription, FormLabel } from "../../../ui/form";
+import { Input } from "../../../ui/input";
 
 interface MetricTypePanelProps {
   readonly index: number;
@@ -33,7 +35,7 @@ export const MetricTypePanel = ({
   });
   const metricType = metricTypes[index];
   const [isVisible, setIsVisible] = useState(
-    metricType?.isNew && (index === 0 || index === metricTypes.length - 1),
+    metricType?.isNew && (index === 0 || index === metricTypes.length - 1)
   );
 
   const {
@@ -72,17 +74,17 @@ export const MetricTypePanel = ({
   return (
     <div className="flex justify-between items-center gap-2">
       <details
-        className="group rounded-lg bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden w-full"
+        className="group rounded-lg border p-6 [&_summary::-webkit-details-marker]:hidden w-full"
         open={isVisible}
       >
         <summary
-          className="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900"
+          className="flex cursor-pointer items-center justify-between gap-1.5"
           onClick={() => {
             event?.preventDefault();
             setIsVisible(!isVisible);
           }}
         >
-          <span className="font-bold italic text-sm">
+          <span className="font-bold italic">
             {metricTypeNameLive ? metricTypeNameLive : "Untitled Metric Type"}
           </span>
 
@@ -108,51 +110,51 @@ export const MetricTypePanel = ({
             )}
           </div>
         </summary>
-        <div className="mt-4 leading-relaxed text-gray-700 text-sm">
+        <div className="mt-4 leading-relaxed text-sm">
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
-              <label
+              <FormLabel
                 htmlFor={`name.${metricType?._id}`}
-                className="block text-sm font-medium text-gray-700"
+                className="block font-medium"
               >
                 Name
-              </label>
-              <span className="text-xs text-gray-400 mt-2">
+              </FormLabel>
+              <FormDescription className="mt-1">
                 This will be the name of your metric type.
-              </span>
+              </FormDescription>
             </div>
             <div className="flex flex-col items-end">
-              <input
+              <Input
                 id={`name.${metricType?._id}`}
                 type="text"
-                className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
+                className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm ${
                   !isReadonly && errors.metricTypes?.[index]?.name
-                    ? "border-red-600"
+                    ? "border-red-800"
                     : ""
                 }`}
                 {...register(`metricTypes.${index}.name`)}
                 disabled={isReadonly}
               />
               {!isReadonly && errors.metricTypes?.[index]?.name && (
-                <span className="text-xs text-red-600">
+                <FormDescription className="text-red-800">
                   {errors.metricTypes?.[index]?.name?.message}
-                </span>
+                </FormDescription>
               )}
             </div>
           </div>
         </div>
-        <div className="mt-4 leading-relaxed text-gray-700 text-sm">
+        <div className="mt-4 leading-relaxed text-sm">
           <div className="flex items-center w-full justify-between">
             <div className="flex flex-col w-96">
-              <label
+              <FormLabel
                 htmlFor={`metricType.${metricType?._id}`}
-                className="block text-sm font-medium text-gray-700"
+                className="block font-medium"
               >
                 Type
-              </label>
-              <span className="text-xs text-gray-400 mt-2">
+              </FormLabel>
+              <FormDescription className="mt-1">
                 This will be the type of your metric.
-              </span>
+              </FormDescription>
             </div>
             <div className="flex flex-col items-end">
               <Select
@@ -162,20 +164,20 @@ export const MetricTypePanel = ({
                 {...register(`metricTypes.${index}.metricType`)}
                 errorClassName={
                   !isReadonly && errors.metricTypes?.[index]?.metricType
-                    ? "border-red-600"
+                    ? "border-red-800"
                     : ""
                 }
                 isDisabled={isReadonly}
               />
               {!isReadonly && errors.metricTypes?.[index]?.metricType && (
-                <span className="text-xs text-red-600">
+                <FormDescription className="text-red-800 mt-1">
                   {errors.metricTypes?.[index]?.metricType?.message}
-                </span>
+                </FormDescription>
               )}
             </div>
           </div>
         </div>
-        <div className="mt-4 leading-relaxed text-gray-700 text-sm">
+        <div className="mt-4 leading-relaxed text-sm">
           <div className="flex justify-between">
             {metrics.length !== 0 ? (
               <span className="text-md text-green-600">
@@ -185,15 +187,11 @@ export const MetricTypePanel = ({
             ) : null}
           </div>
           {!isReadonly && (
-            <AddPanel
-              title="Add Metric"
-              onAdd={handleAddMetric}
-              className="mt-4"
-            />
+            <AddPanel title="Add Metric" onAdd={handleAddMetric} />
           )}
-          <span className="text-xs text-red-600">
+          <FormDescription className="text-red-800">
             {!isReadonly && errors.metricTypes?.[index]?.metrics?.message}
-          </span>
+          </FormDescription>
           {metrics.map((metric, metricIndex) => {
             return (
               <MetricPanel

@@ -51,7 +51,7 @@ export const Header = ({ value, type = "Template" }: HeaderProps) => {
     <div className="flex justify-between items-end">
       <div className="flex flex-col">
         <span className="text-sm italic">{helperText()}</span>
-        <h1 className="text-xl font-semibold text-gray-900 tracking-wide">
+        <h1 className="text-xl font-semibold tracking-wide">
           {value}
         </h1>
       </div>
