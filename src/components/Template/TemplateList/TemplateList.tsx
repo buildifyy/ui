@@ -6,6 +6,14 @@ import { useTemplateList } from "@/service";
 import { TemplateMoreOptions } from "@/components/Template";
 import { Check, X } from "lucide-react";
 import { Input } from "../../ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export const TemplateList = () => {
   const [dataToRender, setDataToRender] = useState<TemplateFormData[]>([]);
@@ -15,7 +23,7 @@ export const TemplateList = () => {
   >([]);
   const [selectedExternalIds, setSelectedExternalIds] = useState<string[]>();
   const [nameFilterOptions, setNameFilterOptions] = useState<FilterOption[]>(
-    [],
+    []
   );
   const [selectedNames, setSelectedNames] = useState<string[]>();
   const [parentFilterOptions, setParentFilterOptions] = useState<
@@ -53,14 +61,14 @@ export const TemplateList = () => {
             label: data.basicInformation.externalId,
             value: data.basicInformation.externalId,
           };
-        }),
+        })
       );
 
       const newNameFilterOptions: FilterOption[] = [];
       templateList.forEach((data) => {
         if (
           newNameFilterOptions.findIndex(
-            (f) => f.value === data.basicInformation.name,
+            (f) => f.value === data.basicInformation.name
           ) === -1
         ) {
           newNameFilterOptions.push({
@@ -75,7 +83,7 @@ export const TemplateList = () => {
       templateList.forEach((data) => {
         if (
           newParentFilterOptions.findIndex(
-            (f) => f.value === data.basicInformation.parent,
+            (f) => f.value === data.basicInformation.parent
           ) === -1 &&
           data.basicInformation.parent
         ) {
@@ -91,7 +99,7 @@ export const TemplateList = () => {
       templateList.forEach((data) => {
         if (
           newIsCustomFilterOptions.findIndex(
-            (f) => f.value === data.basicInformation.isCustom.toString(),
+            (f) => f.value === data.basicInformation.isCustom.toString()
           ) === -1
         ) {
           newIsCustomFilterOptions.push({
@@ -125,35 +133,35 @@ export const TemplateList = () => {
               .includes(searchText.toLowerCase()) ||
             i.basicInformation.parent
               .toLowerCase()
-              .includes(searchText.toLowerCase()),
+              .includes(searchText.toLowerCase())
         );
       }
 
       if (selectedExternalIds && selectedExternalIds.length > 0) {
         const listCopy = [...filteredList];
         filteredList = listCopy.filter((i: TemplateFormData) =>
-          selectedExternalIds.includes(i.basicInformation.externalId),
+          selectedExternalIds.includes(i.basicInformation.externalId)
         );
       }
 
       if (selectedNames && selectedNames.length > 0) {
         const listCopy = [...filteredList];
         filteredList = listCopy.filter((i: TemplateFormData) =>
-          selectedNames.includes(i.basicInformation.name),
+          selectedNames.includes(i.basicInformation.name)
         );
       }
 
       if (selectedParents && selectedParents.length > 0) {
         const listCopy = [...filteredList];
         filteredList = listCopy.filter((i: TemplateFormData) =>
-          selectedParents.includes(i.basicInformation.parent),
+          selectedParents.includes(i.basicInformation.parent)
         );
       }
 
       if (selectedIsCustom && selectedIsCustom.length > 0) {
         const listCopy = [...filteredList];
         filteredList = listCopy.filter((i: TemplateFormData) =>
-          selectedIsCustom.includes(i.basicInformation.isCustom.toString()),
+          selectedIsCustom.includes(i.basicInformation.isCustom.toString())
         );
       }
 
@@ -233,52 +241,58 @@ export const TemplateList = () => {
           value={searchText}
         />
       </div>
-      <div className="max-h-[calc(100%-7rem)] overflow-y-auto border rounded-2xl mt-5 pb-3">
-        <table className="w-full border-collapse">
-          <thead className="sticky top-0">
-            <tr className="border-b">
-              <th className="p-2 pl-4 text-left text-[0.9rem] font-bold">
+      <div className="h-[calc(100vh-200px)] overflow-y-auto border rounded-2xl mt-5 pb-3">
+        <Table className="w-full border-collapse">
+          <TableHeader className="sticky top-0 h-12 bg-[hsl(var(--background))] shadow-th">
+            <TableRow className="border-b">
+              <TableHead className="p-2 pl-4 text-left text-[0.9rem] font-bold">
                 External ID
-              </th>
-              <th className="p-2 text-left text-[0.9rem] font-bold">Name</th>
-              <th className="p-2 text-left text-[0.9rem] font-bold">Parent</th>
-              <th className="p-2 text-left text-[0.9rem] font-bold">Custom</th>
-              <th className="p-2 text-left w-20 text-[0.9rem] font-bold"></th>
-            </tr>
-          </thead>
-          <tbody>
+              </TableHead>
+              <TableHead className="p-2 text-left text-[0.9rem] font-bold">
+                Name
+              </TableHead>
+              <TableHead className="p-2 text-left text-[0.9rem] font-bold">
+                Parent
+              </TableHead>
+              <TableHead className="p-2 text-left text-[0.9rem] font-bold">
+                Custom
+              </TableHead>
+              <TableHead className="p-2 text-left w-20 text-[0.9rem] font-bold"></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {isLoading || isLoadingFilters ? (
-              <td colSpan={4} className="p-4">
+              <TableCell colSpan={4} className="p-4">
                 <div className="flex justify-center">
                   <img src={Loader} alt="loading" width="50px" />
                 </div>
-              </td>
+              </TableCell>
             ) : dataToRender.length === 0 ? (
-              <tr>
-                <td colSpan={4} className="p-4">
+              <TableRow>
+                <TableCell colSpan={4} className="p-4">
                   No templates found
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ) : (
               dataToRender.map((data, i) => (
-                <tr key={i} className="border-b last:border-none">
-                  <td className="p-2 pl-4 text-[0.9rem] italic">
+                <TableRow key={i} className="border-b last:border-none">
+                  <TableCell className="p-2 pl-4 text-[0.9rem] italic">
                     {data.basicInformation.externalId}
-                  </td>
-                  <td className="p-2 text-[0.9rem]">
+                  </TableCell>
+                  <TableCell className="p-2 text-[0.9rem]">
                     {data.basicInformation.name}
-                  </td>
-                  <td className="p-2 text-[0.9rem] italic">
+                  </TableCell>
+                  <TableCell className="p-2 text-[0.9rem] italic">
                     {data.basicInformation.parent}
-                  </td>
-                  <td className="p-2 text-[0.9rem]">
+                  </TableCell>
+                  <TableCell className="p-2 text-[0.9rem]">
                     {data.basicInformation.isCustom ? (
                       <Check height={17} width={17} />
                     ) : (
                       <X height={17} width={17} />
                     )}
-                  </td>
-                  <td className="p-3 text-[0.9rem] flex gap-2">
+                  </TableCell>
+                  <TableCell className="p-3 text-[0.9rem] flex gap-2">
                     <TemplateMoreOptions
                       externalId={data.basicInformation.externalId}
                       message="View Options"
@@ -290,12 +304,12 @@ export const TemplateList = () => {
                         isEdit
                       />
                     )}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))
             )}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
       {showFilteredResultsHelper && (
         <div className="text-right text-gray-500 text-md mt-2">

@@ -74,6 +74,9 @@ module.exports = {
         mina: ["mina", "sans-serif"],
         lato: ["lato", "sans-serif"],
       },
+      boxShadow: {
+        th: "0px 0px 15px -5px rgba(255,255,255,0.9)",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
