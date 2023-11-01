@@ -1,11 +1,10 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { TemplateFormData } from "@/models";
-import Loader from "@/assets/loader.gif";
 import { Filter, FilterOption, Header } from "@/components/shared";
 import { useTemplateList } from "@/service";
 import { TemplateMoreOptions } from "@/components/Template";
 import { Check, X } from "lucide-react";
-import { Input } from "../../ui/input";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -14,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Progress } from "@/components/ui/progress";
 
 export const TemplateList = () => {
   const [dataToRender, setDataToRender] = useState<TemplateFormData[]>([]);
@@ -45,6 +45,7 @@ export const TemplateList = () => {
       (selectedIsCustom && selectedIsCustom.length > 0)) &&
     dataToRender.length !== 0 &&
     !isLoading;
+  const [progressValue, setProgressValue] = useState<number>(5);
 
   const handleSearchTextChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -197,6 +198,21 @@ export const TemplateList = () => {
     setSearchText("");
   };
 
+  useEffect(() => {
+    if (isLoading) {
+      setProgressValue(25);
+    }
+
+    if (isLoadingFilters) {
+      setProgressValue(75);
+    }
+
+    if (!isLoading && !isLoadingFilters) {
+      setProgressValue(80);
+      return;
+    }
+  }, [isLoading, isLoadingFilters]);
+
   return (
     <div className="w-full">
       <Header value="Templates" />
@@ -241,7 +257,10 @@ export const TemplateList = () => {
           value={searchText}
         />
       </div>
-      <div className="h-[calc(100vh-200px)] overflow-y-auto border rounded-2xl mt-5 pb-3">
+      <div className="h-[calc(100vh-200px)] overflow-y-auto border rounded-tl-none rounded-tr-none rounded-2xl mt-5 pb-3">
+        {isLoading || isLoadingFilters ? (
+          <Progress value={progressValue} className="h-1" />
+        ) : null}
         <Table className="w-full border-collapse">
           <TableHeader className="sticky top-0 h-12 bg-[hsl(var(--background))] shadow-th">
             <TableRow className="border-b">
@@ -261,13 +280,7 @@ export const TemplateList = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {isLoading || isLoadingFilters ? (
-              <TableCell colSpan={4} className="p-4">
-                <div className="flex justify-center">
-                  <img src={Loader} alt="loading" width="50px" />
-                </div>
-              </TableCell>
-            ) : dataToRender.length === 0 ? (
+            {dataToRender.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={4} className="p-4">
                   No templates found

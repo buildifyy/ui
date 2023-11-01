@@ -1,11 +1,11 @@
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { Dropdown, TemplateFormData } from "@/models";
 import { AddPanel, Select } from "@/components/shared";
-import { MetricPanel } from "../MetricPanel";
+import { MetricPanel } from "@/components/Template";
 import { useState } from "react";
 import { ChevronRight, ChevronUp, Trash } from "lucide-react";
-import { FormDescription, FormLabel } from "../../../ui/form";
-import { Input } from "../../../ui/input";
+import { FormDescription, FormLabel } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 interface MetricTypePanelProps {
   readonly index: number;

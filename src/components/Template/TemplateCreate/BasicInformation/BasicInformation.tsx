@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { Select, OnOff } from "@/components/shared";
 import { useParentTemplates, useTemplateView } from "@/service";
 import { useLocation } from "react-router-dom";
-import { FormDescription, FormLabel } from "../../../ui/form";
-import { Input } from "../../../ui/input";
+import { FormDescription, FormLabel } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 export const BasicInformation = () => {
   const location = useLocation();

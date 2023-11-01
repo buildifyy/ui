@@ -1,7 +1,7 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
 import { AddPanel } from "@/components/shared";
-import { MetricTypePanel } from "../../Panels";
+import { MetricTypePanel } from "@/components/Template";
 import { useMetricTypeDropdown } from "@/service/common";
 import { useLocation } from "react-router-dom";
 

@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import { Button } from "../../ui/button";
+import { Button } from "@/components/ui/button";
 
 interface AddPanelProps {
   readonly title: string;

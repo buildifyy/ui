@@ -8,8 +8,8 @@ import {
 import { TemplateFormData } from "@/models";
 import { OnOff } from "@/components/shared";
 import { ChevronRight, ChevronUp, Trash } from "lucide-react";
-import { FormDescription, FormLabel } from "../../../ui/form";
-import { Input } from "../../../ui/input";
+import { FormDescription, FormLabel } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 interface MetricPanelProps {
   readonly index: number;

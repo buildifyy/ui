@@ -1,6 +1,6 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
-import { AttributePanel } from "../../Panels";
+import { AttributePanel } from "@/components/Template";
 import { useAttributeTypeDropdown } from "@/service/common";
 
 export const Attributes = () => {

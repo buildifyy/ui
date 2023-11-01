@@ -1,7 +1,7 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
 import { AddPanel } from "@/components/shared";
-import { AttributePanel } from "../../Panels";
+import { AttributePanel } from "@/components/Template";
 import { useAttributeTypeDropdown } from "@/service/common";
 import { useLocation } from "react-router-dom";
 

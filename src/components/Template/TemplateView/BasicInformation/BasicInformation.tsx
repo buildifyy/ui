@@ -2,8 +2,8 @@ import { Controller, useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
 import { Select, OnOff } from "@/components/shared";
 import { useParentTemplates } from "@/service";
-import { FormDescription, FormLabel } from "../../../ui/form";
-import { Input } from "../../../ui/input";
+import { FormDescription, FormLabel } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 export const BasicInformation = () => {
   const { register, control } = useFormContext<TemplateFormData>();

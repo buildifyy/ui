@@ -1,6 +1,6 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
-import { MetricTypePanel } from "../../Panels";
+import { MetricTypePanel } from "@/components/Template";
 import { useMetricTypeDropdown } from "@/service/common";
 
 export const MetricTypes = () => {
