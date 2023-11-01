@@ -74,7 +74,7 @@ export const MetricTypePanel = ({
   return (
     <div className="flex justify-between items-center gap-2">
       <details
-        className="group rounded-lg border p-6 [&_summary::-webkit-details-marker]:hidden w-full"
+        className="group rounded-lg border p-3 [&_summary::-webkit-details-marker]:hidden w-full"
         open={isVisible}
       >
         <summary
@@ -110,100 +110,102 @@ export const MetricTypePanel = ({
             )}
           </div>
         </summary>
-        <div className="mt-4 leading-relaxed text-sm">
-          <div className="flex items-center w-full justify-between">
-            <div className="flex flex-col w-96">
-              <FormLabel
-                htmlFor={`name.${metricType?._id}`}
-                className="block font-medium"
-              >
-                Name
-              </FormLabel>
-              <FormDescription className="mt-1">
-                This will be the name of your metric type.
-              </FormDescription>
-            </div>
-            <div className="flex flex-col items-end">
-              <Input
-                id={`name.${metricType?._id}`}
-                type="text"
-                className={`w-64 h-8 p-2 rounded shadow-sm sm:text-sm ${
-                  !isReadonly && errors.metricTypes?.[index]?.name
-                    ? "border-red-800"
-                    : ""
-                }`}
-                {...register(`metricTypes.${index}.name`)}
-                disabled={isReadonly}
-              />
-              {!isReadonly && errors.metricTypes?.[index]?.name && (
-                <FormDescription className="text-red-800">
-                  {errors.metricTypes?.[index]?.name?.message}
+        <div className="p-2">
+          <div className="mt-4 leading-relaxed">
+            <div className="flex items-center w-full justify-between">
+              <div className="flex flex-col w-96">
+                <FormLabel
+                  htmlFor={`name.${metricType?._id}`}
+                  className="block font-medium"
+                >
+                  Name
+                </FormLabel>
+                <FormDescription className="mt-1">
+                  This will be the name of your metric type.
                 </FormDescription>
-              )}
+              </div>
+              <div className="flex flex-col items-end">
+                <Input
+                  id={`name.${metricType?._id}`}
+                  type="text"
+                  className={`w-64 p-2 rounded shadow-sm ${
+                    !isReadonly && errors.metricTypes?.[index]?.name
+                      ? "border-red-800"
+                      : ""
+                  }`}
+                  {...register(`metricTypes.${index}.name`)}
+                  disabled={isReadonly}
+                />
+                {!isReadonly && errors.metricTypes?.[index]?.name && (
+                  <FormDescription className="text-red-800">
+                    {errors.metricTypes?.[index]?.name?.message}
+                  </FormDescription>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mt-4 leading-relaxed text-sm">
-          <div className="flex items-center w-full justify-between">
-            <div className="flex flex-col w-96">
-              <FormLabel
-                htmlFor={`metricType.${metricType?._id}`}
-                className="block font-medium"
-              >
-                Type
-              </FormLabel>
-              <FormDescription className="mt-1">
-                This will be the type of your metric.
-              </FormDescription>
-            </div>
-            <div className="flex flex-col items-end">
-              <Select
-                id={`metricType.${metricType?._id}`}
-                widthClassName="w-64"
-                data={dropdownValues}
-                {...register(`metricTypes.${index}.metricType`)}
-                errorClassName={
-                  !isReadonly && errors.metricTypes?.[index]?.metricType
-                    ? "border-red-800"
-                    : ""
-                }
-                isDisabled={isReadonly}
-              />
-              {!isReadonly && errors.metricTypes?.[index]?.metricType && (
-                <FormDescription className="text-red-800 mt-1">
-                  {errors.metricTypes?.[index]?.metricType?.message}
+          <div className="mt-4 leading-relaxed">
+            <div className="flex items-center w-full justify-between">
+              <div className="flex flex-col w-96">
+                <FormLabel
+                  htmlFor={`metricType.${metricType?._id}`}
+                  className="block font-medium"
+                >
+                  Type
+                </FormLabel>
+                <FormDescription className="mt-1">
+                  This will be the type of your metric.
                 </FormDescription>
-              )}
+              </div>
+              <div className="flex flex-col items-end">
+                <Select
+                  id={`metricType.${metricType?._id}`}
+                  widthClassName="w-64"
+                  data={dropdownValues}
+                  {...register(`metricTypes.${index}.metricType`)}
+                  errorClassName={
+                    !isReadonly && errors.metricTypes?.[index]?.metricType
+                      ? "border-red-800"
+                      : ""
+                  }
+                  isDisabled={isReadonly}
+                />
+                {!isReadonly && errors.metricTypes?.[index]?.metricType && (
+                  <FormDescription className="text-red-800 mt-1">
+                    {errors.metricTypes?.[index]?.metricType?.message}
+                  </FormDescription>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mt-4 leading-relaxed text-sm">
-          <div className="flex justify-between">
-            {metrics.length !== 0 ? (
-              <span className="text-md text-green-600">
-                {metrics.length}
-                {metrics.length > 1 ? " metrics" : " metric"}
-              </span>
-            ) : null}
+          <div className="mt-4 leading-relaxed">
+            <div className="flex justify-between">
+              {metrics.length !== 0 ? (
+                <span className="text-md text-green-600">
+                  {metrics.length}
+                  {metrics.length > 1 ? " metrics" : " metric"}
+                </span>
+              ) : null}
+            </div>
+            {!isReadonly && (
+              <AddPanel title="Add Metric" onAdd={handleAddMetric} />
+            )}
+            <FormDescription className="text-red-800">
+              {!isReadonly && errors.metricTypes?.[index]?.metrics?.message}
+            </FormDescription>
+            {metrics.map((metric, metricIndex) => {
+              return (
+                <MetricPanel
+                  key={metric._id}
+                  index={metricIndex}
+                  metricTypeIndex={index}
+                  onRemove={handleRemoveMetric}
+                  isReadonly={isReadonly}
+                  isMetricTypeNew={metricType?.isNew}
+                />
+              );
+            })}
           </div>
-          {!isReadonly && (
-            <AddPanel title="Add Metric" onAdd={handleAddMetric} />
-          )}
-          <FormDescription className="text-red-800">
-            {!isReadonly && errors.metricTypes?.[index]?.metrics?.message}
-          </FormDescription>
-          {metrics.map((metric, metricIndex) => {
-            return (
-              <MetricPanel
-                key={metric._id}
-                index={metricIndex}
-                metricTypeIndex={index}
-                onRemove={handleRemoveMetric}
-                isReadonly={isReadonly}
-                isMetricTypeNew={metricType?.isNew}
-              />
-            );
-          })}
         </div>
       </details>
     </div>
