@@ -109,7 +109,7 @@ export const Attributes = ({ fields }: AttributesProps) => {
                   {boxToRender(field, index)}
 
                   {errors.attributes?.[index]?.value && (
-                    <FormDescription className="text-red-800">
+                    <FormDescription className="text-red-800 mt-1">
                       {errors.attributes?.[index]?.value?.message}
                     </FormDescription>
                   )}
