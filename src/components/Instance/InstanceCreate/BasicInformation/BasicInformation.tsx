@@ -3,6 +3,8 @@ import { OnOff, Select } from "@/components/shared";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 import { InstanceFormData, InstanceMetaDataField } from "@/models";
 import React, { useEffect } from "react";
+import { FormDescription, FormLabel } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 interface BasicInformationProps {
   readonly fields?: InstanceMetaDataField[];
@@ -37,16 +39,13 @@ export const BasicInformation = ({
     <div className="flex flex-col my-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto max-h-[35rem]">
       <div className="flex items-center w-full justify-between">
         <div className="flex flex-col w-96">
-          <label
-            htmlFor="parent"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <FormLabel htmlFor="parent" className="block font-medium">
             Parent Template
-          </label>
-          <span className="text-xs text-gray-400 mt-2 w-60">
+          </FormLabel>
+          <FormDescription className="mt-1 w-60">
             Attributes, Relationships and Metric Types will be inherited from
             this template.
-          </span>
+          </FormDescription>
         </div>
         <div className="flex flex-col">
           <Select
@@ -54,15 +53,15 @@ export const BasicInformation = ({
             widthClassName="w-64"
             data={parentTemplates}
             errorClassName={
-              errors.basicInformation?.parent ? "border-red-600" : ""
+              errors.basicInformation?.parent ? "border-red-800" : ""
             }
             {...register("basicInformation.parent")}
             isDisabled={isLoading}
           />
           {errors.basicInformation?.parent && (
-            <span className="text-xs text-red-600">
+            <FormDescription className="mt-1 text-red-800">
               {errors.basicInformation?.parent.message}
-            </span>
+            </FormDescription>
           )}
         </div>
       </div>
@@ -81,30 +80,30 @@ export const BasicInformation = ({
               <hr className="w-full my-6" />
               <div className="flex items-center w-full justify-between">
                 <div className="flex flex-col w-96">
-                  <label
+                  <FormLabel
                     htmlFor={field.label}
-                    className="block text-sm font-medium text-gray-700"
+                    className="block font-medium"
                   >
                     {field.label}
-                  </label>
-                  <span className="text-xs text-gray-400 mt-2 w-60">
+                  </FormLabel>
+                  <FormDescription className="mt-1 w-60">
                     {field.infoText}
-                  </span>
+                  </FormDescription>
                 </div>
                 <div className="flex flex-col">
-                  <input
+                  <Input
                     id={field.label}
                     type="text"
-                    className={`w-64 border h-8 p-2 rounded shadow-sm sm:text-sm text-gray-700 ${
-                      fieldError ? "border-red-600" : ""
+                    className={`w-64 border p-2 rounded shadow-sm ${
+                      fieldError ? "border-red-800" : ""
                     }`}
                     {...register(registerKey)}
                     disabled={isLoading}
                   />
                   {fieldError && (
-                    <span className="text-xs text-red-600">
+                    <FormDescription className="mt-1 text-red-800">
                       {fieldError.message}
-                    </span>
+                    </FormDescription>
                   )}
                 </div>
               </div>
@@ -115,15 +114,12 @@ export const BasicInformation = ({
       <hr className="w-full my-6" />
       <div className="flex items-center w-full justify-between mb-3">
         <div className="flex flex-col w-96">
-          <label
-            htmlFor="custom"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <FormLabel htmlFor="custom" className="block font-medium">
             Custom
-          </label>
-          <span className="text-xs text-gray-400 mt-2">
+          </FormLabel>
+          <FormDescription className="mt-1">
             Specifies if the template is custom or out-of-the-box.
-          </span>
+          </FormDescription>
         </div>
         <div className="flex w-64">
           <div className="flex flex-col w-96 items-end">
@@ -140,9 +136,9 @@ export const BasicInformation = ({
                 />
               )}
             />
-            <span className="text-xs text-gray-400 mt-2">
+            <FormDescription className="mt-1">
               This value cannot be changed
-            </span>
+            </FormDescription>
           </div>
         </div>
       </div>

@@ -2,6 +2,8 @@ import { InstanceFormData, InstanceMetaDataField } from "@/models";
 import { useFormContext } from "react-hook-form";
 import { Select } from "@/components/shared";
 import { useEffect } from "react";
+import { Input } from "@/components/ui/input";
+import { FormDescription, FormLabel } from "@/components/ui/form";
 
 interface AttributesProps {
   readonly fields?: InstanceMetaDataField[];
@@ -27,11 +29,11 @@ export const Attributes = ({ fields }: AttributesProps) => {
     switch (field.type) {
       case "string":
         return (
-          <input
+          <Input
             id={`attribute.${index}.${field.label}`}
             type="text"
-            className={`w-64 border h-8 p-2 rounded shadow-sm text-xs text-gray-700 ${
-              errors.attributes?.[index]?.value ? "border-red-600" : ""
+            className={`w-64 border p-2 rounded shadow-sm ${
+              errors.attributes?.[index]?.value ? "border-red-800" : ""
             }`}
             placeholder={`Enter ${field.label} (${field.typeLabel})`}
             {...register(`attributes.${index}.value`)}
@@ -39,11 +41,11 @@ export const Attributes = ({ fields }: AttributesProps) => {
         );
       case "integer":
         return (
-          <input
+          <Input
             id={`attribute.${index}.${field.label}`}
             type="number"
-            className={`w-64 border h-8 p-2 rounded shadow-sm text-gray-700 text-xs ${
-              errors.attributes?.[index]?.value ? "border-red-600" : ""
+            className={`w-64 border p-2 rounded shadow-sm ${
+              errors.attributes?.[index]?.value ? "border-red-800" : ""
             }`}
             placeholder={`Enter ${field.label} (${field.typeLabel})`}
             {...register(`attributes.${index}.value`)}
@@ -51,11 +53,11 @@ export const Attributes = ({ fields }: AttributesProps) => {
         );
       case "float":
         return (
-          <input
+          <Input
             id={`attribute.${index}.${field.label}`}
             type="text"
-            className={`w-64 border h-8 p-2 rounded shadow-sm text-xs text-gray-700 ${
-              errors.attributes?.[index]?.value ? "border-red-600" : ""
+            className={`w-64 border p-2 rounded shadow-sm ${
+              errors.attributes?.[index]?.value ? "border-red-800" : ""
             }`}
             placeholder={`Enter ${field.label} (${field.typeLabel})`}
             {...register(`attributes.${index}.value`)}
@@ -71,7 +73,7 @@ export const Attributes = ({ fields }: AttributesProps) => {
               { label: "False", value: "false" },
             ]}
             errorClassName={
-              errors.attributes?.[index]?.value ? "border-red-600" : ""
+              errors.attributes?.[index]?.value ? "border-red-800" : ""
             }
             {...register(`attributes.${index}.value`)}
           />
@@ -80,7 +82,7 @@ export const Attributes = ({ fields }: AttributesProps) => {
   };
 
   return (
-    <div className="flex flex-col my-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto max-h-[28rem]">
+    <div className="flex flex-col my-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto h-[calc(100vh-220px)]">
       <div className="space-y-4 w-full">
         {fields?.map((field, index) => {
           return (
@@ -88,25 +90,28 @@ export const Attributes = ({ fields }: AttributesProps) => {
               {index !== 0 && <hr className="w-full my-6" />}
               <div className="flex items-center w-full justify-between py-1">
                 <div className="flex flex-col w-96">
-                  <label
+                  <FormLabel
                     htmlFor={`attribute.${index}.${field.label}`}
-                    className="block text-sm font-medium text-gray-700"
+                    className="block font-medium"
                   >
-                    {field.label}
-                  </label>
+                    {field.label}{" "}
+                    {field.isRequired ? (
+                      <span className="text-red-800">*</span>
+                    ) : null}
+                  </FormLabel>
                   {field.infoText && (
-                    <span className="text-xs text-gray-400 mt-2 w-60">
+                    <FormDescription className="mt-1 w-60">
                       {field.infoText}
-                    </span>
+                    </FormDescription>
                   )}
                 </div>
                 <div className="flex flex-col">
                   {boxToRender(field, index)}
 
                   {errors.attributes?.[index]?.value && (
-                    <span className="text-xs text-red-600">
+                    <FormDescription className="text-red-800">
                       {errors.attributes?.[index]?.value?.message}
-                    </span>
+                    </FormDescription>
                   )}
                 </div>
               </div>
