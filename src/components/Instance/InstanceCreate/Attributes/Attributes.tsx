@@ -4,6 +4,7 @@ import { Select } from "@/components/shared";
 import { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { FormDescription, FormLabel } from "@/components/ui/form";
+import React from "react";
 
 interface AttributesProps {
   readonly fields?: InstanceMetaDataField[];
@@ -86,7 +87,7 @@ export const Attributes = ({ fields }: AttributesProps) => {
       <div className="space-y-4 w-full">
         {fields?.map((field, index) => {
           return (
-            <>
+            <React.Fragment key={index}>
               {index !== 0 && <hr className="w-full my-6" />}
               <div className="flex items-center w-full justify-between py-1">
                 <div className="flex flex-col w-96">
@@ -115,7 +116,7 @@ export const Attributes = ({ fields }: AttributesProps) => {
                   )}
                 </div>
               </div>
-            </>
+            </React.Fragment>
           );
         })}
       </div>
