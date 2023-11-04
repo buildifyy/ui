@@ -31,6 +31,7 @@ export interface TemplateMetric {
   readonly value?: string | number | boolean | null;
   readonly isCalculated?: boolean;
   readonly isSourced?: boolean;
+  readonly isNew?: boolean;
 }
 
 export interface TemplateFormData {

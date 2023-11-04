@@ -16,7 +16,6 @@ interface MetricPanelProps {
   readonly metricTypeIndex: number;
   readonly onRemove?: (index: number) => void;
   readonly isReadonly?: boolean;
-  readonly isMetricTypeNew?: boolean;
 }
 
 export const MetricPanel = ({
@@ -24,7 +23,6 @@ export const MetricPanel = ({
   metricTypeIndex,
   onRemove,
   isReadonly,
-  isMetricTypeNew,
 }: MetricPanelProps) => {
   const {
     register,
@@ -39,7 +37,9 @@ export const MetricPanel = ({
     keyName: "_id",
   });
   const metric = metrics[index];
-  const [isVisible, setIsVisible] = useState(isMetricTypeNew && index === 0);
+  const [isVisible, setIsVisible] = useState(
+    metric?.isNew && (index === 0 || index === metrics.length - 1)
+  );
 
   const metricNameLive = useWatch({
     name: `metricTypes.${metricTypeIndex}.metrics.${index}.name`,
@@ -88,7 +88,8 @@ export const MetricPanel = ({
     trigger(`metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`);
   }, [index, metricIsSourcedLive, metricTypeIndex, trigger]);
 
-  const showTrashButton = isMetricTypeNew || !isReadonly;
+  const showTrashButton = metric?.isNew && !isReadonly;
+  console.log("showTrashButton: ", showTrashButton);
 
   return (
     <div className="flex justify-between items-center gap-2 mt-4">

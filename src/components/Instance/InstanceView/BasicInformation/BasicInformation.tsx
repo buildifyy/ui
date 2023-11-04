@@ -17,7 +17,7 @@ export const BasicInformation = ({ fields }: BasicInformationProps) => {
   const { data: parentTemplates } = useParentTemplates();
 
   return (
-    <div className="flex flex-col my-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto h-[calc(100vh-220px)]">
+    <div className="flex flex-col my-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto h-[calc(100vh-220px)] lg:mx-[20%] md:mx-[15%] sm:mx-[5%] xs:mx-0">
       <div className="flex items-center w-full justify-between pt-5">
         <div className="flex flex-col w-96">
           <FormLabel htmlFor="parent" className="block font-medium">

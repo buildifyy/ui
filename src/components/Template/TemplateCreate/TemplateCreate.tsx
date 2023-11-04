@@ -110,8 +110,7 @@ export const TemplateCreate = () => {
             ...a,
             owningTemplate: getValues("basicInformation.externalId"),
           };
-        })
-        .reverse(),
+        }),
       metricTypes: data.metricTypes
         .filter((mt) => mt.isNew)
         .map((mt) => {
@@ -123,10 +122,9 @@ export const TemplateCreate = () => {
         .map((mt) => {
           return {
             ...mt,
-            metrics: mt.metrics.reverse(),
+            metrics: mt.metrics,
           };
-        })
-        .reverse(),
+        }),
     };
     createTemplate(toPush);
   };

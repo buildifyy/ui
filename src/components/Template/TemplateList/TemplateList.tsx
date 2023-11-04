@@ -215,8 +215,8 @@ export const TemplateList = () => {
 
   return (
     <div className="w-full">
-      <Header value="Templates" />
-      <div className="flex justify-between mt-4">
+      <Header value="Templates" isListView />
+      <div className="flex justify-between mt-4 lg:mx-[10%] mx-0">
         <div className="flex gap-2 items-center">
           <Filter
             options={externalIdFilterOptions}
@@ -257,7 +257,7 @@ export const TemplateList = () => {
           value={searchText}
         />
       </div>
-      <div className="h-[calc(100vh-200px)] overflow-y-auto border rounded-tl-none rounded-tr-none rounded-2xl mt-5 pb-3">
+      <div className="h-[calc(100vh-200px)] overflow-y-auto border rounded-tl-none rounded-tr-none rounded-2xl mt-5 pb-3 lg:mx-[10%] mx-0">
         {isLoading || isLoadingFilters ? (
           <Progress value={progressValue} className="h-1" />
         ) : null}

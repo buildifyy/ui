@@ -3,19 +3,14 @@ import { TemplateFormData } from "@/models";
 import { AddPanel } from "@/components/shared";
 import { MetricTypePanel } from "@/components/Template";
 import { useMetricTypeDropdown } from "@/service";
-import { useLocation } from "react-router-dom";
 
 export const MetricTypes = () => {
-  const location = useLocation();
   const { control } = useFormContext<TemplateFormData>();
   const {
     fields: metricTypes,
-    prepend,
     append,
     remove,
   } = useFieldArray({ control, name: "metricTypes", keyName: "_id" });
-
-  const isEditMode = location.pathname.includes("/edit");
 
   const { data: metricTypeValues } = useMetricTypeDropdown();
 
@@ -24,39 +19,24 @@ export const MetricTypes = () => {
   };
 
   const handleAddMetricType = () => {
-    if (isEditMode) {
-      append({
-        name: "",
-        metricType: "",
-        isNew: true,
-        metrics: [
-          {
-            name: "",
-            isCalculated: false,
-            isManual: false,
-            isSourced: false,
-          },
-        ],
-      });
-    } else {
-      prepend({
-        name: "",
-        metricType: "",
-        isNew: true,
-        metrics: [
-          {
-            name: "",
-            isCalculated: false,
-            isManual: false,
-            isSourced: false,
-          },
-        ],
-      });
-    }
+    append({
+      name: "",
+      metricType: "",
+      isNew: true,
+      metrics: [
+        {
+          name: "",
+          isCalculated: false,
+          isManual: false,
+          isSourced: false,
+          isNew: true,
+        },
+      ],
+    });
   };
 
   return (
-    <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-y-auto h-[calc(100vh-220px)]">
+    <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-y-auto h-[calc(100vh-220px)] lg:mx-[20%] md:mx-[15%] sm:mx-[5%] xs:mx-0">
       <div className="space-y-4 w-full">
         {metricTypes.filter((mt) => mt.isNew).length !== 0 ? (
           <div className="flex justify-between">

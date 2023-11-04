@@ -13,7 +13,7 @@ export const MetricTypes = () => {
   const { data: metricTypeValues } = useMetricTypeDropdown();
 
   return (
-    <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center h-[calc(100vh-220px)] overflow-y-auto">
+    <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center h-[calc(100vh-220px)] overflow-y-auto lg:mx-[20%] md:mx-[15%] sm:mx-[5%] xs:mx-0">
       <div className="space-y-4 w-full">
         {metricTypes.length !== 0 ? (
           <div className="flex justify-between">

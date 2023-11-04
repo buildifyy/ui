@@ -40,7 +40,7 @@ export const MetricTypePanel = ({
 
   const {
     fields: metrics,
-    prepend,
+    append,
     remove,
   } = useFieldArray({
     control,
@@ -54,11 +54,12 @@ export const MetricTypePanel = ({
   });
 
   const handleAddMetric = () => {
-    prepend({
+    append({
       name: "",
       isSourced: false,
       isManual: false,
       isCalculated: false,
+      isNew: true,
     });
   };
 
@@ -201,7 +202,6 @@ export const MetricTypePanel = ({
                   metricTypeIndex={index}
                   onRemove={handleRemoveMetric}
                   isReadonly={isReadonly}
-                  isMetricTypeNew={metricType?.isNew}
                 />
               );
             })}

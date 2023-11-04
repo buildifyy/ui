@@ -67,7 +67,10 @@ export const InstanceView = () => {
 
   return (
     <div className="w-full">
-      <Header value={config ? configMap[config] : "Basic Information"} />
+      <Header
+        value={config ? configMap[config] : "Basic Information"}
+        type="Instance"
+      />
       {toRender()}
       <Footer />
     </div>
