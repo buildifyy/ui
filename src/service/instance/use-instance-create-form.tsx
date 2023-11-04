@@ -10,6 +10,6 @@ export const useInstanceCreateForm = (templateId?: string) => {
     },
     {
       enabled: !!templateId,
-    },
+    }
   );
 };

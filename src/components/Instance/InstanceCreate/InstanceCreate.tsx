@@ -9,6 +9,7 @@ import { SubmitHandler, useFormContext, useWatch } from "react-hook-form";
 import { InstanceFormData, InstanceMetaDataField } from "@/models";
 import { useToast } from "@/components/ui/use-toast.ts";
 import { Toaster } from "@/components/ui/toaster.tsx";
+import { useInstanceCreate } from "@/service/instance/use-instance-create";
 
 interface InstanceCreateProps {
   readonly setSchemaContext?: (metaData: InstanceMetaDataField[]) => void;
@@ -34,6 +35,53 @@ export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
     data: instanceCreateFormData,
     isFetching: isFetchingInstanceCreateFormData,
   } = useInstanceCreateForm(selectedParentLive);
+
+  const {
+    mutate: createInstance,
+    isSuccess: isCreateInstanceSuccess,
+    isError: isCreateInstanceError,
+  } = useInstanceCreate();
+
+  const showSuccessToast = () => {
+    toast({
+      variant: "destructive",
+      title: "Instance Created Successfully",
+      className: "group border-none bg-blue-600 text-primary-foreground",
+    });
+  };
+
+  const showFailureToast = () => {
+    toast({
+      variant: "destructive",
+      title: "Instance Creation Failed",
+    });
+  };
+
+  useEffect(() => {
+    if (isCreateInstanceSuccess) {
+      reset((prev) => {
+        return {
+          tenant: prev.tenant,
+          basicInformation: {
+            parent: "",
+            name: "",
+            externalId: "",
+            isCustom: true,
+          },
+          attributes: [],
+        };
+      });
+      searchParams.set("config", "basic-information");
+      setSearchParams(searchParams);
+      showSuccessToast();
+    }
+  }, [isCreateInstanceSuccess, searchParams, reset, setSearchParams]);
+
+  useEffect(() => {
+    if (isCreateInstanceError) {
+      showFailureToast();
+    }
+  }, [isCreateInstanceError]);
 
   const configMap: Record<string, string> = {
     "basic-information": "Basic Information",
@@ -74,30 +122,7 @@ export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
   };
 
   const onSubmit: SubmitHandler<InstanceFormData> = (data) => {
-    console.log("data: ", data);
-    reset((prev) => {
-      return {
-        tenant: prev.tenant,
-        basicInformation: {
-          parent: "",
-          name: "",
-          externalId: "",
-          isCustom: true,
-        },
-        attributes: [],
-      };
-    });
-    searchParams.set("config", "basic-information");
-    setSearchParams(searchParams);
-    showSuccessToast();
-  };
-
-  const showSuccessToast = () => {
-    toast({
-      variant: "destructive",
-      title: "Instance Created Successfully",
-      className: "group border-none bg-blue-600 text-primary-foreground",
-    });
+    createInstance(data);
   };
 
   console.log("errors: ", errors);
