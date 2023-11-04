@@ -61,6 +61,7 @@ export const MetricTypes = () => {
             />
           );
         })}
+        <AddPanel title="Add Metric Type" onAdd={handleAddMetricType} />
       </div>
     </div>
   );

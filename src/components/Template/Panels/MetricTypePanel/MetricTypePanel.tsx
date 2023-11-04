@@ -179,7 +179,7 @@ export const MetricTypePanel = ({
               </div>
             </div>
           </div>
-          <div className="mt-4 leading-relaxed">
+          <div className="space-y-4 w-full">
             <div className="flex justify-between">
               {metrics.length !== 0 ? (
                 <span className="text-md text-green-600">
@@ -205,6 +205,9 @@ export const MetricTypePanel = ({
                 />
               );
             })}
+            {!isReadonly && metrics.length > 0 && (
+              <AddPanel title="Add Metric" onAdd={handleAddMetric} />
+            )}
           </div>
         </div>
       </details>

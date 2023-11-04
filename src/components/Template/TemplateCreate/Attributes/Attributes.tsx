@@ -57,6 +57,7 @@ export const Attributes = () => {
             />
           );
         })}
+        <AddPanel title="Add Attribute" onAdd={handleAddAttribute} />
       </div>
     </div>
   );
