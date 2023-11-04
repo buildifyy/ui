@@ -1,7 +1,11 @@
 import { FormProvider, useForm } from "react-hook-form";
 import { Topbar } from "@/components/skeleton";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { InstanceCreate } from "@/components/Instance";
+import {
+  InstanceCreate,
+  InstanceList,
+  InstanceView,
+} from "@/components/Instance";
 import {
   InstanceFormData,
   InstanceMetaDataField,
@@ -9,7 +13,6 @@ import {
 } from "@/models";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
-import { InstanceList } from "@/components/Instance/InstanceList/InstanceList";
 
 export const InstanceForm = () => {
   const [schemaContext, setSchemaContext] = useState<InstanceMetaDataField[]>(
@@ -39,6 +42,7 @@ export const InstanceForm = () => {
                 path="/instances"
                 element={<Navigate replace to="/instances/create" />}
               />
+              <Route path="/instances/:instanceId" element={<InstanceView />} />
               <Route
                 path="/instances/create"
                 element={<InstanceCreate setSchemaContext={setSchemaContext} />}

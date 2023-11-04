@@ -28,7 +28,7 @@ export const TemplateCreate = () => {
       searchParams.set("config", "basic-information");
       setSearchParams(searchParams);
     }
-  }, [config]);
+  }, [config, searchParams, setSearchParams]);
 
   const configMap: Record<string, string> = {
     "basic-information": "Basic Information",

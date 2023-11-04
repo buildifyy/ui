@@ -1,43 +1,24 @@
-import { useParentTemplates } from "@/service";
-import { OnOff, Select } from "@/components/shared";
-import { Controller, useFormContext, useWatch } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { InstanceFormData, InstanceMetaDataField } from "@/models";
-import React, { useEffect } from "react";
+import { Select, OnOff } from "@/components/shared";
+import { useParentTemplates } from "@/service";
 import { FormDescription, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import React from "react";
 
 interface BasicInformationProps {
   readonly fields?: InstanceMetaDataField[];
   readonly isLoading: boolean;
 }
 
-export const BasicInformation = ({
-  fields,
-  isLoading,
-}: BasicInformationProps) => {
-  const {
-    control,
-    register,
-    setValue,
-    formState: { errors },
-  } = useFormContext<InstanceFormData>();
+export const BasicInformation = ({ fields }: BasicInformationProps) => {
+  const { register, control } = useFormContext<InstanceFormData>();
+
   const { data: parentTemplates } = useParentTemplates();
-
-  const basicInformationNameLive = useWatch({
-    name: "basicInformation.name",
-    control,
-  });
-
-  useEffect(() => {
-    if (basicInformationNameLive !== null) {
-      const valueToSet = basicInformationNameLive?.replace(/\s/g, "");
-      setValue("basicInformation.externalId", valueToSet?.toLowerCase());
-    }
-  }, [basicInformationNameLive, setValue]);
 
   return (
     <div className="flex flex-col my-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto h-[calc(100vh-220px)]">
-      <div className="flex items-center w-full justify-between">
+      <div className="flex items-center w-full justify-between pt-5">
         <div className="flex flex-col w-96">
           <FormLabel htmlFor="parent" className="block font-medium">
             Parent Template
@@ -52,17 +33,9 @@ export const BasicInformation = ({
             id="parent"
             widthClassName="w-64"
             data={parentTemplates}
-            errorClassName={
-              errors.basicInformation?.parent ? "border-red-800" : ""
-            }
             {...register("basicInformation.parent")}
-            isDisabled={isLoading}
+            isDisabled
           />
-          {errors.basicInformation?.parent && (
-            <FormDescription className="mt-1 text-red-800">
-              {errors.basicInformation?.parent.message}
-            </FormDescription>
-          )}
         </div>
       </div>
       {fields?.map((field, i) => {
@@ -71,10 +44,6 @@ export const BasicInformation = ({
             field.label === "Name"
               ? "basicInformation.name"
               : "basicInformation.externalId";
-          const fieldError =
-            field.label === "Name"
-              ? errors.basicInformation?.name
-              : errors.basicInformation?.externalId;
           return (
             <React.Fragment key={i}>
               <hr className="w-full my-6" />
@@ -94,17 +63,10 @@ export const BasicInformation = ({
                   <Input
                     id={field.label}
                     type="text"
-                    className={`w-64 border p-2 rounded shadow-sm ${
-                      fieldError ? "border-red-800" : ""
-                    }`}
+                    className="w-64 border p-2 rounded shadow-sm"
                     {...register(registerKey)}
-                    disabled={isLoading}
+                    disabled
                   />
-                  {fieldError && (
-                    <FormDescription className="mt-1 text-red-800">
-                      {fieldError.message}
-                    </FormDescription>
-                  )}
                 </div>
               </div>
             </React.Fragment>
@@ -136,9 +98,6 @@ export const BasicInformation = ({
                 />
               )}
             />
-            <FormDescription className="mt-1">
-              This value cannot be changed
-            </FormDescription>
           </div>
         </div>
       </div>

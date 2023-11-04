@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { InstanceService } from "@/service/instance/instance.service.ts";
+import { InstanceService } from "@/service";
 
 export const useInstanceCreateForm = (templateId?: string) => {
   return useQuery(

@@ -4,12 +4,11 @@ import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { BasicInformation } from "./BasicInformation";
 import { Attributes } from "@/components/Instance/InstanceCreate/Attributes";
-import { useInstanceCreateForm } from "@/service/instance";
+import { useInstanceCreateForm, useInstanceCreate } from "@/service";
 import { SubmitHandler, useFormContext, useWatch } from "react-hook-form";
 import { InstanceFormData, InstanceMetaDataField } from "@/models";
 import { useToast } from "@/components/ui/use-toast.ts";
 import { Toaster } from "@/components/ui/toaster.tsx";
-import { useInstanceCreate } from "@/service/instance/use-instance-create";
 
 interface InstanceCreateProps {
   readonly setSchemaContext?: (metaData: InstanceMetaDataField[]) => void;
@@ -95,13 +94,13 @@ export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
       searchParams.set("config", "basic-information");
       setSearchParams(searchParams);
     }
-  }, [config]);
+  }, [config, searchParams, setSearchParams]);
 
   useEffect(() => {
     if (instanceCreateFormData && setSchemaContext) {
       setSchemaContext(instanceCreateFormData.attributes.fields);
     }
-  }, [instanceCreateFormData]);
+  }, [instanceCreateFormData, setSchemaContext]);
 
   const toRender = () => {
     switch (config) {

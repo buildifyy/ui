@@ -43,14 +43,14 @@ export const BasicInformation = () => {
         };
       });
     }
-  }, [parentTemplateData]);
+  }, [parentTemplateData, reset, selectedParent]);
 
   useEffect(() => {
     if (basicInformationNameLive !== null && !isEditMode) {
       const valueToSet = basicInformationNameLive?.replace(/\s/g, "");
       setValue("basicInformation.externalId", valueToSet?.toLowerCase());
     }
-  }, [basicInformationNameLive, setValue]);
+  }, [basicInformationNameLive, isEditMode, setValue]);
 
   const handleOnParentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value) {
@@ -60,7 +60,7 @@ export const BasicInformation = () => {
 
   return (
     <div className="flex flex-col mt-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto h-[calc(100vh-220px)]">
-      <div className="flex items-center w-full justify-between pt-5 overflow-y-auto px-2">
+      <div className="flex items-center w-full justify-between pt-5">
         <div className="flex flex-col w-96">
           <FormLabel htmlFor="parent" className="block font-medium">
             Parent Template
@@ -144,7 +144,7 @@ export const BasicInformation = () => {
         </div>
       </div>
       <hr className="w-full my-6" />
-      <div className="flex items-center w-full justify-between mb-3 px-2">
+      <div className="flex items-center w-full justify-between mb-3">
         <div className="flex flex-col w-96">
           <FormLabel htmlFor="custom" className="block font-medium">
             Custom

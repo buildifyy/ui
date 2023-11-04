@@ -2,7 +2,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
 import { AddPanel } from "@/components/shared";
 import { MetricTypePanel } from "@/components/Template";
-import { useMetricTypeDropdown } from "@/service/common";
+import { useMetricTypeDropdown } from "@/service";
 import { useLocation } from "react-router-dom";
 
 export const MetricTypes = () => {
@@ -57,7 +57,7 @@ export const MetricTypes = () => {
 
   return (
     <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-y-auto h-[calc(100vh-220px)]">
-      <div className="space-y-4 w-full overflow-y-auto">
+      <div className="space-y-4 w-full">
         {metricTypes.filter((mt) => mt.isNew).length !== 0 ? (
           <div className="flex justify-between">
             <span className="text-green-600">

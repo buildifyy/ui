@@ -1,21 +1,17 @@
-import { InstanceFormData, InstanceMetaDataField } from "@/models";
 import { useFormContext } from "react-hook-form";
-import { Select } from "@/components/shared";
+import { InstanceFormData, InstanceMetaDataField } from "@/models";
 import { useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import { FormDescription, FormLabel } from "@/components/ui/form";
+import { Select } from "@/components/shared";
 import React from "react";
+import { FormDescription, FormLabel } from "@/components/ui/form";
 
 interface AttributesProps {
   readonly fields?: InstanceMetaDataField[];
 }
 
 export const Attributes = ({ fields }: AttributesProps) => {
-  const {
-    register,
-    setValue,
-    formState: { errors },
-  } = useFormContext<InstanceFormData>();
+  const { register, setValue } = useFormContext<InstanceFormData>();
 
   useEffect(() => {
     if (fields) {
@@ -33,11 +29,10 @@ export const Attributes = ({ fields }: AttributesProps) => {
           <Input
             id={`attribute.${index}.${field.label}`}
             type="text"
-            className={`w-64 border p-2 rounded shadow-sm ${
-              errors.attributes?.[index]?.value ? "border-red-800" : ""
-            }`}
-            placeholder={`Enter ${field.label} (${field.typeLabel})`}
+            className="w-64 border p-2 rounded shadow-sm"
+            placeholder={`${field.label} (${field.typeLabel})`}
             {...register(`attributes.${index}.value`)}
+            disabled
           />
         );
       case "integer":
@@ -45,11 +40,10 @@ export const Attributes = ({ fields }: AttributesProps) => {
           <Input
             id={`attribute.${index}.${field.label}`}
             type="number"
-            className={`w-64 border p-2 rounded shadow-sm ${
-              errors.attributes?.[index]?.value ? "border-red-800" : ""
-            }`}
-            placeholder={`Enter ${field.label} (${field.typeLabel})`}
+            className="w-64 border p-2 rounded shadow-sm"
+            placeholder={`${field.label} (${field.typeLabel})`}
             {...register(`attributes.${index}.value`)}
+            disabled
           />
         );
       case "float":
@@ -57,11 +51,10 @@ export const Attributes = ({ fields }: AttributesProps) => {
           <Input
             id={`attribute.${index}.${field.label}`}
             type="text"
-            className={`w-64 border p-2 rounded shadow-sm ${
-              errors.attributes?.[index]?.value ? "border-red-800" : ""
-            }`}
-            placeholder={`Enter ${field.label} (${field.typeLabel})`}
+            className="w-64 border p-2 rounded shadow-sm"
+            placeholder={`${field.label} (${field.typeLabel})`}
             {...register(`attributes.${index}.value`)}
+            disabled
           />
         );
       case "bool":
@@ -73,17 +66,15 @@ export const Attributes = ({ fields }: AttributesProps) => {
               { label: "True", value: "true" },
               { label: "False", value: "false" },
             ]}
-            errorClassName={
-              errors.attributes?.[index]?.value ? "border-red-800" : ""
-            }
             {...register(`attributes.${index}.value`)}
+            isDisabled
           />
         );
     }
   };
 
   return (
-    <div className="flex flex-col my-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto h-[calc(100vh-220px)]">
+    <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center overflow-y-auto h-[calc(100vh-220px)]">
       <div className="space-y-4 w-full">
         {fields?.map((field, index) => {
           return (
@@ -106,15 +97,7 @@ export const Attributes = ({ fields }: AttributesProps) => {
                     </FormDescription>
                   )}
                 </div>
-                <div className="flex flex-col">
-                  {boxToRender(field, index)}
-
-                  {errors.attributes?.[index]?.value && (
-                    <FormDescription className="text-red-800 mt-1">
-                      {errors.attributes?.[index]?.value?.message}
-                    </FormDescription>
-                  )}
-                </div>
+                <div className="flex flex-col">{boxToRender(field, index)}</div>
               </div>
             </React.Fragment>
           );

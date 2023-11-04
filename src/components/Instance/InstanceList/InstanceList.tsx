@@ -12,8 +12,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
-import { useInstanceList } from "@/service/instance/use-instance-list";
-import { InstanceMoreOptions } from "../InstanceMoreOptions/InstanceMoreOptions";
+import { useInstanceList } from "@/service";
+import { InstanceMoreOptions } from "@/components/Instance";
 
 export const InstanceList = () => {
   const [dataToRender, setDataToRender] = useState<InstanceFormData[]>([]);
