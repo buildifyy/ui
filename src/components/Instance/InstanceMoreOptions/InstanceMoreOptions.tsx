@@ -9,17 +9,17 @@ import {
 import { Link } from "react-router-dom";
 import { Edit, Eye } from "lucide-react";
 
-interface TemplateMoreOptionsProps {
+interface InstanceMoreOptionsProps {
   readonly externalId: string;
   readonly message?: string;
   readonly isEdit?: boolean;
 }
 
-export const TemplateMoreOptions = ({
+export const InstanceMoreOptions = ({
   externalId,
   message,
   isEdit,
-}: TemplateMoreOptionsProps) => {
+}: InstanceMoreOptionsProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -36,19 +36,19 @@ export const TemplateMoreOptions = ({
           <Link
             to={
               isEdit
-                ? `/templates/edit/${externalId}?config=basic-information`
-                : `/templates/${externalId}?config=basic-information`
+                ? `/instances/edit/${externalId}?config=basic-information`
+                : `/instances/${externalId}?config=basic-information`
             }
           >
-            Template
+            Instance
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Link
             to={
               isEdit
-                ? `/templates/edit/${externalId}?config=attributes`
-                : `/templates/${externalId}?config=attributes`
+                ? `/instances/edit/${externalId}?config=attributes`
+                : `/instances/${externalId}?config=attributes`
             }
           >
             Attributes
@@ -58,8 +58,8 @@ export const TemplateMoreOptions = ({
           <Link
             to={
               isEdit
-                ? `/templates/edit/${externalId}?config=relationships`
-                : `/templates/${externalId}?config=relationships`
+                ? `/instances/edit/${externalId}?config=relationships`
+                : `/instances/${externalId}?config=relationships`
             }
           >
             Relationships
@@ -69,8 +69,8 @@ export const TemplateMoreOptions = ({
           <Link
             to={
               isEdit
-                ? `/templates/edit/${externalId}?config=metric-types`
-                : `/templates/${externalId}?config=metric-types`
+                ? `/instances/edit/${externalId}?config=metric-types`
+                : `/instances/${externalId}?config=metric-types`
             }
           >
             Metric Types

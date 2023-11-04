@@ -9,10 +9,11 @@ import {
 } from "@/models";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
+import { InstanceList } from "@/components/Instance/InstanceList/InstanceList";
 
 export const InstanceForm = () => {
   const [schemaContext, setSchemaContext] = useState<InstanceMetaDataField[]>(
-    [],
+    []
   );
 
   const methods = useForm<InstanceFormData>({
@@ -33,6 +34,7 @@ export const InstanceForm = () => {
         <div className="flex w-full flex-col justify-between">
           <div className="flex h-full px-5 py-3">
             <Routes>
+              <Route path="/instances" element={<InstanceList />} />
               <Route
                 path="/instances"
                 element={<Navigate replace to="/instances/create" />}
