@@ -73,10 +73,7 @@ export const Menu = () => {
                 </div>
               </li>
               <li>
-                <details
-                  className="group"
-                  open={location.pathname.includes("/templates")}
-                >
+                <details className="group" open>
                   <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2">
                     <span className="text-sm font-medium"> Templates </span>
 
@@ -134,7 +131,7 @@ export const Menu = () => {
               <li>
                 <details
                   className="group [&_summary::-webkit-details-marker]:hidden"
-                  open={location.pathname.includes("/instances")}
+                  open
                 >
                   <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2">
                     <span className="text-sm font-medium"> Instances </span>

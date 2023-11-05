@@ -7,9 +7,10 @@ import { Alert, Header } from "@/components/shared";
 import { Footer } from "@/components/skeleton";
 import { useEffect, useState } from "react";
 import { useTemplateCreate } from "@/service";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster.tsx";
 import { useToast } from "@/components/ui/use-toast.ts";
+import { ToastAction } from "@/components/ui/toast";
 
 export const TemplateCreate = () => {
   const {
@@ -18,10 +19,12 @@ export const TemplateCreate = () => {
     formState: { errors },
     getValues,
   } = useFormContext<TemplateFormData>();
+  const [externalId, setExternalId] = useState<string>("");
   const [showCancelPopup, setShowCancelPopup] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const config = searchParams.get("config");
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!config) {
@@ -39,9 +42,16 @@ export const TemplateCreate = () => {
 
   const showSuccessToast = () => {
     toast({
-      variant: "destructive",
       title: "Template Created Successfully",
-      className: "group border-none bg-blue-600 text-primary-foreground",
+      className: "group",
+      action: (
+        <ToastAction
+          altText="View"
+          onClick={() => navigate(`/templates/${externalId}`)}
+        >
+          View
+        </ToastAction>
+      ),
     });
   };
 
@@ -101,6 +111,7 @@ export const TemplateCreate = () => {
   };
 
   const onSubmit: SubmitHandler<TemplateFormData> = (data) => {
+    setExternalId(getValues("basicInformation.externalId"));
     const toPush: TemplateFormData = {
       ...data,
       attributes: data.attributes

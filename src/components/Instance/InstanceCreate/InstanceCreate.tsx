@@ -1,7 +1,7 @@
 import { Header } from "@/components/shared";
 import { Footer } from "@/components/skeleton";
-import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { BasicInformation } from "./BasicInformation";
 import { Attributes } from "@/components/Instance/InstanceCreate/Attributes";
 import { useInstanceCreateForm, useInstanceCreate } from "@/service";
@@ -9,6 +9,7 @@ import { SubmitHandler, useFormContext, useWatch } from "react-hook-form";
 import { InstanceFormData, InstanceMetaDataField } from "@/models";
 import { useToast } from "@/components/ui/use-toast.ts";
 import { Toaster } from "@/components/ui/toaster.tsx";
+import { ToastAction } from "@/components/ui/toast";
 
 interface InstanceCreateProps {
   readonly setSchemaContext?: (metaData: InstanceMetaDataField[]) => void;
@@ -21,9 +22,12 @@ export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
     control,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors },
   } = useFormContext<InstanceFormData>();
+  const [externalId, setExternalId] = useState<string>("");
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const selectedParentLive = useWatch({
     control,
@@ -43,9 +47,16 @@ export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
 
   const showSuccessToast = () => {
     toast({
-      variant: "destructive",
       title: "Instance Created Successfully",
-      className: "group border-none bg-blue-600 text-primary-foreground",
+      className: "group",
+      action: (
+        <ToastAction
+          altText="View"
+          onClick={() => navigate(`/instances/${externalId}`)}
+        >
+          View
+        </ToastAction>
+      ),
     });
   };
 
@@ -121,6 +132,7 @@ export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
   };
 
   const onSubmit: SubmitHandler<InstanceFormData> = (data) => {
+    setExternalId(getValues("basicInformation.externalId"));
     createInstance(data);
   };
 

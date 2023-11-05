@@ -1,13 +1,17 @@
 import { useLocation, useSearchParams } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
-import { BadgeAlert, Check } from "lucide-react";
 import { Menu } from "@/components/skeleton";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+} from "@/components/ui/breadcrumb";
 
 export const Topbar = () => {
   const location = useLocation();
   const {
-    formState: { errors, isValid, isSubmitted },
+    formState: { errors },
   } = useFormContext<TemplateFormData>();
   const [searchParams, setSearchParams] = useSearchParams();
   const config = searchParams.get("config");
@@ -29,139 +33,188 @@ export const Topbar = () => {
   const shouldDisplaySteps =
     location.pathname !== "/" && location.pathname !== "/templates";
 
+  console.log("basicInfoErrors: ", errors.basicInformation);
+
   return (
     <div className="flex items-center border-b">
       <Menu />
       {shouldDisplaySteps && (
-        <div className="flex flex-grow px-28 items-center">
-          <h2 className="sr-only">Steps</h2>
-          <div className="relative after:absolute after:inset-x-0 after:top-1/2 after:block after:h-0.5 after:-translate-y-1/2 after:rounded-lg w-full">
-            <ol className="relative z-10 flex justify-between text-sm font-medium">
-              <li
-                className="flex items-center gap-2 p-2"
+        // <div className="flex flex-grow px-28 items-center">
+        //   <h2 className="sr-only">Steps</h2>
+        //   <div className="relative after:absolute after:inset-x-0 after:top-1/2 after:block after:h-0.5 after:-translate-y-1/2 after:rounded-lg w-full">
+        //     <ol className="relative z-10 flex justify-between text-sm font-medium">
+        //       <li
+        //         className="flex items-center gap-2 p-2"
+        //         onClick={() => handleStepClick("basic-information")}
+        //       >
+        //         {errors.basicInformation?.parent ||
+        //         errors.basicInformation?.name ||
+        //         errors.basicInformation?.externalId ? (
+        //           <BadgeAlert
+        //             width={17}
+        //             height={17}
+        //             className="text-red-800 text-center"
+        //           />
+        //         ) : isSubmitted && isValid ? (
+        //           <Check height={17} width={17} className="text-green-600" />
+        //         ) : (
+        //           <span
+        //             className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold ${
+        //               config === "basic-information"
+        //                 ? "bg-blue-600"
+        //                 : "bg-gray-400"
+        //             }`}
+        //           >
+        //             1
+        //           </span>
+        //         )}
+
+        //         <div className="flex gap-2 items-center">
+        //           <span
+        //             className={`hidden sm:block ${
+        //               config === "basic-information" ? "font-extrabold" : ""
+        //             }`}
+        //           >
+        //             Basic Information
+        //           </span>
+        //         </div>
+        //       </li>
+
+        //       <li
+        //         className="flex items-center gap-2 p-2"
+        //         onClick={() => handleStepClick("attributes")}
+        //       >
+        //         {errors.attributes?.length && errors.attributes.length > 0 ? (
+        //           <BadgeAlert
+        //             width={17}
+        //             height={17}
+        //             className="text-red-800 text-center"
+        //           />
+        //         ) : isSubmitted && isValid ? (
+        //           <Check height={17} width={17} className="text-green-600" />
+        //         ) : (
+        //           <span
+        //             className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold ${
+        //               config === "attributes" ? "bg-blue-600" : "bg-gray-400"
+        //             }`}
+        //           >
+        //             2
+        //           </span>
+        //         )}
+
+        //         <div className="flex gap-2 items-center">
+        //           <span
+        //             className={`hidden sm:block ${
+        //               config === "attributes" ? "font-extrabold" : ""
+        //             }`}
+        //           >
+        //             Attributes
+        //           </span>
+        //         </div>
+        //       </li>
+
+        //       <li
+        //         className="flex items-center gap-2 p-2"
+        //         onClick={() => handleStepClick("relationships")}
+        //       >
+        //         <span
+        //           className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold ${
+        //             config === "relationships" ? "bg-blue-600" : "bg-gray-400"
+        //           }`}
+        //         >
+        //           3
+        //         </span>
+
+        //         <span
+        //           className={`hidden sm:block ${
+        //             config === "relationships" ? "font-extrabold" : ""
+        //           }`}
+        //         >
+        //           {" "}
+        //           Relationships{" "}
+        //         </span>
+        //       </li>
+
+        //       <li
+        //         className="flex items-center gap-2 p-2"
+        //         onClick={() => handleStepClick("metric-types")}
+        //       >
+        //         {errors.metricTypes?.length && errors.metricTypes.length > 0 ? (
+        //           <BadgeAlert
+        //             width={17}
+        //             height={17}
+        //             className="text-red-600 text-center"
+        //           />
+        //         ) : isSubmitted && isValid ? (
+        //           <Check height={17} width={17} className="text-green-600" />
+        //         ) : (
+        //           <span
+        //             className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold ${
+        //               config === "metric-types" ? "bg-blue-600" : "bg-gray-400"
+        //             }`}
+        //           >
+        //             4
+        //           </span>
+        //         )}
+
+        //         <span
+        //           className={`hidden sm:block ${
+        //             config === "metric-types" ? "font-extrabold" : ""
+        //           }`}
+        //         >
+        //           {" "}
+        //           Metric Types{" "}
+        //         </span>
+        //       </li>
+        //     </ol>
+        //   </div>
+        // </div>
+        <div className="flex flex-grow px-28 justify-center">
+          <Breadcrumb>
+            <BreadcrumbItem isCurrentPage={config === "basic-information"}>
+              <BreadcrumbLink
                 onClick={() => handleStepClick("basic-information")}
+                className={`${
+                  errors.basicInformation &&
+                  Object.keys(errors.basicInformation).length > 0
+                    ? "text-red-600"
+                    : ""
+                }`}
               >
-                {errors.basicInformation?.parent ||
-                errors.basicInformation?.name ||
-                errors.basicInformation?.externalId ? (
-                  <BadgeAlert
-                    width={17}
-                    height={17}
-                    className="text-red-800 text-center"
-                  />
-                ) : isSubmitted && isValid ? (
-                  <Check height={17} width={17} className="text-green-600" />
-                ) : (
-                  <span
-                    className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold ${
-                      config === "basic-information"
-                        ? "bg-blue-600"
-                        : "bg-gray-400"
-                    }`}
-                  >
-                    1
-                  </span>
-                )}
-
-                <div className="flex gap-2 items-center">
-                  <span
-                    className={`hidden sm:block ${
-                      config === "basic-information" ? "font-extrabold" : ""
-                    }`}
-                  >
-                    Basic Information
-                  </span>
-                </div>
-              </li>
-
-              <li
-                className="flex items-center gap-2 p-2"
+                Basic Information
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem isCurrentPage={config === "attributes"}>
+              <BreadcrumbLink
                 onClick={() => handleStepClick("attributes")}
+                className={`${
+                  errors.attributes && Object.keys(errors.attributes).length > 0
+                    ? "text-red-600"
+                    : ""
+                }`}
               >
-                {errors.attributes?.length && errors.attributes.length > 0 ? (
-                  <BadgeAlert
-                    width={17}
-                    height={17}
-                    className="text-red-800 text-center"
-                  />
-                ) : isSubmitted && isValid ? (
-                  <Check height={17} width={17} className="text-green-600" />
-                ) : (
-                  <span
-                    className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold ${
-                      config === "attributes" ? "bg-blue-600" : "bg-gray-400"
-                    }`}
-                  >
-                    2
-                  </span>
-                )}
-
-                <div className="flex gap-2 items-center">
-                  <span
-                    className={`hidden sm:block ${
-                      config === "attributes" ? "font-extrabold" : ""
-                    }`}
-                  >
-                    Attributes
-                  </span>
-                </div>
-              </li>
-
-              <li
-                className="flex items-center gap-2 p-2"
-                onClick={() => handleStepClick("relationships")}
-              >
-                <span
-                  className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold ${
-                    config === "relationships" ? "bg-blue-600" : "bg-gray-400"
-                  }`}
-                >
-                  3
-                </span>
-
-                <span
-                  className={`hidden sm:block ${
-                    config === "relationships" ? "font-extrabold" : ""
-                  }`}
-                >
-                  {" "}
-                  Relationships{" "}
-                </span>
-              </li>
-
-              <li
-                className="flex items-center gap-2 p-2"
+                Attributes
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem isCurrentPage={config === "relationships"}>
+              <BreadcrumbLink onClick={() => handleStepClick("relationships")}>
+                Relationships
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem isCurrentPage={config === "metric-types"}>
+              <BreadcrumbLink
                 onClick={() => handleStepClick("metric-types")}
+                className={`${
+                  errors.metricTypes &&
+                  Object.keys(errors.metricTypes).length > 0
+                    ? "text-red-600"
+                    : ""
+                }`}
               >
-                {errors.metricTypes?.length && errors.metricTypes.length > 0 ? (
-                  <BadgeAlert
-                    width={17}
-                    height={17}
-                    className="text-red-600 text-center"
-                  />
-                ) : isSubmitted && isValid ? (
-                  <Check height={17} width={17} className="text-green-600" />
-                ) : (
-                  <span
-                    className={`h-6 w-6 rounded-full text-center text-[10px]/6 font-bold ${
-                      config === "metric-types" ? "bg-blue-600" : "bg-gray-400"
-                    }`}
-                  >
-                    4
-                  </span>
-                )}
-
-                <span
-                  className={`hidden sm:block ${
-                    config === "metric-types" ? "font-extrabold" : ""
-                  }`}
-                >
-                  {" "}
-                  Metric Types{" "}
-                </span>
-              </li>
-            </ol>
-          </div>
+                Metric Types
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
         </div>
       )}
     </div>

@@ -41,7 +41,6 @@ export const Attributes = () => {
             </span>
           </div>
         ) : null}
-
         <AddPanel title="Add Attribute" onAdd={handleAddAttribute} />
         {attributes.map((attr, index) => {
           return (
@@ -57,7 +56,9 @@ export const Attributes = () => {
             />
           );
         })}
-        <AddPanel title="Add Attribute" onAdd={handleAddAttribute} />
+        {attributes.length > 0 && (
+          <AddPanel title="Add Attribute" onAdd={handleAddAttribute} />
+        )}
       </div>
     </div>
   );
