@@ -134,4 +134,16 @@ export const instanceSchema = yup.object({
       }),
     )
     .required(),
+  metricTypes: yup.array().of(
+    yup.object({
+      id: yup.string().required(),
+      metrics: yup.array().of(
+        yup.object({
+          id: yup.string().required(),
+          metricType: yup.string().required("This is a required field"),
+          value: yup.string()
+        })
+      ).required()
+    })
+  ).required()
 });

@@ -42,6 +42,7 @@ export const InstanceView = () => {
             ...instanceData.basicInformation,
           },
           attributes: instanceData.attributes,
+          metricTypes: instanceData.metricTypes,
         };
       });
     }

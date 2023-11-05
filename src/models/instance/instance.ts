@@ -6,6 +6,9 @@ export interface InstanceMetaDataField {
   readonly type: "string" | "select" | "integer" | "float" | "bool";
   readonly isRequired: boolean;
   readonly isHidden: boolean;
+  readonly dropdownValues: string[];
+  readonly manualValue?: string;
+  readonly metrics: InstanceMetaDataField[];
 }
 
 export interface InstanceMetaData {
@@ -15,4 +18,5 @@ export interface InstanceMetaData {
 export interface InstanceFormMetaData {
   readonly basicInformation: InstanceMetaData;
   readonly attributes: InstanceMetaData;
+  readonly metricTypes: InstanceMetaData;
 }

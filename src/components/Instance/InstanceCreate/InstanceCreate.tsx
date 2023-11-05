@@ -10,6 +10,7 @@ import { InstanceFormData, InstanceMetaDataField } from "@/models";
 import { useToast } from "@/components/ui/use-toast.ts";
 import { Toaster } from "@/components/ui/toaster.tsx";
 import { ToastAction } from "@/components/ui/toast";
+import { MetricTypes } from "./MetricTypes";
 
 interface InstanceCreateProps {
   readonly setSchemaContext?: (metaData: InstanceMetaDataField[]) => void;
@@ -79,6 +80,7 @@ export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
             isCustom: true,
           },
           attributes: [],
+          metricTypes: [],
         };
       });
       searchParams.set("config", "basic-information");
@@ -125,6 +127,10 @@ export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
       case "attributes":
         return (
           <Attributes fields={instanceCreateFormData?.attributes.fields} />
+        );
+      case "metric-types":
+        return (
+          <MetricTypes fields={instanceCreateFormData?.metricTypes.fields} />
         );
       default:
         return null;
