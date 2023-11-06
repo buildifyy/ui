@@ -283,7 +283,7 @@ export const InstanceList = () => {
             {dataToRender.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={4} className="p-4">
-                  No templates found
+                  No instances found
                 </TableCell>
               </TableRow>
             ) : (

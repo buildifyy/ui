@@ -7,6 +7,7 @@ import { Header } from "@/components/shared";
 import { Footer } from "@/components/skeleton";
 import { useEffect } from "react";
 import { useInstanceCreateForm, useInstanceView } from "@/service";
+import { MetricTypes } from "./MetricTypes";
 
 export const InstanceView = () => {
   const { reset } = useFormContext<InstanceFormData>();
@@ -53,13 +54,17 @@ export const InstanceView = () => {
       case "basic-information":
         return (
           <BasicInformation
-            fields={instanceCreateFormData?.basicInformation.fields}
+            fields={instanceCreateFormData?.basicInformation?.fields}
             isLoading={isFetchingCreateFormData || isFetchingInstanceData}
           />
         );
       case "attributes":
         return (
-          <Attributes fields={instanceCreateFormData?.attributes.fields} />
+          <Attributes fields={instanceCreateFormData?.attributes?.fields} />
+        );
+      case "metric-types":
+        return (
+          <MetricTypes fields={instanceCreateFormData?.metricTypes?.fields} />
         );
       default:
         return null;
