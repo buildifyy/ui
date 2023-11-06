@@ -1,8 +1,8 @@
-import { Dropdown } from "@/models";
+import { DropdownData } from "@/models";
 import axios from "axios";
 
 export class CommonService {
-  getAttributeTypeDropdown = async (): Promise<Dropdown[]> => {
+  getAttributeTypeDropdown = async (): Promise<DropdownData[]> => {
     const url = `http://localhost:8080/api/v1/attribute-types`;
 
     try {
@@ -13,7 +13,7 @@ export class CommonService {
     }
   };
 
-  getMetricTypeDropdown = async (): Promise<Dropdown[]> => {
+  getMetricTypeDropdown = async (): Promise<DropdownData[]> => {
     const url = `http://localhost:8080/api/v1/metric-types`;
 
     try {

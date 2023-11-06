@@ -1,4 +1,4 @@
-export interface Dropdown {
+export interface DropdownData {
   readonly label: string;
   readonly value: string;
 }

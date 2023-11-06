@@ -4,7 +4,7 @@ import { Select } from "@/components/shared";
 import { Link, useLocation } from "react-router-dom";
 import me from "@/assets/me.jpg";
 import { useFormContext } from "react-hook-form";
-import { Dropdown, TemplateFormData } from "@/models";
+import { DropdownData, TemplateFormData } from "@/models";
 import { useState } from "react";
 
 export const Menu = () => {
@@ -15,7 +15,9 @@ export const Menu = () => {
   } = useFormContext<TemplateFormData>();
   const location = useLocation();
 
-  const tenantData: Dropdown[] = [{ label: "the-binary", value: "the-binary" }];
+  const tenantData: DropdownData[] = [
+    { label: "the-binary", value: "the-binary" },
+  ];
 
   const [isOpen, setIsOpen] = useState(false);
 

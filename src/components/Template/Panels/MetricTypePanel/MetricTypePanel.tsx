@@ -1,5 +1,5 @@
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
-import { Dropdown, TemplateFormData } from "@/models";
+import { DropdownData, TemplateFormData } from "@/models";
 import { AddPanel, Select } from "@/components/shared";
 import { MetricPanel } from "@/components/Template";
 import { useState } from "react";
@@ -11,7 +11,7 @@ interface MetricTypePanelProps {
   readonly index: number;
   readonly onRemove?: (index: number) => void;
   readonly isReadonly?: boolean;
-  readonly dropdownValues?: Dropdown[];
+  readonly dropdownValues?: DropdownData[];
   readonly isNew?: boolean;
 }
 

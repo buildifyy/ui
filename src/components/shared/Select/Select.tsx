@@ -1,12 +1,12 @@
 import React from "react";
 import "./Select.css";
-import { Dropdown } from "@/models";
+import { DropdownData } from "@/models";
 
 interface SelectProps {
   readonly id?: string;
   readonly widthClassName?: string;
   readonly errorClassName?: string;
-  readonly data?: Dropdown[];
+  readonly data?: DropdownData[];
   readonly isDisabled?: boolean;
   readonly onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -32,5 +32,5 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         ))}
       </select>
     );
-  },
+  }
 );

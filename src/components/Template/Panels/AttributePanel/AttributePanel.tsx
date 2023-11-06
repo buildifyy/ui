@@ -4,7 +4,7 @@ import {
   useFormContext,
   useWatch,
 } from "react-hook-form";
-import { Dropdown, TemplateFormData } from "@/models";
+import { DropdownData, TemplateFormData } from "@/models";
 import { useEffect, useState } from "react";
 import { OnOff, Select } from "@/components/shared";
 import { ChevronRight, ChevronUp, Trash } from "lucide-react";
@@ -15,7 +15,7 @@ interface AttributePanelProps {
   readonly index: number;
   readonly onRemove?: (index: number) => void;
   readonly isReadonly?: boolean;
-  readonly dropdownValues?: Dropdown[];
+  readonly dropdownValues?: DropdownData[];
 }
 
 export const AttributePanel = ({
