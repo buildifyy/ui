@@ -8,6 +8,7 @@ import { Footer } from "@/components/skeleton";
 import { useEffect } from "react";
 import { useInstanceCreateForm, useInstanceView } from "@/service";
 import { Metrics } from "./Metrics";
+import { Relationships } from "./Relationships";
 
 export const InstanceView = () => {
   const { reset } = useFormContext<InstanceFormData>();
@@ -44,6 +45,7 @@ export const InstanceView = () => {
           },
           attributes: instanceData.attributes,
           metrics: instanceData.metrics,
+          relationships: instanceData.relationships,
         };
       });
     }
@@ -62,6 +64,8 @@ export const InstanceView = () => {
         return (
           <Attributes fields={instanceCreateFormData?.attributes?.fields} />
         );
+      case "relationships":
+        return <Relationships />;
       case "metrics":
         return <Metrics fields={instanceCreateFormData?.metrics?.fields} />;
       default:

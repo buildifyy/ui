@@ -3,7 +3,6 @@ import { InstanceFormData, InstanceMetaDataField } from "@/models";
 import { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/shared";
-import React from "react";
 import { FormLabel } from "@/components/ui/form";
 
 interface AttributesProps {
@@ -77,22 +76,23 @@ export const Attributes = ({ fields }: AttributesProps) => {
       <div className="space-y-4 w-full">
         {fields?.map((field, index) => {
           return (
-            <React.Fragment key={index}>
-              <div className="flex items-center w-full justify-between py-1">
-                <div className="flex flex-col w-full">
-                  <FormLabel
-                    htmlFor={`attribute.${index}.${field.label}`}
-                    className="block font-medium mb-2"
-                  >
-                    {field.label}{" "}
-                    {field.isRequired ? (
-                      <span className="text-red-800">*</span>
-                    ) : null}
-                  </FormLabel>
-                  {boxToRender(field, index)}
-                </div>
+            <div
+              className="flex items-center w-full justify-between py-1"
+              key={field.id}
+            >
+              <div className="flex flex-col w-full">
+                <FormLabel
+                  htmlFor={`attribute.${index}.${field.label}`}
+                  className="block font-medium mb-2"
+                >
+                  {field.label}{" "}
+                  {field.isRequired ? (
+                    <span className="text-red-800">*</span>
+                  ) : null}
+                </FormLabel>
+                {boxToRender(field, index)}
               </div>
-            </React.Fragment>
+            </div>
           );
         })}
       </div>

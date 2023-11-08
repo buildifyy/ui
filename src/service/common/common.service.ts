@@ -1,4 +1,5 @@
 import { DropdownData } from "@/models";
+import { RelationshipData } from "@/models/relationship-data";
 import axios from "axios";
 
 export class CommonService {
@@ -34,4 +35,15 @@ export class CommonService {
       return Promise.reject(error);
     }
   };
+
+  getRelationships = async (): Promise<RelationshipData[]> => {
+    const url = `http://localhost:8080/api/v1/relationships`;
+
+    try {
+      const response = await axios.get(url);
+      return response.data.data;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
 }

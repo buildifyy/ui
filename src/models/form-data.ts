@@ -55,9 +55,17 @@ export interface InstanceMetricForm {
   readonly value?: string;
 }
 
+export interface InstanceRelationshipForm {
+  readonly id?: string;
+  readonly source?: string;
+  readonly target?: string;
+  readonly relationshipId?: string;
+}
+
 export interface InstanceFormData {
   readonly tenant: string;
   readonly basicInformation: InstanceBasicInformationForm;
   readonly attributes?: InstanceAttributeForm[];
   readonly metrics?: InstanceMetricForm[];
+  readonly relationships?: InstanceRelationshipForm[];
 }
