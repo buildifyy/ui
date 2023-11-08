@@ -1,5 +1,6 @@
 import * as yup from "yup";
 import { InstanceMetaDataField } from "@/models/instance";
+import { InstanceMetricForm } from ".";
 
 export const templateSchema = yup.object({
   tenant: yup.string().required("This field is required"),
@@ -87,9 +88,9 @@ export const instanceSchema = yup.object({
             index
           ] as InstanceMetaDataField;
           if (attributeContext?.isRequired) {
-            return value == null || value === ""
-              ? this.createError({ message: "This value is required" })
-              : true;
+            if (value == null || value === "") {
+              return this.createError({message: "This value is required" });
+            }
           }
 
           if (value) {
@@ -128,20 +129,27 @@ export const instanceSchema = yup.object({
         }),
       }),
     )
-    .required(),
+    .test("all-attribute-validation", "", function() {
+      const findRequiredAttributeIndex = this.options.context?.["attributes"]?.findIndex((attribute: InstanceMetaDataField) => attribute?.isRequired);
+      if (findRequiredAttributeIndex === -1) {
+        return true;
+      }
+
+      if (this.parent?.attributes) {
+        return true;
+      }
+
+      return this.createError({path: "attributes", message: "Please set values for all required attributes"});
+    }),
   metrics: yup.array().of(
     yup.object({
       id: yup.string().required(),
       metricBehaviour: yup.string().required("This is a required field"),
       value: yup.string().test("value-validation", "", function(value) {
-        console.log('path: ', this.path);
         const index = parseInt(this.path.split("[")[1].split("]")[0], 10);
-        console.log('index: ', index);
-        console.log('options: ', this.options);
         const metricContext = this.options.context?.["metrics"][
           index
         ] as InstanceMetaDataField;
-        console.log('metricContext: ', metricContext);
         if (value) {
           switch (metricContext?.type) {
             case "integer":
@@ -177,5 +185,15 @@ export const instanceSchema = yup.object({
         return true;
       })
     })
-  ).required()
+  ).test("all-metric-validation", "", function() {
+    if (!this.parent?.metrics) {
+      return this.createError({path: "metrics", message: "Please set metric behavious for all metrics"});
+    }
+
+    if (this.parent?.metrics?.findIndex((metric: InstanceMetricForm) => metric?.metricBehaviour && metric?.metricBehaviour !== "") !== -1) {
+      return true;
+    }
+
+    return this.createError({path: "metrics", message: "Please set metric behaviours for all metrics"});
+  })
 });

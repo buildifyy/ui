@@ -51,11 +51,6 @@ export const Metrics = ({ fields }: MetricProps) => {
     <div className="flex flex-col my-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto h-[calc(100vh-220px)] lg:mx-[20%] md:mx-[15%] sm:mx-[5%] xs:mx-0">
       <Accordion type="multiple" className="w-full">
         {fields?.map((field, index) => {
-          console.log(
-            unitValues?.find((unit) => unit.label === field.unit)?.symbol
-          );
-          console.log("unitValues: ", unitValues);
-          console.log("field: ", field);
           return (
             <AccordionItem value={field.id} key={field.id}>
               <AccordionTrigger>{field.label}</AccordionTrigger>
@@ -86,7 +81,7 @@ export const Metrics = ({ fields }: MetricProps) => {
                       htmlFor={`attribute.${index}.metricBehaviour`}
                       className="block font-medium mb-1"
                     >
-                      Metric Behaviour
+                      Metric Behaviour <span className="text-red-800">*</span>
                     </FormLabel>
                     <Select
                       id={`metrics.${index}.label`}

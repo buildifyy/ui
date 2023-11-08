@@ -58,6 +58,6 @@ export interface InstanceMetricForm {
 export interface InstanceFormData {
   readonly tenant: string;
   readonly basicInformation: InstanceBasicInformationForm;
-  readonly attributes: InstanceAttributeForm[];
-  readonly metrics: InstanceMetricForm[];
+  readonly attributes?: InstanceAttributeForm[];
+  readonly metrics?: InstanceMetricForm[];
 }

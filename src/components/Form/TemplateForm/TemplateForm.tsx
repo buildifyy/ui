@@ -12,7 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 export const TemplateForm = () => {
   const methods = useForm<TemplateFormData>({
-    resolver: yupResolver(templateSchema),
+    resolver: yupResolver<TemplateFormData>(templateSchema),
     mode: "all",
     defaultValues: {
       tenant: "the-binary",

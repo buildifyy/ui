@@ -23,7 +23,7 @@ export const InstanceForm = () => {
   >([]);
 
   const methods = useForm<InstanceFormData>({
-    resolver: yupResolver(instanceSchema),
+    resolver: yupResolver<InstanceFormData>(instanceSchema),
     context: {
       attributes: attributeSchemaContext,
       metrics: metricSchemaContext,
