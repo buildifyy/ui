@@ -87,7 +87,7 @@ export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
       setSearchParams(searchParams);
       showSuccessToast();
     }
-  }, [isCreateInstanceSuccess, searchParams, reset, setSearchParams]);
+  }, [isCreateInstanceSuccess]);
 
   useEffect(() => {
     if (isCreateInstanceError) {

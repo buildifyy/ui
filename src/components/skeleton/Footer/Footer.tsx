@@ -22,7 +22,7 @@ export const Footer = ({ onReset }: FooterProps) => {
 
   const isBackButtonDisabled = config === "basic-information";
 
-  const isNextButtonDisabled = config === "metric-types";
+  const isNextButtonDisabled = config === "metrics";
 
   const handleOnBackClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -32,7 +32,7 @@ export const Footer = ({ onReset }: FooterProps) => {
     } else if (config === "relationships") {
       searchParams.set("config", "attributes");
       setSearchParams(searchParams);
-    } else if (config === "metric-types") {
+    } else if (config === "metrics") {
       searchParams.set("config", "relationships");
       setSearchParams(searchParams);
     }
@@ -47,7 +47,7 @@ export const Footer = ({ onReset }: FooterProps) => {
       searchParams.set("config", "relationships");
       setSearchParams(searchParams);
     } else if (config === "relationships") {
-      searchParams.set("config", "metric-types");
+      searchParams.set("config", "metrics");
       setSearchParams(searchParams);
     }
   };

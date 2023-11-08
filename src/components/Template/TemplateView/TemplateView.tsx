@@ -40,7 +40,7 @@ export const TemplateView = () => {
             ...data.basicInformation,
           },
           attributes: data.attributes,
-          metricTypes: data.metricTypes,
+          metrics: data.metrics,
         };
       });
     }

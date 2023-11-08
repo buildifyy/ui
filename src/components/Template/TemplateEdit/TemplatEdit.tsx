@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useTemplateEdit, useTemplateView } from "@/service";
 import { BasicInformation } from "@/components/Template/TemplateCreate/BasicInformation";
 import { Attributes } from "@/components/Template/TemplateCreate/Attributes";
-import { MetricTypes } from "@/components/Template/TemplateCreate/MetricTypes";
+import { Metrics } from "@/components/Template/TemplateCreate/Metrics";
 import { Alert, Header } from "@/components/shared";
 import { Footer } from "@/components/skeleton";
 import { useToast } from "@/components/ui/use-toast.ts";
@@ -36,9 +36,8 @@ export const TemplateEdit = () => {
 
   const showSuccessToast = () => {
     toast({
-      variant: "destructive",
+      className: "group",
       title: "Template Updated Successfully",
-      className: "group border-none bg-blue-600 text-primary-foreground",
     });
   };
 
@@ -59,7 +58,7 @@ export const TemplateEdit = () => {
               ...data.basicInformation,
             },
             attributes: data.attributes,
-            metricTypes: data.metricTypes,
+            metrics: data.metrics,
           };
         });
         searchParams.set("config", "basic-information");
@@ -80,7 +79,7 @@ export const TemplateEdit = () => {
     "basic-information": "Basic Information",
     attributes: "Attributes",
     relationships: "Relationships",
-    "metric-types": "Metric Types",
+    metrics: "Metrics",
   };
 
   useEffect(() => {
@@ -92,7 +91,7 @@ export const TemplateEdit = () => {
             ...data.basicInformation,
           },
           attributes: data.attributes,
-          metricTypes: data.metricTypes,
+          metrics: data.metrics,
         };
       });
     }
@@ -111,23 +110,16 @@ export const TemplateEdit = () => {
           return a;
         }
       }),
-      metricTypes: data.metricTypes
-        .map((mt) => {
-          if (!mt.owningTemplate) {
-            return {
-              ...mt,
-              owningTemplate: getValues("basicInformation.externalId"),
-            };
-          } else {
-            return mt;
-          }
-        })
-        .map((mt) => {
+      metrics: data.metrics.map((metric) => {
+        if (!metric.owningTemplate) {
           return {
-            ...mt,
-            metrics: mt.metrics,
+            ...metric,
+            owningTemplate: getValues("basicInformation.externalId"),
           };
-        }),
+        } else {
+          return metric;
+        }
+      }),
     };
     updateTemplate(toPush);
   };
@@ -138,8 +130,8 @@ export const TemplateEdit = () => {
         return <BasicInformation />;
       case "attributes":
         return <Attributes />;
-      case "metric-types":
-        return <MetricTypes />;
+      case "metrics":
+        return <Metrics />;
       default:
         return null;
     }
@@ -154,7 +146,7 @@ export const TemplateEdit = () => {
             ...data.basicInformation,
           },
           attributes: data.attributes,
-          metricTypes: data.metricTypes,
+          metrics: data.metrics,
         };
       });
       searchParams.set("config", "basic-information");

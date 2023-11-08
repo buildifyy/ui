@@ -1,6 +1,6 @@
 import { BasicInformation } from "./BasicInformation";
 import { Attributes } from "./Attributes";
-import { MetricTypes } from "./MetricTypes";
+import { Metrics } from "./Metrics";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
 import { Alert, Header } from "@/components/shared";
@@ -37,7 +37,7 @@ export const TemplateCreate = () => {
     "basic-information": "Basic Information",
     attributes: "Attributes",
     relationships: "Relationships",
-    "metric-types": "Metric Types",
+    metrics: "Metrics",
   };
 
   const showSuccessToast = () => {
@@ -80,7 +80,7 @@ export const TemplateCreate = () => {
             isCustom: true,
           },
           attributes: [],
-          metricTypes: [],
+          metrics: [],
         };
       });
       searchParams.set("config", "basic-information");
@@ -103,8 +103,8 @@ export const TemplateCreate = () => {
         return <BasicInformation />;
       case "attributes":
         return <Attributes />;
-      case "metric-types":
-        return <MetricTypes />;
+      case "metrics":
+        return <Metrics />;
       default:
         return null;
     }
@@ -122,18 +122,12 @@ export const TemplateCreate = () => {
             owningTemplate: getValues("basicInformation.externalId"),
           };
         }),
-      metricTypes: data.metricTypes
+      metrics: data.metrics
         .filter((mt) => mt.isNew)
         .map((mt) => {
           return {
             ...mt,
             owningTemplate: getValues("basicInformation.externalId"),
-          };
-        })
-        .map((mt) => {
-          return {
-            ...mt,
-            metrics: mt.metrics,
           };
         }),
     };
@@ -151,7 +145,7 @@ export const TemplateCreate = () => {
           isCustom: true,
         },
         attributes: [],
-        metricTypes: [],
+        metrics: [],
       };
     });
     searchParams.set("config", "basic-information");

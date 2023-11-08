@@ -39,7 +39,7 @@ export const BasicInformation = () => {
             parent: selectedParent ?? prev.basicInformation.parent,
           },
           attributes: parentTemplateData.attributes,
-          metricTypes: parentTemplateData.metricTypes,
+          metrics: parentTemplateData.metrics,
         };
       });
     }

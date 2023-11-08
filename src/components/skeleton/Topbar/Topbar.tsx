@@ -21,7 +21,7 @@ export const Topbar = () => {
       case "basic-information":
       case "attributes":
       case "relationships":
-      case "metric-types":
+      case "metrics":
         searchParams.set("config", val);
         setSearchParams(searchParams);
         break;
@@ -71,17 +71,16 @@ export const Topbar = () => {
                 Relationships
               </BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbItem isCurrentPage={config === "metric-types"}>
+            <BreadcrumbItem isCurrentPage={config === "metrics"}>
               <BreadcrumbLink
-                onClick={() => handleStepClick("metric-types")}
+                onClick={() => handleStepClick("metrics")}
                 className={`${
-                  errors.metricTypes &&
-                  Object.keys(errors.metricTypes).length > 0
+                  errors.metrics && Object.keys(errors.metrics).length > 0
                     ? "text-red-600"
                     : ""
                 }`}
               >
-                Metric Types
+                Metrics
               </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>

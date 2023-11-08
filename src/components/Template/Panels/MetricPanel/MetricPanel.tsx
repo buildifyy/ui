@@ -1,39 +1,42 @@
-import { useEffect, useState } from "react";
 import {
   Controller,
   useFieldArray,
   useFormContext,
   useWatch,
 } from "react-hook-form";
-import { TemplateFormData } from "@/models";
-import { OnOff } from "@/components/shared";
+import { DropdownData, TemplateFormData } from "@/models";
+import { OnOff, Select } from "@/components/shared";
+import { useEffect, useState } from "react";
 import { ChevronRight, ChevronUp, Trash } from "lucide-react";
 import { FormDescription, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
 interface MetricPanelProps {
   readonly index: number;
-  readonly metricTypeIndex: number;
   readonly onRemove?: (index: number) => void;
   readonly isReadonly?: boolean;
+  readonly dropdownValues?: DropdownData[];
+  readonly isNew?: boolean;
 }
 
 export const MetricPanel = ({
   index,
-  metricTypeIndex,
   onRemove,
   isReadonly,
+  dropdownValues,
+  isNew,
 }: MetricPanelProps) => {
   const {
     register,
-    unregister,
     control,
+    unregister,
     trigger,
+    getValues,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
   const { fields: metrics } = useFieldArray({
     control,
-    name: `metricTypes.${metricTypeIndex}.metrics`,
+    name: `metrics`,
     keyName: "_id",
   });
   const metric = metrics[index];
@@ -42,57 +45,52 @@ export const MetricPanel = ({
   );
 
   const metricNameLive = useWatch({
-    name: `metricTypes.${metricTypeIndex}.metrics.${index}.name`,
+    name: `metrics.${index}.name`,
     control,
   });
 
   const metricIsManualLive = useWatch({
-    name: `metricTypes.${metricTypeIndex}.metrics.${index}.isManual`,
+    name: `metrics.${index}.isManual`,
     control,
   });
 
   const metricIsCalculatedLive = useWatch({
-    name: `metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`,
+    name: `metrics.${index}.isCalculated`,
     control,
   });
 
   const metricIsSourcedLive = useWatch({
-    name: `metricTypes.${metricTypeIndex}.metrics.${index}.isSourced`,
+    name: `metrics.${index}.isSourced`,
     control,
   });
 
+  const showTrashButton =
+    isNew ||
+    (metric?.owningTemplate === getValues("basicInformation.externalId") &&
+      !isReadonly);
+
   useEffect(() => {
     if (metricIsManualLive) {
-      register(`metricTypes.${metricTypeIndex}.metrics.${index}.value`);
+      register(`metrics.${index}.value`);
     } else {
-      unregister(`metricTypes.${metricTypeIndex}.metrics.${index}.value`);
+      unregister(`metrics.${index}.value`);
     }
-    trigger(`metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`);
-    trigger(`metricTypes.${metricTypeIndex}.metrics.${index}.isSourced`);
-  }, [
-    index,
-    metricIsManualLive,
-    metricTypeIndex,
-    register,
-    trigger,
-    unregister,
-  ]);
+    trigger(`metrics.${index}.isCalculated`);
+    trigger(`metrics.${index}.isSourced`);
+  }, [index, metricIsManualLive, register, trigger, unregister]);
 
   useEffect(() => {
-    trigger(`metricTypes.${metricTypeIndex}.metrics.${index}.isManual`);
-    trigger(`metricTypes.${metricTypeIndex}.metrics.${index}.isSourced`);
-  }, [index, metricIsCalculatedLive, metricTypeIndex, trigger]);
+    trigger(`metrics.${index}.isManual`);
+    trigger(`metrics.${index}.isSourced`);
+  }, [index, metricIsCalculatedLive, trigger]);
 
   useEffect(() => {
-    trigger(`metricTypes.${metricTypeIndex}.metrics.${index}.isManual`);
-    trigger(`metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`);
-  }, [index, metricIsSourcedLive, metricTypeIndex, trigger]);
-
-  const showTrashButton = metric?.isNew && !isReadonly;
-  console.log("showTrashButton: ", showTrashButton);
+    trigger(`metrics.${index}.isManual`);
+    trigger(`metrics.${index}.isCalculated`);
+  }, [index, metricIsSourcedLive, trigger]);
 
   return (
-    <div className="flex justify-between items-center gap-2 mt-4">
+    <div className="flex justify-between items-center gap-2">
       <details
         className="group rounded-lg border p-3 [&_summary::-webkit-details-marker]:hidden w-full"
         open={isVisible}
@@ -114,7 +112,7 @@ export const MetricPanel = ({
             ) : (
               <ChevronRight height={17} width={17} />
             )}
-            {showTrashButton ? (
+            {showTrashButton && (
               <button>
                 <Trash
                   width={17}
@@ -127,7 +125,7 @@ export const MetricPanel = ({
                   }}
                 />
               </button>
-            ) : null}
+            )}
           </div>
         </summary>
         <div className="p-2">
@@ -141,7 +139,7 @@ export const MetricPanel = ({
                   Name
                 </FormLabel>
                 <FormDescription className="mt-1">
-                  This will be the name of your metric.
+                  This will be the name of your metric type.
                 </FormDescription>
               </div>
               <div className="flex flex-col items-end">
@@ -149,27 +147,52 @@ export const MetricPanel = ({
                   id={`name.${metric?._id}`}
                   type="text"
                   className={`w-64 p-2 rounded shadow-sm ${
-                    !isReadonly &&
-                    errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                      ?.name
+                    !isReadonly && errors.metrics?.[index]?.name
                       ? "border-red-800"
                       : ""
                   }`}
-                  {...register(
-                    `metricTypes.${metricTypeIndex}.metrics.${index}.name`
-                  )}
+                  {...register(`metrics.${index}.name`)}
                   disabled={isReadonly}
                 />
-                {!isReadonly &&
-                  errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                    ?.name && (
-                    <FormDescription className="mt-1 text-red-800">
-                      {
-                        errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                          ?.name?.message
-                      }
-                    </FormDescription>
-                  )}
+                {!isReadonly && errors.metrics?.[index]?.name && (
+                  <FormDescription className="text-red-800">
+                    {errors?.metrics?.[index]?.name?.message}
+                  </FormDescription>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 leading-relaxed">
+            <div className="flex items-center w-full justify-between">
+              <div className="flex flex-col w-96">
+                <FormLabel
+                  htmlFor={`metricType.${metric?._id}`}
+                  className="block font-medium"
+                >
+                  Type
+                </FormLabel>
+                <FormDescription className="mt-1">
+                  This will be the type of your metric.
+                </FormDescription>
+              </div>
+              <div className="flex flex-col items-end">
+                <Select
+                  id={`metricType.${metric?._id}`}
+                  widthClassName="w-64"
+                  data={dropdownValues}
+                  {...register(`metrics.${index}.metricType`)}
+                  errorClassName={
+                    !isReadonly && errors.metrics?.[index]?.metricType
+                      ? "border-red-800"
+                      : ""
+                  }
+                  isDisabled={isReadonly}
+                />
+                {!isReadonly && errors.metrics?.[index]?.metricType && (
+                  <FormDescription className="text-red-800 mt-1">
+                    {errors?.metrics?.[index]?.metricType?.message}
+                  </FormDescription>
+                )}
               </div>
             </div>
           </div>
@@ -189,7 +212,7 @@ export const MetricPanel = ({
               <div className="flex flex-col items-end">
                 <Controller
                   control={control}
-                  name={`metricTypes.${metricTypeIndex}.metrics.${index}.isManual`}
+                  name={`metrics.${index}.isManual`}
                   defaultValue={true}
                   render={({ field: { value, onChange, onBlur } }) => (
                     <OnOff
@@ -200,16 +223,11 @@ export const MetricPanel = ({
                     />
                   )}
                 />
-                {!isReadonly &&
-                  errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                    ?.isManual && (
-                    <FormDescription className="mt-1 text-red-800">
-                      {
-                        errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                          ?.isManual?.message
-                      }
-                    </FormDescription>
-                  )}
+                {!isReadonly && errors.metrics?.[index]?.isManual && (
+                  <FormDescription className="mt-1 text-red-800">
+                    {errors?.metrics?.[index]?.isManual?.message}
+                  </FormDescription>
+                )}
               </div>
             </div>
           </div>
@@ -231,27 +249,18 @@ export const MetricPanel = ({
                   id={`value.${metric?._id}`}
                   type="text"
                   className={`w-64 p-2 rounded shadow-sm ${
-                    !isReadonly &&
-                    errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                      ?.value
+                    !isReadonly && errors?.metrics?.[index]?.value
                       ? "border-red-800"
                       : ""
                   }`}
-                  {...register(
-                    `metricTypes.${metricTypeIndex}.metrics.${index}.value`
-                  )}
+                  {...register(`metrics.${index}.value`)}
                   disabled={isReadonly || !metricIsManualLive}
                 />
-                {!isReadonly &&
-                  errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                    ?.value && (
-                    <FormDescription className="mt-1 text-red-800">
-                      {
-                        errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                          ?.value?.message
-                      }
-                    </FormDescription>
-                  )}
+                {!isReadonly && errors?.metrics?.[index]?.value && (
+                  <FormDescription className="mt-1 text-red-800">
+                    {errors?.metrics?.[index]?.value?.message}
+                  </FormDescription>
+                )}
                 {!isReadonly && !metricIsManualLive && (
                   <FormDescription className="mt-1 text-yellow-800">
                     Since this metric is not configured to be a manual metric,
@@ -277,7 +286,7 @@ export const MetricPanel = ({
               <div className="flex flex-col items-end">
                 <Controller
                   control={control}
-                  name={`metricTypes.${metricTypeIndex}.metrics.${index}.isCalculated`}
+                  name={`metrics.${index}.isCalculated`}
                   defaultValue={true}
                   render={({ field: { value, onChange, onBlur } }) => (
                     <OnOff
@@ -288,16 +297,11 @@ export const MetricPanel = ({
                     />
                   )}
                 />
-                {!isReadonly &&
-                  errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                    ?.isCalculated && (
-                    <FormDescription className="mt-1 text-red-800">
-                      {
-                        errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                          ?.isCalculated?.message
-                      }
-                    </FormDescription>
-                  )}
+                {!isReadonly && errors?.metrics?.[index]?.isCalculated && (
+                  <FormDescription className="mt-1 text-red-800">
+                    {errors?.metrics?.[index]?.isCalculated?.message}
+                  </FormDescription>
+                )}
               </div>
             </div>
           </div>
@@ -317,7 +321,7 @@ export const MetricPanel = ({
               <div className="flex flex-col items-end">
                 <Controller
                   control={control}
-                  name={`metricTypes.${metricTypeIndex}.metrics.${index}.isSourced`}
+                  name={`metrics.${index}.isSourced`}
                   defaultValue={true}
                   render={({ field: { value, onChange, onBlur } }) => (
                     <OnOff
@@ -328,16 +332,11 @@ export const MetricPanel = ({
                     />
                   )}
                 />
-                {!isReadonly &&
-                  errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                    ?.isSourced && (
-                    <FormDescription className="mt-1 text-red-800">
-                      {
-                        errors.metricTypes?.[metricTypeIndex]?.metrics?.[index]
-                          ?.isSourced?.message
-                      }
-                    </FormDescription>
-                  )}
+                {!isReadonly && errors?.metrics?.[index]?.isSourced && (
+                  <FormDescription className="mt-1 text-red-800">
+                    {errors?.metrics?.[index]?.isSourced?.message}
+                  </FormDescription>
+                )}
               </div>
             </div>
           </div>

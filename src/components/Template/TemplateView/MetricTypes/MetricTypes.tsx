@@ -1,13 +1,13 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
-import { MetricTypePanel } from "@/components/Template";
+import { MetricPanel } from "@/components/Template";
 import { useMetricTypeDropdown } from "@/service";
 
 export const MetricTypes = () => {
   const { control } = useFormContext<TemplateFormData>();
-  const { fields: metricTypes } = useFieldArray({
+  const { fields: metrics } = useFieldArray({
     control,
-    name: "metricTypes",
+    name: "metrics",
     keyName: "_id",
   });
   const { data: metricTypeValues } = useMetricTypeDropdown();
@@ -15,20 +15,20 @@ export const MetricTypes = () => {
   return (
     <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center h-[calc(100vh-220px)] overflow-y-auto lg:mx-[20%] md:mx-[15%] sm:mx-[5%] xs:mx-0">
       <div className="space-y-4 w-full">
-        {metricTypes.length !== 0 ? (
+        {metrics.length !== 0 ? (
           <div className="flex justify-between">
             <span className="text-green-600">
-              {metricTypes.length}
-              {metricTypes.length > 1 ? " metric types" : " metric type"}
+              {metrics.length}
+              {metrics.length > 1 ? " metrics" : " metric"}
             </span>
           </div>
         ) : null}
 
-        {metricTypes.length === 0 ? <span>No metric types found</span> : null}
+        {metrics.length === 0 ? <span>No metrics found</span> : null}
 
-        {metricTypes.map((mt, index) => {
+        {metrics.map((mt, index) => {
           return (
-            <MetricTypePanel
+            <MetricPanel
               key={mt._id}
               index={index}
               isReadonly
