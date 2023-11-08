@@ -8,6 +8,7 @@ interface SelectProps {
   readonly errorClassName?: string;
   readonly data?: DropdownData[];
   readonly isDisabled?: boolean;
+  readonly value?: string;
   readonly onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 

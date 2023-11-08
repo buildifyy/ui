@@ -20,7 +20,7 @@ export interface TemplateMetric {
   readonly id?: string;
   readonly name: string;
   readonly metricType: string;
-  readonly unit?: string;
+  readonly unit: string;
   readonly isManual?: boolean;
   readonly value?: string | number | boolean | null;
   readonly isCalculated?: boolean;
@@ -51,7 +51,6 @@ export interface InstanceAttributeForm {
 
 export interface InstanceMetricForm {
   readonly id: string;
-  readonly metricType: string;
   readonly metricBehaviour: string;
   readonly value?: string;
 }

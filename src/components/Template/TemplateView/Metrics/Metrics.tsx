@@ -1,7 +1,7 @@
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
 import { MetricPanel } from "@/components/Template";
-import { useMetricTypeDropdown } from "@/service";
+import { useMetricTypeDropdown, useUnitDropdown } from "@/service";
 
 export const Metrics = () => {
   const { control } = useFormContext<TemplateFormData>();
@@ -11,6 +11,7 @@ export const Metrics = () => {
     keyName: "_id",
   });
   const { data: metricTypeValues } = useMetricTypeDropdown();
+  const { data: unitValues } = useUnitDropdown();
 
   return (
     <div className="flex flex-col mt-5 mx-10 border rounded py-10 px-10 items-center h-[calc(100vh-220px)] overflow-y-auto lg:mx-[20%] md:mx-[15%] sm:mx-[5%] xs:mx-0">
@@ -31,8 +32,9 @@ export const Metrics = () => {
             <MetricPanel
               key={mt._id}
               index={index}
-              isReadonly
-              dropdownValues={metricTypeValues}
+              isReadonly={true}
+              metricTypeDropdownValues={metricTypeValues}
+              unitDropdownValues={unitValues}
             />
           );
         })}

@@ -2,7 +2,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
 import { AddPanel } from "@/components/shared";
 import { MetricPanel } from "@/components/Template";
-import { useMetricTypeDropdown } from "@/service";
+import { useMetricTypeDropdown, useUnitDropdown } from "@/service";
 
 export const Metrics = () => {
   const { control } = useFormContext<TemplateFormData>();
@@ -13,6 +13,7 @@ export const Metrics = () => {
   } = useFieldArray({ control, name: "metrics", keyName: "_id" });
 
   const { data: metricTypeValues } = useMetricTypeDropdown();
+  const { data: unitValues } = useUnitDropdown();
 
   const handleRemoveMetric = (index: number) => {
     remove(index);
@@ -51,7 +52,8 @@ export const Metrics = () => {
               key={metric._id}
               index={index}
               onRemove={handleRemoveMetric}
-              dropdownValues={metricTypeValues}
+              metricTypeDropdownValues={metricTypeValues}
+              unitDropdownValues={unitValues}
               isNew={metric.isNew}
             />
           );

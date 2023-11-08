@@ -8,7 +8,7 @@ export interface InstanceMetaDataField {
   readonly isHidden: boolean;
   readonly dropdownValues: string[];
   readonly manualValue?: string;
-  readonly metrics: InstanceMetaDataField[];
+  readonly unit: string;
 }
 
 export interface InstanceMetaData {

@@ -8,7 +8,8 @@ import {
 import { FormDescription, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { InstanceFormData, InstanceMetaDataField } from "@/models";
-import { useMetricTypeDropdown } from "@/service";
+import { useMetricTypeDropdown, useUnitDropdown } from "@/service";
+import React from "react";
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
@@ -25,6 +26,7 @@ export const Metrics = ({ fields }: MetricProps) => {
   } = useFormContext<InstanceFormData>();
 
   const { data: metricTypeValues } = useMetricTypeDropdown();
+  const { data: unitValues } = useUnitDropdown();
 
   useEffect(() => {
     if (fields) {
@@ -49,6 +51,11 @@ export const Metrics = ({ fields }: MetricProps) => {
     <div className="flex flex-col my-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto h-[calc(100vh-220px)] lg:mx-[20%] md:mx-[15%] sm:mx-[5%] xs:mx-0">
       <Accordion type="multiple" className="w-full">
         {fields?.map((field, index) => {
+          console.log(
+            unitValues?.find((unit) => unit.label === field.unit)?.symbol
+          );
+          console.log("unitValues: ", unitValues);
+          console.log("field: ", field);
           return (
             <AccordionItem value={field.id} key={field.id}>
               <AccordionTrigger>{field.label}</AccordionTrigger>
@@ -68,28 +75,19 @@ export const Metrics = ({ fields }: MetricProps) => {
                       id={`metrics.${index}.metricType`}
                       data={metricTypeValues}
                       widthClassName="w-52"
-                      errorClassName={
-                        errors?.metrics?.[index]?.metricType
-                          ? "border-red-800"
-                          : ""
-                      }
-                      {...register(`metrics.${index}.metricType`)}
+                      value={field.type}
+                      isDisabled
                     />
                   </div>
-                  {errors?.metrics?.[index]?.metricType && (
-                    <FormDescription className="text-red-800 mt-1">
-                      {errors?.metrics?.[index]?.metricType?.message}
-                    </FormDescription>
-                  )}
                 </div>
-                <div className="flex flex-col w-full mb-2">
-                  <FormLabel
-                    htmlFor={`attribute.${index}.metricBehaviour`}
-                    className="block font-medium mb-1"
-                  >
-                    Metric Behaviour
-                  </FormLabel>
-                  <div className="flex gap-2">
+                <div className="flex justify-start gap-2">
+                  <div className="flex flex-col mb-2">
+                    <FormLabel
+                      htmlFor={`attribute.${index}.metricBehaviour`}
+                      className="block font-medium mb-1"
+                    >
+                      Metric Behaviour
+                    </FormLabel>
                     <Select
                       id={`metrics.${index}.label`}
                       data={field.dropdownValues?.map(
@@ -108,18 +106,37 @@ export const Metrics = ({ fields }: MetricProps) => {
                       }
                       {...register(`metrics.${index}.metricBehaviour`)}
                     />
-                    {watch(`metrics.${index}.metricBehaviour`) === "Manual" && (
-                      <Input
-                        type="text"
-                        className={`p-2 rounded shadow-sm w-32 mt-2`}
-                        {...register(`metrics.${index}.value`)}
-                      />
+                    {errors?.metrics?.[index]?.metricBehaviour && (
+                      <FormDescription className="text-red-800 mt-1">
+                        {errors?.metrics?.[index]?.metricBehaviour?.message}
+                      </FormDescription>
                     )}
                   </div>
-                  {errors?.metrics?.[index]?.metricBehaviour && (
-                    <FormDescription className="text-red-800 mt-1">
-                      {errors?.metrics?.[index]?.metricBehaviour?.message}
-                    </FormDescription>
+                  {watch(`metrics.${index}.metricBehaviour`) === "Manual" && (
+                    <React.Fragment>
+                      <div className="flex flex-col">
+                        <FormLabel>Value</FormLabel>
+                        <Input
+                          type="text"
+                          className={`p-2 rounded shadow-sm w-32 mt-2`}
+                          {...register(`metrics.${index}.value`)}
+                          placeholder="Enter Value"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <FormLabel>Symbol</FormLabel>
+                        <Input
+                          type="text"
+                          className={`p-2 rounded shadow-sw w-20 mt-2`}
+                          value={
+                            unitValues?.find(
+                              (unit) => unit.value === field.unit
+                            )?.symbol
+                          }
+                          disabled
+                        />
+                      </div>
+                    </React.Fragment>
                   )}
                 </div>
               </AccordionContent>

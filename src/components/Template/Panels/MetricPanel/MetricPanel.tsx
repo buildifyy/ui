@@ -15,7 +15,8 @@ interface MetricPanelProps {
   readonly index: number;
   readonly onRemove?: (index: number) => void;
   readonly isReadonly?: boolean;
-  readonly dropdownValues?: DropdownData[];
+  readonly metricTypeDropdownValues?: DropdownData[];
+  readonly unitDropdownValues?: DropdownData[];
   readonly isNew?: boolean;
 }
 
@@ -23,7 +24,8 @@ export const MetricPanel = ({
   index,
   onRemove,
   isReadonly,
-  dropdownValues,
+  metricTypeDropdownValues,
+  unitDropdownValues,
   isNew,
 }: MetricPanelProps) => {
   const {
@@ -133,7 +135,7 @@ export const MetricPanel = ({
             <div className="flex items-center w-full justify-between">
               <div className="flex flex-col w-96">
                 <FormLabel
-                  htmlFor={`name.${metric?._id}`}
+                  htmlFor={`metric.${metric?._id}.name`}
                   className="block font-medium"
                 >
                   Name
@@ -144,7 +146,7 @@ export const MetricPanel = ({
               </div>
               <div className="flex flex-col items-end">
                 <Input
-                  id={`name.${metric?._id}`}
+                  id={`metric.${metric?._id}.name`}
                   type="text"
                   className={`w-64 p-2 rounded shadow-sm ${
                     !isReadonly && errors.metrics?.[index]?.name
@@ -166,7 +168,7 @@ export const MetricPanel = ({
             <div className="flex items-center w-full justify-between">
               <div className="flex flex-col w-96">
                 <FormLabel
-                  htmlFor={`metricType.${metric?._id}`}
+                  htmlFor={`metric.${metric?._id}.metricType`}
                   className="block font-medium"
                 >
                   Type
@@ -177,9 +179,9 @@ export const MetricPanel = ({
               </div>
               <div className="flex flex-col items-end">
                 <Select
-                  id={`metricType.${metric?._id}`}
+                  id={`metric.${metric?._id}.metricType`}
                   widthClassName="w-64"
-                  data={dropdownValues}
+                  data={metricTypeDropdownValues}
                   {...register(`metrics.${index}.metricType`)}
                   errorClassName={
                     !isReadonly && errors.metrics?.[index]?.metricType
@@ -200,7 +202,41 @@ export const MetricPanel = ({
             <div className="flex items-center w-full justify-between">
               <div className="flex flex-col w-96">
                 <FormLabel
-                  htmlFor={`manual.${metric?._id}`}
+                  htmlFor={`metric.${metric?._id}.unit`}
+                  className="block font-medium"
+                >
+                  Unit
+                </FormLabel>
+                <FormDescription className="mt-1">
+                  This will be the unit of your metric.
+                </FormDescription>
+              </div>
+              <div className="flex flex-col items-end">
+                <Select
+                  id={`metric.${metric?._id}.unit`}
+                  widthClassName="w-64"
+                  data={unitDropdownValues}
+                  {...register(`metrics.${index}.unit`)}
+                  errorClassName={
+                    !isReadonly && errors.metrics?.[index]?.unit
+                      ? "border-red-800"
+                      : ""
+                  }
+                  isDisabled={isReadonly}
+                />
+                {!isReadonly && errors.metrics?.[index]?.unit && (
+                  <FormDescription className="text-red-800 mt-1">
+                    {errors?.metrics?.[index]?.unit?.message}
+                  </FormDescription>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 leading-relaxed">
+            <div className="flex items-center w-full justify-between">
+              <div className="flex flex-col w-96">
+                <FormLabel
+                  htmlFor={`metric.${metric?._id}.isManual`}
                   className="block font-medium"
                 >
                   Manual
@@ -235,7 +271,7 @@ export const MetricPanel = ({
             <div className="flex items-center w-full justify-between">
               <div className="flex flex-col w-96">
                 <FormLabel
-                  htmlFor={`value.${metric?._id}`}
+                  htmlFor={`metric.${metric?._id}.value`}
                   className="block font-medium"
                 >
                   Value
@@ -246,7 +282,7 @@ export const MetricPanel = ({
               </div>
               <div className="flex flex-col items-end">
                 <Input
-                  id={`value.${metric?._id}`}
+                  id={`metric.${metric?._id}.value`}
                   type="text"
                   className={`w-64 p-2 rounded shadow-sm ${
                     !isReadonly && errors?.metrics?.[index]?.value
@@ -274,7 +310,7 @@ export const MetricPanel = ({
             <div className="flex items-center w-full justify-between">
               <div className="flex flex-col w-96">
                 <FormLabel
-                  htmlFor={`calculated.${metric?._id}`}
+                  htmlFor={`metric.${metric?._id}.isCalculated`}
                   className="block font-medium"
                 >
                   Calculated
@@ -309,7 +345,7 @@ export const MetricPanel = ({
             <div className="flex items-center w-full justify-between">
               <div className="flex flex-col w-96">
                 <FormLabel
-                  htmlFor={`sourced.${metric?._id}`}
+                  htmlFor={`metric.${metric?._id}.isSourced`}
                   className="block font-medium"
                 >
                   Sourced

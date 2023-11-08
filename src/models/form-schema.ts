@@ -27,7 +27,7 @@ export const templateSchema = yup.object({
       yup.object({
         name: yup.string().required("This field is required"),
         metricType: yup.string().required("This field is required"),
-        // unit: yup.string().required("This field is required"),
+        unit: yup.string().required("This field is required"),
         isManual: yup.boolean().test(
           "oneOfRequired",
           "One of Manual, Calculated or Sourced must be selected",
@@ -122,7 +122,6 @@ export const instanceSchema = yup.object({
   metrics: yup.array().of(
     yup.object({
       id: yup.string().required(),
-      metricType: yup.string().required("This is a required field"),
       metricBehaviour: yup.string().required("This is a required field"),
       value: yup.string()
     })
