@@ -119,7 +119,7 @@ export const instanceSchema = yup.object({
                     })
                   : true;
               case "string":
-                return !/^[a-zA-Z0-9\\s]*$/.test(value) ? this.createError({
+                return !/^[a-zA-Z0-9\s]*$/.test(value) ? this.createError({
                   message: "Please enter a valid string value",
                 }) : true;
             }
