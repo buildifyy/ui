@@ -78,7 +78,6 @@ export const Attributes = ({ fields }: AttributesProps) => {
         {fields?.map((field, index) => {
           return (
             <React.Fragment key={index}>
-              {/* {index !== 0 && <hr className="w-full my-6" />} */}
               <div className="flex items-center w-full justify-between py-1">
                 <div className="flex flex-col w-full">
                   <FormLabel

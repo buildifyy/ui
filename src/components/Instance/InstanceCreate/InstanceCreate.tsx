@@ -2,15 +2,15 @@ import { Header } from "@/components/shared";
 import { Footer } from "@/components/skeleton";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { BasicInformation } from "./BasicInformation";
-import { Attributes } from "@/components/Instance/InstanceCreate/Attributes";
 import { useInstanceCreateForm, useInstanceCreate } from "@/service";
 import { SubmitHandler, useFormContext, useWatch } from "react-hook-form";
 import { InstanceFormData, InstanceMetaDataField } from "@/models";
 import { useToast } from "@/components/ui/use-toast.ts";
 import { Toaster } from "@/components/ui/toaster.tsx";
 import { ToastAction } from "@/components/ui/toast";
-import { MetricTypes } from "./MetricTypes";
+import { BasicInformation } from "./BasicInformation";
+import { Attributes } from "./Attributes";
+import { Metrics } from "./Metrics";
 
 interface InstanceCreateProps {
   readonly setSchemaContext?: (metaData: InstanceMetaDataField[]) => void;
@@ -80,7 +80,7 @@ export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
             isCustom: true,
           },
           attributes: [],
-          metricTypes: [],
+          metrics: [],
         };
       });
       searchParams.set("config", "basic-information");
@@ -99,7 +99,7 @@ export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
     "basic-information": "Basic Information",
     attributes: "Attributes",
     relationships: "Relationships",
-    "metric-types": "Metric Types",
+    metrics: "Metrics",
   };
 
   useEffect(() => {
@@ -128,10 +128,8 @@ export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
         return (
           <Attributes fields={instanceCreateFormData?.attributes.fields} />
         );
-      case "metric-types":
-        return (
-          <MetricTypes fields={instanceCreateFormData?.metricTypes.fields} />
-        );
+      case "metrics":
+        return <Metrics fields={instanceCreateFormData?.metrics.fields} />;
       default:
         return null;
     }

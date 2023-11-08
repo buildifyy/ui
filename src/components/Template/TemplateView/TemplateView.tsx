@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form";
 import { TemplateFormData } from "@/models";
 import { BasicInformation } from "./BasicInformation";
 import { Attributes } from "./Attributes";
-import { MetricTypes } from "./MetricTypes";
+import { Metrics } from "./Metrics";
 import { Header } from "@/components/shared";
 import { Footer } from "@/components/skeleton";
 import { useEffect } from "react";
@@ -28,7 +28,7 @@ export const TemplateView = () => {
     "basic-information": "Basic Information",
     attributes: "Attributes",
     relationships: "Relationships",
-    "metric-types": "Metric Types",
+    metrics: "Metrics",
   };
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export const TemplateView = () => {
         };
       });
     }
-  }, [data]);
+  }, [data, reset]);
 
   const toRender = () => {
     switch (config) {
@@ -52,8 +52,8 @@ export const TemplateView = () => {
         return <BasicInformation />;
       case "attributes":
         return <Attributes />;
-      case "metric-types":
-        return <MetricTypes />;
+      case "metrics":
+        return <Metrics />;
       default:
         return null;
     }

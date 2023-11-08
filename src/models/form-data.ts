@@ -41,6 +41,7 @@ export interface InstanceBasicInformationForm {
   readonly externalId: string;
   readonly parent: string;
   readonly isCustom: boolean;
+  readonly rootTemplate?: string;
 }
 
 export interface InstanceAttributeForm {
@@ -48,14 +49,10 @@ export interface InstanceAttributeForm {
   readonly value?: string;
 }
 
-export interface InstanceMetricTypeForm {
-  readonly id: string;
-  readonly metrics: InstanceMetricForm[];
-}
-
 export interface InstanceMetricForm {
   readonly id: string;
   readonly metricType: string;
+  readonly metricBehaviour: string;
   readonly value?: string;
 }
 
@@ -63,5 +60,5 @@ export interface InstanceFormData {
   readonly tenant: string;
   readonly basicInformation: InstanceBasicInformationForm;
   readonly attributes: InstanceAttributeForm[];
-  readonly metricTypes: InstanceMetricTypeForm[];
+  readonly metrics: InstanceMetricForm[];
 }

@@ -3,7 +3,7 @@ import { TemplateFormData } from "@/models";
 import { MetricPanel } from "@/components/Template";
 import { useMetricTypeDropdown } from "@/service";
 
-export const MetricTypes = () => {
+export const Metrics = () => {
   const { control } = useFormContext<TemplateFormData>();
   const { fields: metrics } = useFieldArray({
     control,

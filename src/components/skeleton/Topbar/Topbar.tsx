@@ -33,8 +33,6 @@ export const Topbar = () => {
   const shouldDisplaySteps =
     location.pathname !== "/" && location.pathname !== "/templates";
 
-  console.log("basicInfoErrors: ", errors.basicInformation);
-
   return (
     <div className="flex items-center border-b">
       <Menu />

@@ -18,5 +18,5 @@ export interface InstanceMetaData {
 export interface InstanceFormMetaData {
   readonly basicInformation: InstanceMetaData;
   readonly attributes: InstanceMetaData;
-  readonly metricTypes: InstanceMetaData;
+  readonly metrics: InstanceMetaData;
 }

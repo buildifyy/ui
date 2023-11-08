@@ -1,1 +1,1 @@
-export * from "./TemplatEdit";
+export * from './TemplateEdit';

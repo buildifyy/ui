@@ -7,7 +7,7 @@ import { Header } from "@/components/shared";
 import { Footer } from "@/components/skeleton";
 import { useEffect } from "react";
 import { useInstanceCreateForm, useInstanceView } from "@/service";
-import { MetricTypes } from "./MetricTypes";
+import { Metrics } from "./Metrics";
 
 export const InstanceView = () => {
   const { reset } = useFormContext<InstanceFormData>();
@@ -31,7 +31,7 @@ export const InstanceView = () => {
     "basic-information": "Basic Information",
     attributes: "Attributes",
     relationships: "Relationships",
-    "metric-types": "Metric Types",
+    metrics: "Metrics",
   };
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export const InstanceView = () => {
             ...instanceData.basicInformation,
           },
           attributes: instanceData.attributes,
-          metricTypes: instanceData.metricTypes,
+          metrics: instanceData.metrics,
         };
       });
     }
@@ -62,10 +62,8 @@ export const InstanceView = () => {
         return (
           <Attributes fields={instanceCreateFormData?.attributes?.fields} />
         );
-      case "metric-types":
-        return (
-          <MetricTypes fields={instanceCreateFormData?.metricTypes?.fields} />
-        );
+      case "metrics":
+        return <Metrics fields={instanceCreateFormData?.metrics?.fields} />;
       default:
         return null;
     }

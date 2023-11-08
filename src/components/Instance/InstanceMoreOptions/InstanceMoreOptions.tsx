@@ -69,11 +69,11 @@ export const InstanceMoreOptions = ({
           <Link
             to={
               isEdit
-                ? `/instances/edit/${externalId}?config=metric-types`
-                : `/instances/${externalId}?config=metric-types`
+                ? `/instances/edit/${externalId}?config=metrics`
+                : `/instances/${externalId}?config=metrics`
             }
           >
-            Metric Types
+            Metrics
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>

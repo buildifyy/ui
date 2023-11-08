@@ -69,11 +69,11 @@ export const TemplateMoreOptions = ({
           <Link
             to={
               isEdit
-                ? `/templates/edit/${externalId}?config=metric-types`
-                : `/templates/${externalId}?config=metric-types`
+                ? `/templates/edit/${externalId}?config=metrics`
+                : `/templates/${externalId}?config=metrics`
             }
           >
-            Metric Types
+            Metrics
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
