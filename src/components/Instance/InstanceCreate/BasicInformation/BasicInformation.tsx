@@ -19,6 +19,7 @@ export const BasicInformation = ({
     control,
     register,
     setValue,
+    clearErrors,
     formState: { errors },
   } = useFormContext<InstanceFormData>();
   const { data: parentTemplates } = useParentTemplates();
@@ -30,10 +31,11 @@ export const BasicInformation = ({
 
   useEffect(() => {
     if (basicInformationNameLive !== null) {
+      clearErrors("basicInformation.externalId");
       const valueToSet = basicInformationNameLive?.replace(/\s/g, "");
       setValue("basicInformation.externalId", valueToSet?.toLowerCase());
     }
-  }, [basicInformationNameLive, setValue]);
+  }, [basicInformationNameLive, setValue, clearErrors]);
 
   return (
     <div className="flex flex-col my-5 mx-10 border rounded py-5 px-10 items-center overflow-y-auto h-[calc(100vh-220px)] lg:mx-[20%] md:mx-[15%] sm:mx-[5%] xs:mx-0">

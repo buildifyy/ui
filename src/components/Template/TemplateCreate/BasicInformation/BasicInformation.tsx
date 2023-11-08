@@ -14,6 +14,7 @@ export const BasicInformation = () => {
     register,
     setValue,
     reset,
+    clearErrors,
     formState: { errors },
   } = useFormContext<TemplateFormData>();
   const [selectedParent, setSelectedParent] = useState<string>();
@@ -47,10 +48,11 @@ export const BasicInformation = () => {
 
   useEffect(() => {
     if (basicInformationNameLive !== null && !isEditMode) {
+      clearErrors("basicInformation.externalId");
       const valueToSet = basicInformationNameLive?.replace(/\s/g, "");
       setValue("basicInformation.externalId", valueToSet?.toLowerCase());
     }
-  }, [basicInformationNameLive, isEditMode, setValue]);
+  }, [basicInformationNameLive, isEditMode, setValue, clearErrors]);
 
   const handleOnParentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value) {
