@@ -32,7 +32,7 @@ export const Menu = () => {
           isCustom: true,
         },
         attributes: [],
-        metricTypes: [],
+        metrics: [],
       };
     });
     setIsOpen(false);
