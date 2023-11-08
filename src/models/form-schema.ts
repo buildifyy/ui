@@ -111,6 +111,16 @@ export const instanceSchema = yup.object({
                       message: "Please enter a valid decimal value",
                     })
                   : true;
+              case "bool":
+                return (value.toLowerCase() !== "true" && value.toLowerCase() !== "false")
+                  ? this.createError({
+                      message: "Please enter a valid boolean value",
+                    })
+                  : true;
+              case "string":
+                return !/^[a-zA-Z0-9\\s]*$/.test(value) ? this.createError({
+                  message: "Please enter a valid string value",
+                }) : true;
             }
           }
 
@@ -123,7 +133,49 @@ export const instanceSchema = yup.object({
     yup.object({
       id: yup.string().required(),
       metricBehaviour: yup.string().required("This is a required field"),
-      value: yup.string()
+      value: yup.string().test("value-validation", "", function(value) {
+        console.log('path: ', this.path);
+        const index = parseInt(this.path.split("[")[1].split("]")[0], 10);
+        console.log('index: ', index);
+        console.log('options: ', this.options);
+        const metricContext = this.options.context?.["metrics"][
+          index
+        ] as InstanceMetaDataField;
+        console.log('metricContext: ', metricContext);
+        if (value) {
+          switch (metricContext?.type) {
+            case "integer":
+              if (value.includes(".")) {
+                return this.createError({
+                  message: "Please enter a valid integer",
+                });
+              }
+              return isNaN(parseInt(value))
+                ? this.createError({
+                    message: "Please enter a valid integer",
+                  })
+                : true;
+            case "float":
+              return isNaN(parseFloat(value))
+                ? this.createError({
+                    message: "Please enter a valid decimal value",
+                  })
+                : true;
+            case "bool":
+              return (value.toLowerCase() !== "true" && value.toLowerCase() !== "false")
+                ? this.createError({
+                    message: "Please enter a valid boolean value",
+                  })
+                : true;
+            case "string":
+              return !/^[a-zA-Z0-9\\s]*$/.test(value) ? this.createError({
+                message: "Please enter a valid string value",
+              }) : true;
+          }
+        }
+
+        return true;
+      })
     })
   ).required()
 });

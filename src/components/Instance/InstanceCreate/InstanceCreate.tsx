@@ -13,10 +13,16 @@ import { Attributes } from "./Attributes";
 import { Metrics } from "./Metrics";
 
 interface InstanceCreateProps {
-  readonly setSchemaContext?: (metaData: InstanceMetaDataField[]) => void;
+  readonly setAttributeSchemaContext?: (
+    metaData: InstanceMetaDataField[]
+  ) => void;
+  readonly setMetricSchemaContext?: (metaData: InstanceMetaDataField[]) => void;
 }
 
-export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
+export const InstanceCreate = ({
+  setAttributeSchemaContext,
+  setMetricSchemaContext,
+}: InstanceCreateProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const config = searchParams.get("config");
   const {
@@ -110,10 +116,19 @@ export const InstanceCreate = ({ setSchemaContext }: InstanceCreateProps) => {
   }, [config, searchParams, setSearchParams]);
 
   useEffect(() => {
-    if (instanceCreateFormData && setSchemaContext) {
-      setSchemaContext(instanceCreateFormData.attributes.fields);
+    if (
+      instanceCreateFormData &&
+      setAttributeSchemaContext &&
+      setMetricSchemaContext
+    ) {
+      setAttributeSchemaContext(instanceCreateFormData.attributes.fields);
+      setMetricSchemaContext(instanceCreateFormData.metrics.fields);
     }
-  }, [instanceCreateFormData, setSchemaContext]);
+  }, [
+    instanceCreateFormData,
+    setAttributeSchemaContext,
+    setMetricSchemaContext,
+  ]);
 
   const toRender = () => {
     switch (config) {

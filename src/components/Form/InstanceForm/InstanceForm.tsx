@@ -15,14 +15,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 
 export const InstanceForm = () => {
-  const [schemaContext, setSchemaContext] = useState<InstanceMetaDataField[]>(
-    []
-  );
+  const [attributeSchemaContext, setAttributeSchemaContext] = useState<
+    InstanceMetaDataField[]
+  >([]);
+  const [metricSchemaContext, setMetricSchemaContext] = useState<
+    InstanceMetaDataField[]
+  >([]);
 
   const methods = useForm<InstanceFormData>({
     resolver: yupResolver(instanceSchema),
     context: {
-      attributes: schemaContext,
+      attributes: attributeSchemaContext,
+      metrics: metricSchemaContext,
     },
     mode: "all",
     defaultValues: {
@@ -45,7 +49,12 @@ export const InstanceForm = () => {
               <Route path="/instances/:instanceId" element={<InstanceView />} />
               <Route
                 path="/instances/create"
-                element={<InstanceCreate setSchemaContext={setSchemaContext} />}
+                element={
+                  <InstanceCreate
+                    setAttributeSchemaContext={setAttributeSchemaContext}
+                    setMetricSchemaContext={setMetricSchemaContext}
+                  />
+                }
               />
             </Routes>
           </div>

@@ -114,14 +114,23 @@ export const Metrics = ({ fields }: MetricProps) => {
                   </div>
                   {watch(`metrics.${index}.metricBehaviour`) === "Manual" && (
                     <React.Fragment>
-                      <div className="flex flex-col">
+                      <div className="flex flex-col w-32">
                         <FormLabel>Value</FormLabel>
                         <Input
                           type="text"
-                          className={`p-2 rounded shadow-sm w-32 mt-2`}
+                          className={`p-2 rounded shadow-sm w-32 mt-2 ${
+                            errors?.metrics?.[index]?.value
+                              ? "border-red-800"
+                              : ""
+                          }`}
                           {...register(`metrics.${index}.value`)}
                           placeholder="Enter Value"
                         />
+                        {errors?.metrics?.[index]?.value && (
+                          <FormDescription className="text-red-800 mt-1">
+                            {errors?.metrics?.[index]?.value?.message}
+                          </FormDescription>
+                        )}
                       </div>
                       <div className="flex flex-col">
                         <FormLabel>Symbol</FormLabel>
