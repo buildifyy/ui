@@ -29,6 +29,20 @@ export const BasicInformation = ({
     control,
   });
 
+  const basicInformationParent = useWatch({
+    name: "basicInformation.parent",
+    control,
+  });
+
+  useEffect(() => {
+    if (basicInformationParent) {
+      const rootTemplate = parentTemplates?.find(
+        (parentTemplate) => parentTemplate.value === basicInformationParent
+      )?.rootTemplate;
+      setValue("basicInformation.rootTemplate", rootTemplate);
+    }
+  }, [basicInformationParent, parentTemplates, setValue]);
+
   useEffect(() => {
     if (basicInformationNameLive !== null) {
       clearErrors("basicInformation.externalId");

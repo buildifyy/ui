@@ -1,7 +1,7 @@
-import { Select } from "@/components/shared";
 import { FormLabel } from "@/components/ui/form";
 import { InstanceFormData } from "@/models";
 import { useRelationships } from "@/service";
+import { Chip } from "@nextui-org/react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 export const Relationships = () => {
@@ -22,25 +22,23 @@ export const Relationships = () => {
         {relationships.map((relationship) => {
           return (
             <div className="flex flex-col m-4" key={relationship.id}>
-              <FormLabel className="block font-medium mb-2">
+              <FormLabel className="block font-medium">
                 {
                   relationshipTemplates?.find(
                     (r) => r.id === relationship.relationshipTemplateId
                   )?.name
                 }
               </FormLabel>
-              <Select
-                id={relationship.id}
-                widthClassName="w-32"
-                data={[
-                  {
-                    label: relationship.target || "",
-                    value: relationship.target || "",
-                  },
-                ]}
-                value={relationship.target}
-                isDisabled
-              />
+
+              <div className="flex flex-wrap gap-2 mt-3">
+                {Array.isArray(relationship.target) ? (
+                  relationship.target?.map((target: string) => (
+                    <Chip variant="bordered">{target}</Chip>
+                  ))
+                ) : (
+                  <Chip variant="bordered">{relationship.target}</Chip>
+                )}
+              </div>
             </div>
           );
         })}

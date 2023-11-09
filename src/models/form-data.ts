@@ -57,8 +57,7 @@ export interface InstanceMetricForm {
 
 export interface InstanceRelationshipForm {
   readonly id?: string;
-  readonly source?: string;
-  readonly target?: string;
+  readonly target?: string | string[];
   readonly relationshipTemplateId?: string;
 }
 

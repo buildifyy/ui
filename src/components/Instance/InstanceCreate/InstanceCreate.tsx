@@ -11,6 +11,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { BasicInformation } from "./BasicInformation";
 import { Attributes } from "./Attributes";
 import { Metrics } from "./Metrics";
+import { Relationships } from "./Relationships";
 
 interface InstanceCreateProps {
   readonly setAttributeSchemaContext?: (
@@ -143,6 +144,8 @@ export const InstanceCreate = ({
         return (
           <Attributes fields={instanceCreateFormData?.attributes.fields} />
         );
+      case "relationships":
+        return <Relationships />;
       case "metrics":
         return <Metrics fields={instanceCreateFormData?.metrics.fields} />;
       default:
@@ -152,7 +155,18 @@ export const InstanceCreate = ({
 
   const onSubmit: SubmitHandler<InstanceFormData> = (data) => {
     setExternalId(getValues("basicInformation.externalId"));
-    createInstance(data);
+    const toPush: InstanceFormData = {
+      ...data,
+      relationships: data.relationships?.map((relationship) => {
+        return {
+          ...relationship,
+          target: !(relationship.target as string).includes(",")
+            ? [relationship.target as string]
+            : (relationship.target as string).split(","),
+        };
+      }),
+    };
+    createInstance(toPush);
   };
 
   console.log("errors: ", errors);
