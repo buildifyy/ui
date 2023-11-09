@@ -11,9 +11,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Progress } from "@/components/ui/progress";
 import { useInstanceList } from "@/service";
 import { InstanceMoreOptions } from "@/components/Instance";
+import { Progress } from "@nextui-org/react";
 
 export const InstanceList = () => {
   const [dataToRender, setDataToRender] = useState<InstanceFormData[]>([]);
@@ -45,7 +45,6 @@ export const InstanceList = () => {
       (selectedIsCustom && selectedIsCustom.length > 0)) &&
     dataToRender.length !== 0 &&
     !isLoading;
-  const [progressValue, setProgressValue] = useState<number>(5);
 
   const handleSearchTextChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -198,24 +197,9 @@ export const InstanceList = () => {
     setSearchText("");
   };
 
-  useEffect(() => {
-    if (isLoading) {
-      setProgressValue(25);
-    }
-
-    if (isLoadingFilters) {
-      setProgressValue(75);
-    }
-
-    if (!isLoading && !isLoadingFilters) {
-      setProgressValue(80);
-      return;
-    }
-  }, [isLoading, isLoadingFilters]);
-
   return (
     <div className="w-full">
-      <Header value="Templates" isListView />
+      <Header value="Instances" isListView />
       <div className="flex justify-between mt-4 lg:mx-[10%] mx-0">
         <div className="flex gap-2 items-center">
           <Filter
@@ -259,7 +243,7 @@ export const InstanceList = () => {
       </div>
       <div className="h-[calc(100vh-200px)] overflow-y-auto border rounded-tl-none rounded-tr-none rounded-2xl mt-5 pb-3 lg:mx-[10%] mx-0">
         {isLoading || isLoadingFilters ? (
-          <Progress value={progressValue} className="h-1" />
+          <Progress aria-label="Loading..." isIndeterminate size="sm" />
         ) : null}
         <Table className="w-full border-collapse">
           <TableHeader className="sticky top-0 h-12 bg-[hsl(var(--background))] shadow-th">

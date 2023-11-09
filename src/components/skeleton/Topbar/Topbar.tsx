@@ -31,7 +31,9 @@ export const Topbar = () => {
   };
 
   const shouldDisplaySteps =
-    location.pathname !== "/" && location.pathname !== "/templates";
+    location.pathname !== "/" &&
+    location.pathname !== "/templates" &&
+    location.pathname !== "/instances";
 
   return (
     <div className="flex items-center border-b">
