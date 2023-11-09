@@ -59,7 +59,7 @@ export interface InstanceRelationshipForm {
   readonly id?: string;
   readonly source?: string;
   readonly target?: string;
-  readonly relationshipId?: string;
+  readonly relationshipTemplateId?: string;
 }
 
 export interface InstanceFormData {
