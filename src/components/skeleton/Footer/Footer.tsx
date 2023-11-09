@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
 import { useFormContext } from "react-hook-form";
-import { TemplateFormData } from "@/models";
+import { InstanceFormData, TemplateFormData } from "@/models";
 
 interface FooterProps {
   readonly onReset?: () => void;
@@ -9,8 +9,10 @@ interface FooterProps {
 
 export const Footer = ({ onReset }: FooterProps) => {
   const {
+    watch: templateWatch,
     formState: { dirtyFields },
   } = useFormContext<TemplateFormData>();
+  const { watch: instanceWatch } = useFormContext<InstanceFormData>();
   const handleOnCancel = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (onReset) {
@@ -22,7 +24,10 @@ export const Footer = ({ onReset }: FooterProps) => {
 
   const isBackButtonDisabled = config === "basic-information";
 
-  const isNextButtonDisabled = config === "metrics";
+  const isNextButtonDisabled =
+    config === "metrics" ||
+    !templateWatch("basicInformation.parent") ||
+    !instanceWatch("basicInformation.parent");
 
   const handleOnBackClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
