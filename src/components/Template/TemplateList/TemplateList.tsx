@@ -45,9 +45,6 @@ export const TemplateList = () => {
   }, [templateList]);
 
   useEffect(() => {
-    console.log("selectedExternalIds: ", selectedExternalIds);
-    console.log("selectedNames: ", selectedNames);
-    console.log("selectedParents: ", selectedParents);
     if (
       selectedExternalIds.size === 0 &&
       selectedNames.size === 0 &&
