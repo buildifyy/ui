@@ -274,12 +274,13 @@ export const TemplateList = () => {
                 : setSelectedNames(new Set(e.target.value.split(",")));
             }}
           >
-            {dataToRender.map((data) => (
-              <SelectItem
-                key={data.basicInformation.name}
-                value={data.basicInformation.name}
-              >
-                {data.basicInformation.name}
+            {[
+              ...new Set(
+                dataToRender.map((data) => data.basicInformation.name)
+              ),
+            ].map((data) => (
+              <SelectItem key={data} value={data}>
+                {data}
               </SelectItem>
             ))}
           </Select>
@@ -303,14 +304,17 @@ export const TemplateList = () => {
                 : setSelectedParents(new Set(e.target.value.split(",")));
             }}
           >
-            {dataToRender.map((data) => (
-              <SelectItem
-                key={data.basicInformation.parent}
-                value={data.basicInformation.parent}
-              >
-                {data.basicInformation.parent}
-              </SelectItem>
-            ))}
+            {[
+              ...new Set(
+                dataToRender.map((data) => data.basicInformation.parent)
+              ),
+            ]
+              .filter((data) => data != "")
+              .map((data) => (
+                <SelectItem key={data} value={data}>
+                  {data}
+                </SelectItem>
+              ))}
           </Select>
           <FilterX
             height={20}
