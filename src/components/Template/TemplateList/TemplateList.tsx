@@ -2,8 +2,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { TemplateFormData } from "@/models";
 import { Header } from "@/components/shared";
 import { useTemplateList } from "@/service";
-// import { TemplateMoreOptions } from "@/components/Template";
-import { Check, FilterX, X } from "lucide-react";
+import { FilterX } from "lucide-react";
 import {
   Progress,
   Select,
@@ -16,7 +15,10 @@ import {
   TableRow,
   TableCell,
   getKeyValue,
+  Chip,
+  Tooltip,
 } from "@nextui-org/react";
+import { TemplateMoreOptions } from "..";
 
 export const TemplateList = () => {
   const [dataToRender, setDataToRender] = useState<TemplateFormData[]>([]);
@@ -185,6 +187,10 @@ export const TemplateList = () => {
       key: "custom",
       label: "CUSTOM",
     },
+    {
+      key: "more",
+      label: "",
+    },
   ];
 
   const tableRows = dataToRender.map((data) => {
@@ -194,9 +200,30 @@ export const TemplateList = () => {
       name: data.basicInformation.name,
       parent: data.basicInformation.parent,
       custom: data.basicInformation.isCustom ? (
-        <Check height={17} width={17} />
+        <Chip color="success" variant="bordered" size="sm">
+          Custom
+        </Chip>
       ) : (
-        <X height={17} width={17} />
+        <Tooltip content="Out-of-the-box">
+          <Chip color="warning" variant="bordered" size="sm">
+            OOTB
+          </Chip>
+        </Tooltip>
+      ),
+      more: (
+        <div className="flex gap-2">
+          <TemplateMoreOptions
+            externalId={data.basicInformation.externalId}
+            message="View Options"
+          />
+          {data.basicInformation.isCustom && (
+            <TemplateMoreOptions
+              externalId={data.basicInformation.externalId}
+              message="Edit Options"
+              isEdit
+            />
+          )}
+        </div>
       ),
     };
   });
