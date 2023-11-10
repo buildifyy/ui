@@ -1,10 +1,9 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { TemplateFormData } from "@/models";
-import { Filter, FilterOption, Header } from "@/components/shared";
+import { Header } from "@/components/shared";
 import { useTemplateList } from "@/service";
 import { TemplateMoreOptions } from "@/components/Template";
-import { Check, X } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Check, FilterX, X } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -13,36 +12,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Progress } from "@nextui-org/react";
+import { Progress, Select, SelectItem, Input } from "@nextui-org/react";
 
 export const TemplateList = () => {
   const [dataToRender, setDataToRender] = useState<TemplateFormData[]>([]);
   const [searchText, setSearchText] = useState<string>();
-  const [externalIdFilterOptions, setExternalIdFilterOptions] = useState<
-    FilterOption[]
-  >([]);
-  const [selectedExternalIds, setSelectedExternalIds] = useState<string[]>();
-  const [nameFilterOptions, setNameFilterOptions] = useState<FilterOption[]>(
-    []
+  const [selectedExternalIds, setSelectedExternalIds] = useState(
+    new Set<string>([])
   );
-  const [selectedNames, setSelectedNames] = useState<string[]>();
-  const [parentFilterOptions, setParentFilterOptions] = useState<
-    FilterOption[]
-  >([]);
-  const [selectedParents, setSelectedParents] = useState<string[]>();
-  const [isCustomFilterOptions, setIsCustomFilterOptions] = useState<
-    FilterOption[]
-  >([]);
-  const [selectedIsCustom, setSelectedIsCustom] = useState<string[]>();
+  const [selectedNames, setSelectedNames] = useState(new Set<string>([]));
+  const [selectedParents, setSelectedParents] = useState(new Set<string>([]));
   const cachedList = useRef<TemplateFormData[]>([]);
   const [isLoadingFilters, setIsLoadingFilters] = useState<boolean>(false);
   const { data: templateList, isLoading } = useTemplateList();
   const showFilteredResultsHelper =
     (searchText ||
-      (selectedExternalIds && selectedExternalIds.length > 0) ||
-      (selectedNames && selectedNames.length > 0) ||
-      (selectedParents && selectedParents.length > 0) ||
-      (selectedIsCustom && selectedIsCustom.length > 0)) &&
+      (selectedExternalIds && selectedExternalIds.size > 0) ||
+      (selectedNames && selectedNames.size > 0) ||
+      (selectedParents && selectedParents.size > 0)) &&
     dataToRender.length !== 0 &&
     !isLoading;
 
@@ -54,68 +41,21 @@ export const TemplateList = () => {
     if (templateList) {
       cachedList.current = templateList;
       setDataToRender(templateList);
-
-      setExternalIdFilterOptions(
-        templateList.map((data) => {
-          return {
-            label: data.basicInformation.externalId,
-            value: data.basicInformation.externalId,
-          };
-        })
-      );
-
-      const newNameFilterOptions: FilterOption[] = [];
-      templateList.forEach((data) => {
-        if (
-          newNameFilterOptions.findIndex(
-            (f) => f.value === data.basicInformation.name
-          ) === -1
-        ) {
-          newNameFilterOptions.push({
-            label: data.basicInformation.name,
-            value: data.basicInformation.name,
-          });
-        }
-      });
-      setNameFilterOptions(newNameFilterOptions);
-
-      const newParentFilterOptions: FilterOption[] = [];
-      templateList.forEach((data) => {
-        if (
-          newParentFilterOptions.findIndex(
-            (f) => f.value === data.basicInformation.parent
-          ) === -1 &&
-          data.basicInformation.parent
-        ) {
-          newParentFilterOptions.push({
-            label: data.basicInformation.parent,
-            value: data.basicInformation.parent,
-          });
-        }
-      });
-      setParentFilterOptions(newParentFilterOptions);
-
-      const newIsCustomFilterOptions: FilterOption[] = [];
-      templateList.forEach((data) => {
-        if (
-          newIsCustomFilterOptions.findIndex(
-            (f) => f.value === data.basicInformation.isCustom.toString()
-          ) === -1
-        ) {
-          newIsCustomFilterOptions.push({
-            label:
-              data.basicInformation.isCustom
-                .toString()
-                .charAt(0)
-                .toUpperCase() +
-              data.basicInformation.isCustom.toString().slice(1),
-            value: data.basicInformation.isCustom.toString(),
-          });
-        }
-      });
-      setIsCustomFilterOptions(newIsCustomFilterOptions);
     }
   }, [templateList]);
+
+  useEffect(() => {
+    console.log("selectedExternalIds: ", selectedExternalIds);
+    console.log("selectedNames: ", selectedNames);
+    console.log("selectedParents: ", selectedParents);
+    if (
+      selectedExternalIds.size === 0 &&
+      selectedNames.size === 0 &&
+      selectedParents.size === 0
+    ) {
+      setDataToRender(cachedList.current);
+    }
+  }, [selectedExternalIds, selectedNames, selectedParents]);
 
   useEffect(() => {
     setIsLoadingFilters(true);
@@ -137,40 +77,32 @@ export const TemplateList = () => {
         );
       }
 
-      if (selectedExternalIds && selectedExternalIds.length > 0) {
+      if (selectedExternalIds && selectedExternalIds.size > 0) {
         const listCopy = [...filteredList];
         filteredList = listCopy.filter((i: TemplateFormData) =>
-          selectedExternalIds.includes(i.basicInformation.externalId)
+          selectedExternalIds.has(i.basicInformation.externalId)
         );
       }
 
-      if (selectedNames && selectedNames.length > 0) {
+      if (selectedNames && selectedNames.size > 0) {
         const listCopy = [...filteredList];
         filteredList = listCopy.filter((i: TemplateFormData) =>
-          selectedNames.includes(i.basicInformation.name)
+          selectedNames.has(i.basicInformation.name)
         );
       }
 
-      if (selectedParents && selectedParents.length > 0) {
+      if (selectedParents && selectedParents.size > 0) {
         const listCopy = [...filteredList];
         filteredList = listCopy.filter((i: TemplateFormData) =>
-          selectedParents.includes(i.basicInformation.parent)
-        );
-      }
-
-      if (selectedIsCustom && selectedIsCustom.length > 0) {
-        const listCopy = [...filteredList];
-        filteredList = listCopy.filter((i: TemplateFormData) =>
-          selectedIsCustom.includes(i.basicInformation.isCustom.toString())
+          selectedParents.has(i.basicInformation.parent)
         );
       }
 
       if (
         searchText === "" &&
-        selectedExternalIds?.length === 0 &&
-        selectedNames?.length === 0 &&
-        selectedParents?.length === 0 &&
-        selectedIsCustom?.length === 0
+        selectedExternalIds?.size === 0 &&
+        selectedNames?.size === 0 &&
+        selectedParents?.size === 0
       ) {
         filteredList = cachedList.current;
       }
@@ -180,20 +112,12 @@ export const TemplateList = () => {
     }, 1000);
 
     return () => clearTimeout(getFilteredResults);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    searchText,
-    selectedExternalIds,
-    selectedNames,
-    selectedParents,
-    selectedIsCustom,
-  ]);
+  }, [searchText, selectedExternalIds, selectedNames, selectedParents]);
 
   const handleClearAllFilters = () => {
-    setSelectedExternalIds([]);
-    setSelectedNames([]);
-    setSelectedParents([]);
-    setSelectedIsCustom([]);
+    setSelectedExternalIds(new Set<string>([]));
+    setSelectedNames(new Set<string>([]));
+    setSelectedParents(new Set<string>([]));
     setSearchText("");
   };
 
@@ -201,42 +125,95 @@ export const TemplateList = () => {
     <div className="w-full">
       <Header value="Templates" isListView />
       <div className="flex justify-between mt-4 lg:mx-[10%] mx-0">
-        <div className="flex gap-2 items-center">
-          <Filter
-            options={externalIdFilterOptions}
-            selectedValues={selectedExternalIds}
-            setSelectedValues={setSelectedExternalIds}
-            placeholderText="All External IDs"
-          />
-          <Filter
-            options={nameFilterOptions}
-            selectedValues={selectedNames}
-            setSelectedValues={setSelectedNames}
-            placeholderText="All Names"
-          />
-          <Filter
-            options={parentFilterOptions}
-            selectedValues={selectedParents}
-            setSelectedValues={setSelectedParents}
-            placeholderText="All Parents"
-          />
-          <Filter
-            options={isCustomFilterOptions}
-            selectedValues={selectedIsCustom}
-            setSelectedValues={setSelectedIsCustom}
-            placeholderText="All Customs"
-          />
-          <span
-            className="hover:cursor-pointer hover:text-blue-600 text-sm"
-            onClick={handleClearAllFilters}
+        <div className="pr-2 flex gap-2 items-center">
+          <Select
+            selectionMode="multiple"
+            labelPlacement="outside"
+            placeholder="All External IDs"
+            aria-label="All External IDs"
+            className="w-40"
+            variant="bordered"
+            selectedKeys={selectedExternalIds}
+            onChange={(e) => {
+              e.target.value === ""
+                ? setSelectedExternalIds(new Set())
+                : setSelectedExternalIds(new Set(e.target.value.split(",")));
+            }}
           >
-            Clear all filters
-          </span>
+            {dataToRender.map((data) => (
+              <SelectItem
+                key={data.basicInformation.externalId}
+                value={data.basicInformation.externalId}
+              >
+                {data.basicInformation.externalId}
+              </SelectItem>
+            ))}
+          </Select>
+          <Select
+            selectionMode="multiple"
+            labelPlacement="outside"
+            placeholder="All Names"
+            aria-label="All Names"
+            className="w-40"
+            variant="bordered"
+            selectedKeys={selectedNames}
+            onChange={(e) => {
+              e.target.value === ""
+                ? setSelectedNames(new Set())
+                : setSelectedNames(new Set(e.target.value.split(",")));
+            }}
+          >
+            {dataToRender.map((data) => (
+              <SelectItem
+                key={data.basicInformation.name}
+                value={data.basicInformation.name}
+              >
+                {data.basicInformation.name}
+              </SelectItem>
+            ))}
+          </Select>
+          <Select
+            selectionMode="multiple"
+            labelPlacement="outside"
+            placeholder="All Parents"
+            aria-label="All Parents"
+            className="w-40"
+            variant="bordered"
+            selectedKeys={selectedParents}
+            isDisabled={
+              dataToRender.filter((data) => data.basicInformation.parent !== "")
+                .length === 0
+            }
+            onChange={(e) => {
+              e.target.value === ""
+                ? setSelectedParents(new Set())
+                : setSelectedParents(new Set(e.target.value.split(",")));
+            }}
+          >
+            {dataToRender.map((data) => (
+              <SelectItem
+                key={data.basicInformation.parent}
+                value={data.basicInformation.parent}
+              >
+                {data.basicInformation.parent}
+              </SelectItem>
+            ))}
+          </Select>
+          <FilterX
+            height={20}
+            width={20}
+            aria-label="Clear Filters"
+            onClick={handleClearAllFilters}
+            className="hover:cursor-pointer hover:text-blue-400"
+          />
         </div>
         <Input
           type="text"
+          variant="bordered"
           placeholder="Search"
-          className="px-4 rounded-2xl text-sm w-52"
+          labelPlacement="outside"
+          aria-label="Search"
+          className="pl-2 rounded-2xl text-sm w-52"
           onChange={handleSearchTextChange}
           value={searchText}
         />
