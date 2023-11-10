@@ -33,10 +33,14 @@ export const Relationships = () => {
               <div className="flex flex-wrap gap-2 mt-3">
                 {Array.isArray(relationship.target) ? (
                   relationship.target?.map((target: string) => (
-                    <Chip variant="bordered">{target}</Chip>
+                    <Chip variant="shadow" color="warning" size="sm">
+                      {target}
+                    </Chip>
                   ))
                 ) : (
-                  <Chip variant="bordered">{relationship.target}</Chip>
+                  <Chip variant="shadow" color="warning" size="sm">
+                    {relationship.target}
+                  </Chip>
                 )}
               </div>
             </div>

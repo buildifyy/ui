@@ -36,9 +36,12 @@ export const BasicInformation = ({
 
   useEffect(() => {
     if (basicInformationParent) {
-      const rootTemplate = parentTemplates?.find(
+      let rootTemplate = parentTemplates?.find(
         (parentTemplate) => parentTemplate.value === basicInformationParent
       )?.rootTemplate;
+      if (rootTemplate === "") {
+        rootTemplate = basicInformationParent;
+      }
       setValue("basicInformation.rootTemplate", rootTemplate);
     }
   }, [basicInformationParent, parentTemplates, setValue]);

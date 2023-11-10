@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from "axios";
 
 export class InstanceService {
   getInstanceCreateForm = async (
-    templateId?: string,
+    templateId?: string
   ): Promise<InstanceFormMetaData> => {
     const url = `http://localhost:8080/api/v1/tenants/the-binary/instances/form/${templateId}`;
     try {
@@ -36,13 +36,27 @@ export class InstanceService {
     }
   };
 
+  getApplicableRelationshipInstances = async (
+    parentTemplate?: string,
+    relationshipTemplateId?: string
+  ): Promise<InstanceFormData[]> => {
+    const url = `http://localhost:8080/api/v1/tenants/the-binary/parents/${parentTemplate}/relationships/${relationshipTemplateId}/instances`;
+
+    try {
+      const response = await axios.get(url);
+      return response.data.data;
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
+
   createInstance = async (data: InstanceFormData): Promise<number> => {
     const url = "http://localhost:8080/api/v1/tenants/the-binary/instances";
 
     try {
       const response = await axios.post<InstanceFormData, AxiosResponse>(
         url,
-        data,
+        data
       );
       return response.status;
     } catch (error) {
@@ -56,7 +70,7 @@ export class InstanceService {
     try {
       const response = await axios.put<InstanceFormData, AxiosResponse>(
         url,
-        data,
+        data
       );
       return response.status;
     } catch (error) {

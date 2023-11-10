@@ -1,15 +1,19 @@
 import { FormLabel } from "@/components/ui/form";
 import { InstanceFormData, RelationshipData } from "@/models";
-import { useInstanceList, useRelationships } from "@/service";
+import {
+  useApplicableRelationshipInstanceList,
+  useRelationships,
+} from "@/service";
 import { Select, SelectItem } from "@nextui-org/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 
 export const Relationships = () => {
   const { control, watch, getValues, setValue, register } =
     useFormContext<InstanceFormData>();
   const { data: relationshipTemplates } = useRelationships();
-  const { data: instanceList } = useInstanceList();
+  const [relationshipTemplatesToRender, setRelationshipTemplatesToRender] =
+    useState<RelationshipData[]>([]);
 
   const basicInformationRootTemplate = useWatch({
     name: "basicInformation.rootTemplate",
@@ -21,47 +25,32 @@ export const Relationships = () => {
     control,
   });
 
-  console.log("keys: ", watch("relationships.0.target"));
-
-  const relationshipTemplatesToRender = relationshipTemplates?.filter(
-    (relationshipTemplate) =>
-      basicInformationRootTemplate
-        ? relationshipTemplate.source === basicInformationRootTemplate
-        : relationshipTemplate.source === basicInformationParent
+  const instanceLists = useApplicableRelationshipInstanceList(
+    basicInformationParent,
+    relationshipTemplatesToRender?.map(
+      (relationshipTemplate) => relationshipTemplate.id
+    )
   );
 
-  const getInstanceListToRender = (
-    relationshipTemplate: RelationshipData
-  ): InstanceFormData[] => {
-    if (instanceList) {
-      const instancesThatMatchTargetType = instanceList.filter((instance) => {
-        // need instances that match the target type of the relationship being created
-        return (
-          instance.basicInformation.rootTemplate &&
-          relationshipTemplate.target.includes(
-            instance.basicInformation.rootTemplate
-          )
-        );
-      });
-
-      if (
-        basicInformationRootTemplate === "p.com.asset" ||
-        basicInformationParent === "p.com.asset"
-      ) {
-        return instancesThatMatchTargetType;
-      }
-
-      return instancesThatMatchTargetType.filter((instance) => {
-        // need instances that either do not have any relationships or do not possess the is located in relationship (inverse)
-        return (
-          instance.relationships?.findIndex(
-            (rel) => rel.relationshipTemplateId === relationshipTemplate.inverse
-          ) === -1 || !instance.relationships
-        );
-      });
+  useEffect(() => {
+    if (
+      relationshipTemplates &&
+      basicInformationParent &&
+      basicInformationRootTemplate
+    ) {
+      const relationshipTemplatesToRender = relationshipTemplates?.filter(
+        (relationshipTemplate) =>
+          basicInformationRootTemplate
+            ? relationshipTemplate.source === basicInformationRootTemplate
+            : relationshipTemplate.source === basicInformationParent
+      );
+      setRelationshipTemplatesToRender(relationshipTemplatesToRender);
     }
-    return [];
-  };
+  }, [
+    basicInformationParent,
+    basicInformationRootTemplate,
+    relationshipTemplates,
+  ]);
 
   useEffect(() => {
     if (relationshipTemplatesToRender) {
@@ -108,8 +97,8 @@ export const Relationships = () => {
                     : ""
                 }
               >
-                {getInstanceListToRender(relationshipTemplate).map(
-                  (instance) => (
+                {(instanceLists[i].data ?? []).map(
+                  (instance: InstanceFormData) => (
                     <SelectItem
                       key={instance.basicInformation.externalId}
                       value={instance.basicInformation.externalId}
