@@ -16,7 +16,7 @@ function App() {
   }, []);
 
   return (
-    <NextUIProvider>
+    <NextUIProvider navigate={navigate}>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         {location.pathname.includes("/templates") ? (
           <TemplateForm />

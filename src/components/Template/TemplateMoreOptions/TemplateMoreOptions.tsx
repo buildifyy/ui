@@ -37,13 +37,6 @@ export const TemplateMoreOptions = ({
         : `/templates/${externalId}?config=attributes`,
     },
     {
-      key: "relationships",
-      label: "Relationships",
-      href: isEdit
-        ? `/templates/edit/${externalId}?config=relationships`
-        : `/templates/${externalId}?config=relationships`,
-    },
-    {
       key: "metrics",
       label: "Metrics",
       href: isEdit
