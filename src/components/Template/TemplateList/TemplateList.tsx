@@ -25,13 +25,6 @@ export const TemplateList = () => {
   const cachedList = useRef<TemplateFormData[]>([]);
   const [isLoadingFilters, setIsLoadingFilters] = useState<boolean>(false);
   const { data: templateList, isLoading } = useTemplateList();
-  const showFilteredResultsHelper =
-    (searchText ||
-      (selectedExternalIds && selectedExternalIds.size > 0) ||
-      (selectedNames && selectedNames.size > 0) ||
-      (selectedParents && selectedParents.size > 0)) &&
-    dataToRender.length !== 0 &&
-    !isLoading;
 
   const handleSearchTextChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -54,43 +47,37 @@ export const TemplateList = () => {
     }
   }, [selectedExternalIds, selectedNames, selectedParents]);
 
-  useEffect(() => {
+  const handleApplyFilter = () => {
     setIsLoadingFilters(true);
+
     const getFilteredResults = setTimeout(() => {
       let filteredList = cachedList.current;
       if (searchText) {
         const listCopy = [...cachedList.current];
-        filteredList = listCopy.filter(
-          (i: TemplateFormData) =>
-            i.basicInformation.externalId
-              .toLowerCase()
-              .includes(searchText.toLowerCase()) ||
-            i.basicInformation.name
-              .toLowerCase()
-              .includes(searchText.toLowerCase()) ||
-            i.basicInformation.parent
-              .toLowerCase()
-              .includes(searchText.toLowerCase())
+        filteredList = listCopy.filter((i) =>
+          i.basicInformation.name
+            .toLowerCase()
+            .includes(searchText.toLowerCase())
         );
       }
 
       if (selectedExternalIds && selectedExternalIds.size > 0) {
         const listCopy = [...filteredList];
-        filteredList = listCopy.filter((i: TemplateFormData) =>
+        filteredList = listCopy.filter((i) =>
           selectedExternalIds.has(i.basicInformation.externalId)
         );
       }
 
       if (selectedNames && selectedNames.size > 0) {
         const listCopy = [...filteredList];
-        filteredList = listCopy.filter((i: TemplateFormData) =>
+        filteredList = listCopy.filter((i) =>
           selectedNames.has(i.basicInformation.name)
         );
       }
 
       if (selectedParents && selectedParents.size > 0) {
         const listCopy = [...filteredList];
-        filteredList = listCopy.filter((i: TemplateFormData) =>
+        filteredList = listCopy.filter((i) =>
           selectedParents.has(i.basicInformation.parent)
         );
       }
@@ -109,7 +96,66 @@ export const TemplateList = () => {
     }, 1000);
 
     return () => clearTimeout(getFilteredResults);
-  }, [searchText, selectedExternalIds, selectedNames, selectedParents]);
+  };
+
+  useEffect(() => {
+    setIsLoadingFilters(true);
+    const getFilteredResults = setTimeout(() => {
+      let filteredList = cachedList.current;
+
+      if (selectedExternalIds && selectedExternalIds.size > 0) {
+        const listCopy = [...filteredList];
+        filteredList = listCopy.filter((i) =>
+          selectedExternalIds.has(i.basicInformation.externalId)
+        );
+      }
+
+      if (selectedNames && selectedNames.size > 0) {
+        const listCopy = [...filteredList];
+        filteredList = listCopy.filter((i) =>
+          selectedNames.has(i.basicInformation.name)
+        );
+      }
+
+      if (selectedParents && selectedParents.size > 0) {
+        const listCopy = [...filteredList];
+        filteredList = listCopy.filter((i) =>
+          selectedParents.has(i.basicInformation.parent)
+        );
+      }
+
+      if (searchText) {
+        const listCopy = [...cachedList.current];
+        filteredList = listCopy.filter(
+          (i) =>
+            i.basicInformation.externalId
+              .toLowerCase()
+              .includes(searchText.toLowerCase()) ||
+            i.basicInformation.name
+              .toLowerCase()
+              .includes(searchText.toLowerCase()) ||
+            i.basicInformation.parent
+              .toLowerCase()
+              .includes(searchText.toLowerCase())
+        );
+      }
+
+      if (
+        searchText === "" &&
+        selectedExternalIds?.size === 0 &&
+        selectedNames?.size === 0 &&
+        selectedParents?.size === 0
+      ) {
+        filteredList = cachedList.current;
+      }
+
+      setDataToRender(filteredList);
+      setIsLoadingFilters(false);
+    }, 1000);
+
+    return () => clearTimeout(getFilteredResults);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchText]);
 
   const handleClearAllFilters = () => {
     setSelectedExternalIds(new Set<string>([]));
@@ -130,6 +176,8 @@ export const TemplateList = () => {
             aria-label="All External IDs"
             className="w-40"
             variant="bordered"
+            onClose={handleApplyFilter}
+            isDisabled={dataToRender.length === 0}
             selectedKeys={selectedExternalIds}
             onChange={(e) => {
               e.target.value === ""
@@ -153,7 +201,9 @@ export const TemplateList = () => {
             aria-label="All Names"
             className="w-40"
             variant="bordered"
+            onClose={handleApplyFilter}
             selectedKeys={selectedNames}
+            isDisabled={dataToRender.length === 0}
             onChange={(e) => {
               e.target.value === ""
                 ? setSelectedNames(new Set())
@@ -177,7 +227,9 @@ export const TemplateList = () => {
             className="w-40"
             variant="bordered"
             selectedKeys={selectedParents}
+            onClose={handleApplyFilter}
             isDisabled={
+              dataToRender.length === 0 ||
               dataToRender.filter((data) => data.basicInformation.parent !== "")
                 .length === 0
             }
@@ -282,12 +334,6 @@ export const TemplateList = () => {
           </TableBody>
         </Table>
       </div>
-      {showFilteredResultsHelper && (
-        <div className="text-right text-gray-500 text-md mt-2">
-          {dataToRender.length} filtered{" "}
-          {dataToRender.length > 1 ? "results" : "result"}
-        </div>
-      )}
     </div>
   );
 };
