@@ -16,6 +16,7 @@ export const useApplicableRelationshipInstanceList = (
             relationshipTemplateId
           ),
         enabled: !!parentTemplate && !!relationshipTemplateId,
+        refetchOnWindowFocus: false,
       };
     }
   );

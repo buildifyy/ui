@@ -10,6 +10,7 @@ export const useInstanceView = (instanceId?: string) => {
     },
     {
       enabled: !!instanceId,
+      refetchOnWindowFocus: false,
     }
   );
 };

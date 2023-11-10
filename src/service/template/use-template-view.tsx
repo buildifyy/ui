@@ -10,6 +10,7 @@ export const useTemplateView = (templateId?: string) => {
     },
     {
       enabled: !!templateId,
-    },
+      refetchOnWindowFocus: false,
+    }
   );
 };

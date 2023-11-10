@@ -10,6 +10,7 @@ export const useInstanceCreateForm = (templateId?: string) => {
     },
     {
       enabled: !!templateId,
+      refetchOnWindowFocus: false,
     }
   );
 };

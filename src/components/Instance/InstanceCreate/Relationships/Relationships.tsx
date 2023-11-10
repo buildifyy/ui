@@ -79,6 +79,7 @@ export const Relationships = () => {
                 variant="bordered"
                 placeholder="Select instances"
                 labelPlacement="outside"
+                aria-label="Select instances"
                 selectionMode={
                   relationshipTemplate.cardinality === "one-to-many"
                     ? "multiple"
