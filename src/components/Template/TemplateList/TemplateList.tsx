@@ -2,17 +2,21 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { TemplateFormData } from "@/models";
 import { Header } from "@/components/shared";
 import { useTemplateList } from "@/service";
-import { TemplateMoreOptions } from "@/components/Template";
+// import { TemplateMoreOptions } from "@/components/Template";
 import { Check, FilterX, X } from "lucide-react";
 import {
+  Progress,
+  Select,
+  SelectItem,
+  Input,
   Table,
-  TableBody,
-  TableCell,
-  TableHead,
   TableHeader,
+  TableColumn,
+  TableBody,
   TableRow,
-} from "@/components/ui/table";
-import { Progress, Select, SelectItem, Input } from "@nextui-org/react";
+  TableCell,
+  getKeyValue,
+} from "@nextui-org/react";
 
 export const TemplateList = () => {
   const [dataToRender, setDataToRender] = useState<TemplateFormData[]>([]);
@@ -164,10 +168,43 @@ export const TemplateList = () => {
     setSearchText("");
   };
 
+  const tableColumns = [
+    {
+      key: "externalId",
+      label: "EXTERNAL ID",
+    },
+    {
+      key: "name",
+      label: "NAME",
+    },
+    {
+      key: "parent",
+      label: "PARENT",
+    },
+    {
+      key: "custom",
+      label: "CUSTOM",
+    },
+  ];
+
+  const tableRows = dataToRender.map((data) => {
+    return {
+      key: data.basicInformation.externalId,
+      externalId: data.basicInformation.externalId,
+      name: data.basicInformation.name,
+      parent: data.basicInformation.parent,
+      custom: data.basicInformation.isCustom ? (
+        <Check height={17} width={17} />
+      ) : (
+        <X height={17} width={17} />
+      ),
+    };
+  });
+
   return (
     <div className="w-full">
       <Header value="Templates" isListView />
-      <div className="flex justify-between mt-4 lg:mx-[10%] mx-0">
+      <div className="flex justify-between mt-4 lg:mx-[10%]">
         <div className="pr-2 flex gap-2 items-center">
           <Select
             selectionMode="multiple"
@@ -267,69 +304,33 @@ export const TemplateList = () => {
           value={searchText}
         />
       </div>
-      <div className="h-[calc(100vh-200px)] overflow-y-auto border rounded-tl-none rounded-tr-none rounded-2xl mt-5 pb-3 lg:mx-[10%] mx-0">
-        {isLoading || isLoadingFilters ? (
-          <Progress aria-label="Loading..." isIndeterminate size="sm" />
-        ) : null}
-        <Table className="w-full border-collapse">
-          <TableHeader className="sticky top-0 h-12 bg-[hsl(var(--background))] shadow-th">
-            <TableRow className="border-b">
-              <TableHead className="p-2 pl-4 text-left text-[0.9rem] font-bold">
-                External ID
-              </TableHead>
-              <TableHead className="p-2 text-left text-[0.9rem] font-bold">
-                Name
-              </TableHead>
-              <TableHead className="p-2 text-left text-[0.9rem] font-bold">
-                Parent
-              </TableHead>
-              <TableHead className="p-2 text-left text-[0.9rem] font-bold">
-                Custom
-              </TableHead>
-              <TableHead className="p-2 text-left w-20 text-[0.9rem] font-bold"></TableHead>
-            </TableRow>
+      <div className="mt-3 lg:mx-[10%]">
+        <Progress
+          aria-label="Loading..."
+          isIndeterminate
+          size="sm"
+          className={`${!isLoading && !isLoadingFilters ? "invisible" : ""}`}
+        />
+        <Table
+          aria-label="Templates table"
+          className="mt-2"
+          isHeaderSticky
+          classNames={{
+            base: "max-h-[calc(100vh-200px)] overflow-y-scroll",
+          }}
+        >
+          <TableHeader columns={tableColumns}>
+            {(column) => (
+              <TableColumn key={column.key}>{column.label}</TableColumn>
+            )}
           </TableHeader>
-          <TableBody>
-            {dataToRender.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={4} className="p-4">
-                  No templates found
-                </TableCell>
+          <TableBody items={tableRows}>
+            {(row) => (
+              <TableRow key={row.key}>
+                {(columnKey) => (
+                  <TableCell>{getKeyValue(row, columnKey)}</TableCell>
+                )}
               </TableRow>
-            ) : (
-              dataToRender.map((data, i) => (
-                <TableRow key={i} className="border-b last:border-none">
-                  <TableCell className="p-2 pl-4 text-[0.9rem] italic">
-                    {data.basicInformation.externalId}
-                  </TableCell>
-                  <TableCell className="p-2 text-[0.9rem]">
-                    {data.basicInformation.name}
-                  </TableCell>
-                  <TableCell className="p-2 text-[0.9rem] italic">
-                    {data.basicInformation.parent}
-                  </TableCell>
-                  <TableCell className="p-2 text-[0.9rem]">
-                    {data.basicInformation.isCustom ? (
-                      <Check height={17} width={17} />
-                    ) : (
-                      <X height={17} width={17} />
-                    )}
-                  </TableCell>
-                  <TableCell className="p-3 text-[0.9rem] flex gap-2">
-                    <TemplateMoreOptions
-                      externalId={data.basicInformation.externalId}
-                      message="View Options"
-                    />
-                    {data.basicInformation.isCustom && (
-                      <TemplateMoreOptions
-                        externalId={data.basicInformation.externalId}
-                        message="Edit Options"
-                        isEdit
-                      />
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))
             )}
           </TableBody>
         </Table>
