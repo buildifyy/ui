@@ -1,6 +1,6 @@
 import { FormLabel } from "@/components/ui/form";
 import { InstanceFormData } from "@/models";
-import { useRelationships } from "@/service";
+import { useInstanceList, useRelationships } from "@/service";
 import Graphin, {
   Behaviors,
   GraphinData,
@@ -31,16 +31,22 @@ export const Relationships = () => {
   });
 
   const { data: relationshipTemplates } = useRelationships();
+  const { data: instanceList } = useInstanceList();
 
   const handlePopoverClick = (isOpen: boolean) => {
     if (isOpen) {
-      const source = getValues("basicInformation.name");
+      const sourceRootTemplate = getValues("basicInformation.rootTemplate");
+      const source = getValues("basicInformation.externalId");
       const nodes: IUserNode[] = [
         {
           id: source,
           style: {
             label: {
               value: source,
+            },
+            keyshape: {
+              stroke: sourceRootTemplate === "p.com.asset" ? "blue" : "red",
+              fill: sourceRootTemplate === "p.com.asset" ? "blue" : "red",
             },
           },
         },
@@ -49,9 +55,10 @@ export const Relationships = () => {
       const edges: IUserEdge[] = [];
 
       relationships.forEach((relationship) => {
-        const relationshipName = relationshipTemplates?.find(
+        const relationshipTemplate = relationshipTemplates?.find(
           (template) => template.id === relationship.relationshipTemplateId
-        )?.name;
+        );
+        const relationshipName = relationshipTemplate?.name;
 
         const targets = Array.isArray(relationship.target)
           ? relationship.target.map((target) => target)
@@ -59,11 +66,24 @@ export const Relationships = () => {
 
         nodes.push(
           ...targets.map((target) => {
+            const instance = instanceList?.find(
+              (instance) => instance.basicInformation.externalId === target
+            );
             return {
               id: target,
               style: {
                 label: {
                   value: target,
+                },
+                keyshape: {
+                  stroke:
+                    instance?.basicInformation.rootTemplate === "p.com.asset"
+                      ? "blue"
+                      : "red",
+                  fill:
+                    instance?.basicInformation.rootTemplate === "p.com.asset"
+                      ? "blue"
+                      : "red",
                 },
               },
             };
