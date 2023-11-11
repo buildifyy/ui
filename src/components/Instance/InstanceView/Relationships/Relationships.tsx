@@ -147,7 +147,6 @@ export const Relationships = () => {
                   <PopoverContent className="p-0">
                     <Graphin
                       data={graphDataToRender}
-                      //   layout={{ type: "radial" }}
                       theme={{ mode: "dark" }}
                       style={{
                         backgroundColor: "transparent",
