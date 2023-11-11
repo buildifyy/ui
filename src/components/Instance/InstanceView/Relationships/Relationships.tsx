@@ -160,18 +160,41 @@ export const Relationships = () => {
 
               <div className="flex flex-wrap gap-2 mt-3">
                 {Array.isArray(relationship.target) ? (
-                  relationship.target?.map((target: string) => (
-                    <Chip
-                      variant="shadow"
-                      color="warning"
-                      size="sm"
-                      key={target}
-                    >
-                      {target}
-                    </Chip>
-                  ))
+                  relationship.target?.map((target: string) => {
+                    const instance = instanceList?.find(
+                      (instance) =>
+                        instance.basicInformation.externalId === target
+                    );
+                    return (
+                      <Chip
+                        variant="shadow"
+                        color={
+                          instance?.basicInformation.rootTemplate ===
+                          "p.com.asset"
+                            ? "default"
+                            : "warning"
+                        }
+                        size="sm"
+                        key={target}
+                      >
+                        {target}
+                      </Chip>
+                    );
+                  })
                 ) : (
-                  <Chip variant="shadow" color="warning" size="sm">
+                  <Chip
+                    variant="shadow"
+                    color={
+                      instanceList?.find(
+                        (instance) =>
+                          instance.basicInformation.externalId ===
+                          relationship.target
+                      )?.basicInformation.rootTemplate === "p.com.asset"
+                        ? "default"
+                        : "warning"
+                    }
+                    size="sm"
+                  >
                     {relationship.target}
                   </Chip>
                 )}
