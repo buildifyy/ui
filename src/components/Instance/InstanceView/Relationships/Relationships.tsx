@@ -95,6 +95,7 @@ export const Relationships = () => {
                   onOpenChange={(isOpen: boolean) =>
                     handlePopoverClick(relationship, isOpen)
                   }
+                  backdrop="blur"
                 >
                   <PopoverTrigger>
                     <Eye width={17} height={17} />
