@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@antv/graphin": "^2.7.27",
     "@hookform/resolvers": "^3.3.2",
     "@nextui-org/react": "^2.2.8",
     "@radix-ui/react-accordion": "^1.1.2",
