@@ -31,51 +31,6 @@ export const Relationships = () => {
 
   const { data: relationshipTemplates } = useRelationships();
 
-  //   const graphDataToRender: GraphinData = {
-  //     nodes: [
-  //       {
-  //         id: "node-0",
-  //         x: 100,
-  //         y: 100,
-  //         style: {
-  //           label: {
-  //             value: "node-0",
-  //           },
-  //         },
-  //       },
-  //       {
-  //         id: "node-1",
-  //         x: 200,
-  //         y: 200,
-  //         style: {
-  //           label: {
-  //             value: "node-1",
-  //           },
-  //         },
-  //       },
-  //       {
-  //         id: "node-2",
-  //         x: 100,
-  //         y: 300,
-  //         style: {
-  //           label: {
-  //             value: "node-2",
-  //           },
-  //         },
-  //       },
-  //     ],
-  //     edges: [
-  //       {
-  //         source: "node-0",
-  //         target: "node-1",
-  //       },
-  //       {
-  //         source: "node-0",
-  //         target: "node-2",
-  //       },
-  //     ],
-  //   };
-
   const handlePopoverClick = (
     relationship: FieldArrayWithId<InstanceFormData, "relationships", "_id">,
     isOpen: boolean
@@ -147,7 +102,13 @@ export const Relationships = () => {
                   <PopoverContent className="p-0">
                     <Graphin
                       data={graphDataToRender}
-                      theme={{ mode: "dark" }}
+                      theme={{
+                        mode: "dark",
+                        background:
+                          "hsl(var(--nextui-content1) / var(--nextui-content1-opacity, var(--tw-bg-opacity)))",
+                        edgeSize: 2,
+                        nodeSize: 30,
+                      }}
                       style={{
                         borderRadius: "10px",
                       }}
