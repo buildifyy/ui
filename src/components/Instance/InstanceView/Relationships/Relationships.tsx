@@ -149,7 +149,6 @@ export const Relationships = () => {
                       data={graphDataToRender}
                       theme={{ mode: "dark" }}
                       style={{
-                        backgroundColor: "transparent",
                         borderRadius: "10px",
                       }}
                     >
