@@ -216,13 +216,6 @@ export const InstanceList = () => {
             externalId={data.basicInformation.externalId}
             message="View Options"
           />
-          {data.basicInformation.isCustom && (
-            <InstanceMoreOptions
-              externalId={data.basicInformation.externalId}
-              message="Edit Options"
-              isEdit
-            />
-          )}
         </div>
       ),
     };
