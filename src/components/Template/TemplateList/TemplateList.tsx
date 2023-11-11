@@ -185,7 +185,7 @@ export const TemplateList = () => {
     },
     {
       key: "custom",
-      label: "CUSTOM",
+      label: "TYPE",
     },
     {
       key: "more",

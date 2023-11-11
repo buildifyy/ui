@@ -1,13 +1,11 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Link } from "react-router-dom";
 import { Edit, Eye } from "lucide-react";
+import {
+  Divider,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@nextui-org/react";
 
 interface InstanceMoreOptionsProps {
   readonly externalId: string;
@@ -17,66 +15,63 @@ interface InstanceMoreOptionsProps {
 
 export const InstanceMoreOptions = ({
   externalId,
-  message,
   isEdit,
 }: InstanceMoreOptionsProps) => {
+  const dropdownItems = [
+    {
+      key: "instance",
+      label: "Instance",
+      href: isEdit
+        ? `/instances/edit/${externalId}?config=basic-information`
+        : `/instances/${externalId}?config=basic-information`,
+    },
+    {
+      key: "divider",
+      label: <Divider />,
+    },
+    {
+      key: "attributes",
+      label: "Attributes",
+      href: isEdit
+        ? `/instances/edit/${externalId}?config=attributes`
+        : `/instances/${externalId}?config=attributes`,
+    },
+    {
+      key: "relationships",
+      label: "Relationships",
+      href: isEdit
+        ? `/instances/edit/${externalId}?config=relationships`
+        : `/instances/${externalId}?config=relationships`,
+    },
+    {
+      key: "metrics",
+      label: "Metrics",
+      href: isEdit
+        ? `/instances/edit/${externalId}?config=metrics`
+        : `/instances/${externalId}?config=metrics`,
+    },
+  ];
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
+    <Dropdown backdrop="blur">
+      <DropdownTrigger>
         {isEdit ? (
-          <Edit height={15} width={15} />
+          <Edit height={15} width={15} className="hover:cursor-pointer" />
         ) : (
-          <Eye height={17} width={17} />
+          <Eye height={17} width={17} className="hover:cursor-pointer" />
         )}
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>{message}</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Link
-            to={
-              isEdit
-                ? `/instances/edit/${externalId}?config=basic-information`
-                : `/instances/${externalId}?config=basic-information`
-            }
-          >
-            Instance
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link
-            to={
-              isEdit
-                ? `/instances/edit/${externalId}?config=attributes`
-                : `/instances/${externalId}?config=attributes`
-            }
-          >
-            Attributes
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link
-            to={
-              isEdit
-                ? `/instances/edit/${externalId}?config=relationships`
-                : `/instances/${externalId}?config=relationships`
-            }
-          >
-            Relationships
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link
-            to={
-              isEdit
-                ? `/instances/edit/${externalId}?config=metrics`
-                : `/instances/${externalId}?config=metrics`
-            }
-          >
-            Metrics
-          </Link>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </DropdownTrigger>
+      <DropdownMenu
+        variant="faded"
+        aria-label="More options menu"
+        disabledKeys={["divider"]}
+        items={dropdownItems}
+      >
+        {(item) => (
+          <DropdownItem key={item.key} href={item.href}>
+            {item.label}
+          </DropdownItem>
+        )}
+      </DropdownMenu>
+    </Dropdown>
   );
 };

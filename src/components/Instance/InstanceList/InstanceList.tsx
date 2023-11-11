@@ -1,19 +1,24 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { InstanceFormData } from "@/models";
 import { Header } from "@/components/shared";
-import { Check, FilterX, X } from "lucide-react";
+import { FilterX } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useInstanceList } from "@/service";
 import {
+  Chip,
+  Progress,
+  Select,
+  SelectItem,
   Table,
   TableBody,
   TableCell,
-  TableHead,
+  TableColumn,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { useInstanceList } from "@/service";
-import { InstanceMoreOptions } from "@/components/Instance";
-import { Progress, Select, SelectItem } from "@nextui-org/react";
+  Tooltip,
+  getKeyValue,
+} from "@nextui-org/react";
+import { InstanceMoreOptions } from "..";
 
 export const InstanceList = () => {
   const [dataToRender, setDataToRender] = useState<InstanceFormData[]>([]);
@@ -26,13 +31,6 @@ export const InstanceList = () => {
   const cachedList = useRef<InstanceFormData[]>([]);
   const [isLoadingFilters, setIsLoadingFilters] = useState<boolean>(false);
   const { data: instanceList, isLoading } = useInstanceList();
-  const showFilteredResultsHelper =
-    (searchText ||
-      (selectedExternalIds && selectedExternalIds.size > 0) ||
-      (selectedNames && selectedNames.size > 0) ||
-      (selectedParents && selectedParents.size > 0)) &&
-    dataToRender.length !== 0 &&
-    !isLoading;
 
   const handleSearchTextChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -172,10 +170,68 @@ export const InstanceList = () => {
     setSearchText("");
   };
 
+  const tableColumns = [
+    {
+      key: "externalId",
+      label: "EXTERNAL ID",
+    },
+    {
+      key: "name",
+      label: "NAME",
+    },
+    {
+      key: "parent",
+      label: "PARENT",
+    },
+    {
+      key: "custom",
+      label: "TYPE",
+    },
+    {
+      key: "more",
+      label: "",
+    },
+  ];
+
+  const tableRows = dataToRender.map((data) => {
+    return {
+      key: data.basicInformation.externalId,
+      externalId: data.basicInformation.externalId,
+      name: data.basicInformation.name,
+      parent: data.basicInformation.parent,
+      custom: data.basicInformation.isCustom ? (
+        <Chip color="success" variant="bordered" size="sm">
+          Custom
+        </Chip>
+      ) : (
+        <Tooltip content="Out-of-the-box">
+          <Chip color="warning" variant="bordered" size="sm">
+            OOTB
+          </Chip>
+        </Tooltip>
+      ),
+      more: (
+        <div className="flex gap-2">
+          <InstanceMoreOptions
+            externalId={data.basicInformation.externalId}
+            message="View Options"
+          />
+          {data.basicInformation.isCustom && (
+            <InstanceMoreOptions
+              externalId={data.basicInformation.externalId}
+              message="Edit Options"
+              isEdit
+            />
+          )}
+        </div>
+      ),
+    };
+  });
+
   return (
     <div className="w-full">
       <Header value="Instances" isListView />
-      <div className="flex justify-between mt-4 lg:mx-[10%] mx-0">
+      <div className="flex justify-between mt-4 lg:mx-[10%]">
         <div className="flex gap-2 items-center">
           <Select
             selectionMode="multiple"
@@ -274,79 +330,37 @@ export const InstanceList = () => {
           value={searchText}
         />
       </div>
-      <div className="h-[calc(100vh-200px)] overflow-y-auto border rounded-tl-none rounded-tr-none rounded-2xl mt-5 pb-3 lg:mx-[10%] mx-0">
-        {isLoading || isLoadingFilters ? (
-          <Progress aria-label="Loading..." isIndeterminate size="sm" />
-        ) : null}
-        <Table className="w-full border-collapse">
-          <TableHeader className="sticky top-0 h-12 bg-[hsl(var(--background))] shadow-th">
-            <TableRow className="border-b">
-              <TableHead className="p-2 pl-4 text-left text-[0.9rem] font-bold">
-                External ID
-              </TableHead>
-              <TableHead className="p-2 text-left text-[0.9rem] font-bold">
-                Name
-              </TableHead>
-              <TableHead className="p-2 text-left text-[0.9rem] font-bold">
-                Parent
-              </TableHead>
-              <TableHead className="p-2 text-left text-[0.9rem] font-bold">
-                Custom
-              </TableHead>
-              <TableHead className="p-2 text-left w-20 text-[0.9rem] font-bold"></TableHead>
-            </TableRow>
+      <div className="mt-3 lg:mx-[10%]">
+        <Progress
+          aria-label="Loading..."
+          isIndeterminate
+          size="sm"
+          className={`${!isLoading && !isLoadingFilters ? "invisible" : ""}`}
+        />
+        <Table
+          aria-label="Templates table"
+          className="mt-2"
+          isHeaderSticky
+          classNames={{
+            base: "max-h-[calc(100vh-200px)] overflow-y-scroll",
+          }}
+        >
+          <TableHeader columns={tableColumns}>
+            {(column) => (
+              <TableColumn key={column.key}>{column.label}</TableColumn>
+            )}
           </TableHeader>
-          <TableBody>
-            {dataToRender.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={4} className="p-4">
-                  No instances found
-                </TableCell>
+          <TableBody items={tableRows}>
+            {(row) => (
+              <TableRow key={row.key}>
+                {(columnKey) => (
+                  <TableCell>{getKeyValue(row, columnKey)}</TableCell>
+                )}
               </TableRow>
-            ) : (
-              dataToRender.map((data, i) => (
-                <TableRow key={i} className="border-b last:border-none">
-                  <TableCell className="p-2 pl-4 text-[0.9rem] italic">
-                    {data.basicInformation.externalId}
-                  </TableCell>
-                  <TableCell className="p-2 text-[0.9rem]">
-                    {data.basicInformation.name}
-                  </TableCell>
-                  <TableCell className="p-2 text-[0.9rem] italic">
-                    {data.basicInformation.parent}
-                  </TableCell>
-                  <TableCell className="p-2 text-[0.9rem]">
-                    {data.basicInformation.isCustom ? (
-                      <Check height={17} width={17} />
-                    ) : (
-                      <X height={17} width={17} />
-                    )}
-                  </TableCell>
-                  <TableCell className="p-3 text-[0.9rem] flex gap-2">
-                    <InstanceMoreOptions
-                      externalId={data.basicInformation.externalId}
-                      message="View Options"
-                    />
-                    {data.basicInformation.isCustom && (
-                      <InstanceMoreOptions
-                        externalId={data.basicInformation.externalId}
-                        message="Edit Options"
-                        isEdit
-                      />
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))
             )}
           </TableBody>
         </Table>
       </div>
-      {showFilteredResultsHelper && (
-        <div className="text-right text-gray-500 text-md mt-2">
-          {dataToRender.length} filtered{" "}
-          {dataToRender.length > 1 ? "results" : "result"}
-        </div>
-      )}
     </div>
   );
 };

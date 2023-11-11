@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import { InstanceFormData, TemplateFormData } from "@/models";
@@ -8,6 +8,7 @@ interface FooterProps {
 }
 
 export const Footer = ({ onReset }: FooterProps) => {
+  const location = useLocation();
   const {
     watch: templateWatch,
     formState: { dirtyFields },
@@ -38,7 +39,11 @@ export const Footer = ({ onReset }: FooterProps) => {
       searchParams.set("config", "attributes");
       setSearchParams(searchParams);
     } else if (config === "metrics") {
-      searchParams.set("config", "relationships");
+      if (location.pathname.includes("/templates")) {
+        searchParams.set("config", "attributes");
+      } else {
+        searchParams.set("config", "relationships");
+      }
       setSearchParams(searchParams);
     }
   };
@@ -49,7 +54,11 @@ export const Footer = ({ onReset }: FooterProps) => {
       searchParams.set("config", "attributes");
       setSearchParams(searchParams);
     } else if (config === "attributes") {
-      searchParams.set("config", "relationships");
+      if (location.pathname.includes("/templates")) {
+        searchParams.set("config", "metrics");
+      } else {
+        searchParams.set("config", "relationships");
+      }
       setSearchParams(searchParams);
     } else if (config === "relationships") {
       searchParams.set("config", "metrics");

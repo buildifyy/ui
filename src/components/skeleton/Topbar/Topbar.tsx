@@ -66,11 +66,15 @@ export const Topbar = () => {
                 Attributes
               </BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbItem isCurrentPage={config === "relationships"}>
-              <BreadcrumbLink onClick={() => handleStepClick("relationships")}>
-                Relationships
-              </BreadcrumbLink>
-            </BreadcrumbItem>
+            {!location.pathname.includes("/templates") && (
+              <BreadcrumbItem isCurrentPage={config === "relationships"}>
+                <BreadcrumbLink
+                  onClick={() => handleStepClick("relationships")}
+                >
+                  Relationships
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            )}
             <BreadcrumbItem isCurrentPage={config === "metrics"}>
               <BreadcrumbLink
                 onClick={() => handleStepClick("metrics")}
