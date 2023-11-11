@@ -334,6 +334,7 @@ export const InstanceList = () => {
           aria-label="Templates table"
           className="mt-2"
           isHeaderSticky
+          isStriped
           classNames={{
             base: "max-h-[calc(100vh-200px)] overflow-y-scroll",
           }}
