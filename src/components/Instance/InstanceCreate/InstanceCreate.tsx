@@ -4,7 +4,11 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useInstanceCreateForm, useInstanceCreate } from "@/service";
 import { SubmitHandler, useFormContext, useWatch } from "react-hook-form";
-import { InstanceFormData, InstanceMetaDataField } from "@/models";
+import {
+  InstanceFormData,
+  InstanceMetaDataField,
+  InstanceRelationshipForm,
+} from "@/models";
 import { useToast } from "@/components/ui/use-toast.ts";
 import { Toaster } from "@/components/ui/toaster.tsx";
 import { ToastAction } from "@/components/ui/toast";
@@ -88,6 +92,7 @@ export const InstanceCreate = ({
           },
           attributes: [],
           metrics: [],
+          relationships: [],
         };
       });
       searchParams.set("config", "basic-information");
@@ -155,16 +160,25 @@ export const InstanceCreate = ({
 
   const onSubmit: SubmitHandler<InstanceFormData> = (data) => {
     setExternalId(getValues("basicInformation.externalId"));
-    const toPush: InstanceFormData = {
-      ...data,
-      relationships: data.relationships?.map((relationship) => {
-        return {
+    const relationshipsToAdd: InstanceRelationshipForm[] = [];
+    data.relationships?.forEach((relationship) => {
+      if (
+        !(
+          !relationship.target ||
+          (Array.isArray(relationship.target) && !relationship.target[0])
+        )
+      ) {
+        relationshipsToAdd.push({
           ...relationship,
           target: !(relationship.target as string).includes(",")
             ? [relationship.target as string]
             : (relationship.target as string).split(","),
-        };
-      }),
+        });
+      }
+    });
+    const toPush: InstanceFormData = {
+      ...data,
+      relationships: relationshipsToAdd,
     };
     createInstance(toPush);
   };

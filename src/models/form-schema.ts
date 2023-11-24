@@ -227,11 +227,16 @@ export const instanceSchema = yup.object({
         message: "Please set metric behaviours for all metrics",
       });
     }),
-  relationships: yup.array().of(
-    yup.object({
-      id: yup.string(),
-      source: yup.string(),
-      target: yup.string(),
-    })
-  ),
+  relationships: yup
+    .array()
+    .of(
+      yup.object({
+        id: yup.string(),
+        source: yup.string(),
+        target: yup.mixed().test("relationship-target", "error", () => {
+          return true;
+        }),
+      })
+    )
+    .notRequired(),
 });

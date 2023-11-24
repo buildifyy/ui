@@ -1,11 +1,14 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { InstanceFormData } from "@/models";
 import { Header } from "@/components/shared";
-import { FilterX } from "lucide-react";
+import { FilterX, Workflow } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useInstanceList } from "@/service";
+import { useInstanceList, useRelationships } from "@/service";
 import {
   Chip,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Progress,
   Select,
   SelectItem,
@@ -19,6 +22,13 @@ import {
   getKeyValue,
 } from "@nextui-org/react";
 import { InstanceMoreOptions } from "..";
+import Graphin, {
+  Behaviors,
+  GraphinData,
+  IUserEdge,
+  IUserNode,
+  Utils,
+} from "@antv/graphin";
 
 export const InstanceList = () => {
   const [dataToRender, setDataToRender] = useState<InstanceFormData[]>([]);
@@ -31,6 +41,11 @@ export const InstanceList = () => {
   const cachedList = useRef<InstanceFormData[]>([]);
   const [isLoadingFilters, setIsLoadingFilters] = useState<boolean>(false);
   const { data: instanceList, isLoading } = useInstanceList();
+  const { data: relationshipTemplates } = useRelationships();
+  const [graphDataToRender, setGraphDataToRender] = useState<GraphinData>({
+    nodes: [],
+    edges: [],
+  });
 
   const handleSearchTextChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -221,6 +236,104 @@ export const InstanceList = () => {
     };
   });
 
+  const handlePopoverClick = (isOpen: boolean) => {
+    if (isOpen) {
+      const nodes: IUserNode[] = [];
+      const edges: IUserEdge[] = [];
+      instanceList?.forEach((instance) => {
+        nodes.push({
+          id: instance.basicInformation.externalId,
+          style: {
+            label: {
+              value: instance.basicInformation.externalId,
+              offset: [0, 10],
+            },
+            keyshape: {
+              stroke:
+                instance.basicInformation.rootTemplate === "p.com.asset"
+                  ? "blue"
+                  : "red",
+              fill:
+                instance.basicInformation.rootTemplate === "p.com.asset"
+                  ? "blue"
+                  : "red",
+            },
+          },
+        });
+
+        instance.relationships?.forEach((relationship) => {
+          const relationshipName = relationshipTemplates?.find(
+            (relationshipTemplate) =>
+              relationshipTemplate.id === relationship.relationshipTemplateId
+          )?.name;
+          if (Array.isArray(relationship.target)) {
+            relationship.target.forEach((target) => {
+              nodes.push({
+                id: target,
+                style: {
+                  label: {
+                    value: target,
+                    offset: [0, 10],
+                  },
+                  keyshape: {
+                    stroke: target.includes("asset") ? "blue" : "red",
+                    fill: target.includes("asset") ? "blue" : "red",
+                  },
+                },
+              });
+
+              edges.push({
+                source: instance.basicInformation.externalId,
+                target: target,
+                style: {
+                  label: {
+                    value: relationshipName,
+                  },
+                },
+              });
+            });
+          } else if (relationship.target) {
+            nodes.push({
+              id: relationship.target,
+              style: {
+                label: {
+                  value: relationship.target,
+                  offset: [0, 10],
+                },
+                keyshape: {
+                  stroke: relationship.target.includes("asset")
+                    ? "blue"
+                    : "red",
+                  fill: relationship.target.includes("asset") ? "blue" : "red",
+                },
+              },
+            });
+
+            edges.push({
+              source: instance.basicInformation.externalId,
+              target: relationship.target,
+              style: {
+                label: {
+                  value: relationshipName,
+                },
+              },
+            });
+          }
+        });
+      });
+
+      setGraphDataToRender({
+        nodes,
+        edges: Utils.processEdges([...edges], {
+          poly: 100,
+          loop: 10,
+        }),
+      });
+    }
+  };
+
+  const { ZoomCanvas } = Behaviors;
+
   return (
     <div className="w-full">
       <Header value="Instances" isListView />
@@ -315,13 +428,56 @@ export const InstanceList = () => {
             className="hover:cursor-pointer hover:text-blue-400"
           />
         </div>
-        <Input
-          type="text"
-          placeholder="Search"
-          className="px-4 rounded-2xl text-sm w-52"
-          onChange={handleSearchTextChange}
-          value={searchText}
-        />
+        <div className="flex gap-2 items-center">
+          <Popover
+            showArrow
+            placement="bottom-end"
+            onOpenChange={handlePopoverClick}
+            backdrop="blur"
+          >
+            <PopoverTrigger>
+              <Workflow
+                width={20}
+                height={20}
+                className="hover:cursor-pointer"
+              />
+            </PopoverTrigger>
+            <PopoverContent className="p-0">
+              <Graphin
+                data={graphDataToRender}
+                layout={{
+                  type: "force2",
+                  linkDistance: 1,
+                  nodeStrength: 50000,
+                  edgeStrength: 50,
+                  gravity: 50,
+                  workerEnabled: true,
+                }}
+                theme={{
+                  mode: "dark",
+                  background:
+                    "hsl(var(--nextui-content1) / var(--nextui-content1-opacity, var(--tw-bg-opacity)))",
+                  edgeSize: 2,
+                  nodeSize: 30,
+                }}
+                style={{
+                  borderRadius: "10px",
+                  height: "700px",
+                  width: "1000px",
+                }}
+              >
+                <ZoomCanvas />
+              </Graphin>
+            </PopoverContent>
+          </Popover>
+          <Input
+            type="text"
+            placeholder="Search"
+            className="px-4 rounded-2xl text-sm w-52"
+            onChange={handleSearchTextChange}
+            value={searchText}
+          />
+        </div>
       </div>
       <div className="mt-3 lg:mx-[10%]">
         <Progress

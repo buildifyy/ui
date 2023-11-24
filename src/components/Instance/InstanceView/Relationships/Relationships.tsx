@@ -43,6 +43,7 @@ export const Relationships = () => {
           style: {
             label: {
               value: source,
+              offset: [0, 10]
             },
             keyshape: {
               stroke: sourceRootTemplate === "p.com.asset" ? "blue" : "red",
@@ -74,6 +75,7 @@ export const Relationships = () => {
               style: {
                 label: {
                   value: target,
+                  offset: [0, 10]
                 },
                 keyshape: {
                   stroke:
@@ -121,7 +123,7 @@ export const Relationships = () => {
           <span>{getValues("basicInformation.name")}</span>
           <Popover
             showArrow
-            placement="right"
+            placement="right-end"
             onOpenChange={handlePopoverClick}
             backdrop="blur"
           >
@@ -140,6 +142,8 @@ export const Relationships = () => {
                 }}
                 style={{
                   borderRadius: "10px",
+                  height: '700px',
+                  width: '1000px'
                 }}
               >
                 <ZoomCanvas />
