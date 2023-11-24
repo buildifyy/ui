@@ -462,8 +462,8 @@ export const InstanceList = () => {
                 }}
                 style={{
                   borderRadius: "10px",
-                  height: "700px",
-                  width: "1000px",
+                  height: "400px",
+                  width: "700px",
                 }}
               >
                 <ZoomCanvas />
